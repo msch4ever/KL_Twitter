@@ -99,6 +99,10 @@ public class User {
         return following;
     }
 
+    public void setFollowing(Set<User> following) {
+        this.following = following;
+    }
+
     public void addToFollowing(User userToFollow) {
         this.following.add(userToFollow);
     }
