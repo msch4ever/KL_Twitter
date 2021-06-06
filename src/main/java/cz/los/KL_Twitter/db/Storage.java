@@ -26,19 +26,21 @@ public class Storage {
     }
 
     public static Long putUserToStorage(User user) {
-        if (user.getUserId() == null) {
-            user.setUserId(++userSequence);
+        User persisted = createUserCopy(user);
+        if (persisted.getUserId() == null) {
+            persisted.setUserId(++userSequence);
         }
-        userStorage.put(user.getUserId(), user);
-        return user.getUserId();
+        userStorage.put(persisted.getUserId(), persisted);
+        return persisted.getUserId();
     }
 
     public static Long putTweetToStorage(Tweet tweet) {
-        if (tweet.getTweetId() == null) {
-            tweet.setTweetId(++tweetSequence);
+        Tweet persisted = createTweetCopy(tweet);
+        if (persisted.getTweetId() == null) {
+            persisted.setTweetId(++tweetSequence);
         }
-        tweetStorage.put(tweet.getTweetId(), tweet);
-        return tweet.getTweetId();
+        tweetStorage.put(persisted.getTweetId(), persisted);
+        return persisted.getTweetId();
     }
 
     public static User getUserById(long id) {
