@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
-public class Tweet {
+public class Tweet implements PersistenceEntity {
 
     private Long tweetId;
     private User user;
@@ -36,11 +36,12 @@ public class Tweet {
         this.retweets = retweets;
     }
 
-    public Long getTweetId() {
+    public Long getId() {
         return tweetId;
     }
 
-    public void setTweetId(Long tweetId) {
+    @Override
+    public void setId(Long tweetId) {
         this.tweetId = tweetId;
     }
 
