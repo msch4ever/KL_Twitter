@@ -2,6 +2,9 @@ package cz.los.KL_Twitter.storage;
 
 import cz.los.KL_Twitter.model.Tweet;
 import cz.los.KL_Twitter.model.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,6 +12,8 @@ import java.util.Map;
 import java.util.Set;
 
 public final class Storage {
+
+    private static final Logger log = LogManager.getLogger(Storage.class);
 
     private static final Map<Long, Tweet> tweetStorage = new HashMap<>();
     private static final Map<Long, User> userStorage = new HashMap<>();
@@ -19,6 +24,7 @@ public final class Storage {
     private Storage() { }
 
     public static Set<User> getUsers() {
+        log.info("Fetching all user in storage.");
         Set<User> result = new HashSet<>();
         for (User user : userStorage.values()) {
             User userCopy = createUserCopy(user);
@@ -26,12 +32,14 @@ public final class Storage {
                 result.add(userCopy);
             }
         }
+        log.info("Fetching done. {} users found.", result.size());
         return result;
     }
 
     private static User createUserCopy(User original) {
+        User copy = null;
         if (original != null) {
-            User copy = new User();
+            copy = new User();
             copy.setDateRegistered(original.getDateRegistered());
             copy.setDateOfBirth(original.getDateOfBirth());
             copy.setFollowers(original.getFollowers());
@@ -40,9 +48,9 @@ public final class Storage {
             copy.setAbout(original.getAbout());
             copy.setLogin(original.getLogin());
             copy.setId(original.getId());
-            return copy;
         }
-        return null;
+        log.debug("Created a copy of user {}.", original);
+        return copy;
     }
 
     public static Set<Tweet> getTweets() {
