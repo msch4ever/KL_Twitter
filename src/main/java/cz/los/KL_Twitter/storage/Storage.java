@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public final class Storage {
+public final class Storage { // database
 
     private static final Logger log = LogManager.getLogger(Storage.class);
 

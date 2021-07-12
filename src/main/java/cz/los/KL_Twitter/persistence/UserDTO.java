@@ -1,3 +1,4 @@
+/*
 package cz.los.KL_Twitter.persistence;
 
 import cz.los.KL_Twitter.model.User;
@@ -12,3 +13,4 @@ public final class UserDTO { //User Transfer Object
         this.login = user.getLogin();
     }
 }
+*/

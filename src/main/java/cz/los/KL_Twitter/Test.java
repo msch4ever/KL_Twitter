@@ -5,6 +5,7 @@ import cz.los.KL_Twitter.model.User;
 import cz.los.KL_Twitter.model.UserFeed;
 import cz.los.KL_Twitter.persistence.UserDao;
 import cz.los.KL_Twitter.persistence.UserDaoInMemImpl;
+import cz.los.KL_Twitter.persistence.UserDaoJdbcImpl;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -14,13 +15,14 @@ public class Test {
 
     public static void main(String[] args) {
 
+
         User user1 = new User("Will69420", "RealWill");
-        //user1.setId(1L);
+        user1.setId(1L);
 
         User user2 = new User("Bill6000", "RealBill");
-        //user2.setId(2L);
+        user2.setId(2L);
 
-       /* Tweet tweet1 = new Tweet(user1, "Hello World", null);
+        Tweet tweet1 = new Tweet(user1, "Hello World", null);
         Tweet tweet2 = new Tweet(user2, "Hello World @Will69420", new HashSet<>(Arrays.asList(user1)));
 
         System.out.println(user1);
@@ -32,15 +34,15 @@ public class Test {
         UserFeed user2Feed = new UserFeed(new HashSet<>(Arrays.asList(tweet2)), user2.getId(), false);
 
         System.out.println(user1Feed);
-        System.out.println(user2Feed);*/
+        System.out.println(user2Feed);
 
         ////////////////////////////////////////////////////////////////////////
-        UserDao userDao = new UserDaoInMemImpl();
+        UserDao userDao = new UserDaoJdbcImpl();
         ////////////////////////////////////////////////////////////////////////
         userDao.save(user1);
         userDao.save(user2);
 
-        Set<User> users = userDao.getAll();
+        /*Set<User> users = userDao.getAll();
 
         User user2FromDB = userDao.findById(user2.getId()).orElseThrow(NullPointerException::new);
 
@@ -50,7 +52,7 @@ public class Test {
 
         userDao.deleteById(user1.getId());
 
-        System.out.println("lol");
+        System.out.println("lol");*/
 
     }
 
