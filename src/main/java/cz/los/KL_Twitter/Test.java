@@ -15,7 +15,6 @@ public class Test {
 
     public static void main(String[] args) {
 
-
         User user1 = new User("Will69420", "RealWill");
         user1.setId(1L);
 
