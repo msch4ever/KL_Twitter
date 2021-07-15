@@ -17,7 +17,7 @@ public class Configurator {
 
     public static void initApp(String[] args) {
         // parse params
-        Configuration config = parseArgs(args);
+        Configuration config = createConfig(args);
         // init app
           // init daoType
         if (config.getDaoType() == Configuration.DaoType.IN_MEM) {
@@ -37,7 +37,7 @@ public class Configurator {
         System.out.println(config);
     }
 
-    private static Configuration parseArgs(String[] args) {
+    private static Configuration createConfig(String[] args) {
         Options options = new Options();
         options.addRequiredOption("dt", DAO_TYPE, true, "choose dao type for this run.");
         options.addOption(INIT_DB, false, "flag for initial creation of the DB.");
