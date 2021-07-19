@@ -1,8 +1,5 @@
 package cz.los.KL_Twitter.config;
 
-import cz.los.KL_Twitter.app.AppContext;
-import cz.los.KL_Twitter.persistence.TweetDao;
-import cz.los.KL_Twitter.persistence.UserDao;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
@@ -38,6 +35,9 @@ public class Configurator {
         if (config.populateDb()) {
             // populate db
         }
+
+        //ToDo: create all handlers and put into AppContext;
+
         System.out.println(config);
     }
 
