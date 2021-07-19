@@ -1,4 +1,4 @@
-package cz.los.KL_Twitter;
+package cz.los.KL_Twitter.app;
 
 import static cz.los.KL_Twitter.config.Configurator.initApp;
 

@@ -1,5 +1,8 @@
 package cz.los.KL_Twitter.config;
 
+import cz.los.KL_Twitter.app.AppContext;
+import cz.los.KL_Twitter.persistence.TweetDao;
+import cz.los.KL_Twitter.persistence.UserDao;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
@@ -20,6 +23,7 @@ public class Configurator {
         Configuration config = createConfig(args);
         // init app
           // init daoType
+
         if (config.getDaoType() == Configuration.DaoType.IN_MEM) {
             // use in mem db
         } else if (config.getDaoType() == Configuration.DaoType.JDBC) {
