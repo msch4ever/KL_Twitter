@@ -4,12 +4,10 @@ import cz.los.KL_Twitter.model.Tweet;
 import cz.los.KL_Twitter.model.User;
 import cz.los.KL_Twitter.model.UserFeed;
 import cz.los.KL_Twitter.persistence.UserDao;
-import cz.los.KL_Twitter.persistence.UserDaoInMemImpl;
-import cz.los.KL_Twitter.persistence.UserDaoJdbcImpl;
+import cz.los.KL_Twitter.persistence.jdbc.UserDaoJdbcImpl;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
 
 public class Test {
 

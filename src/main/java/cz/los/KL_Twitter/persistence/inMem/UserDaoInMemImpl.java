@@ -1,6 +1,7 @@
-package cz.los.KL_Twitter.persistence;
+package cz.los.KL_Twitter.persistence.inMem;
 
 import cz.los.KL_Twitter.model.User;
+import cz.los.KL_Twitter.persistence.UserDao;
 import cz.los.KL_Twitter.storage.Storage;
 
 import java.util.Optional;

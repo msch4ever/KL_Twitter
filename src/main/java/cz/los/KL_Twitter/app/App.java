@@ -15,6 +15,7 @@ import static cz.los.KL_Twitter.config.Configurator.initApp;
 public class App {
 
     private static Logger log = LogManager.getLogger(App.class);
+    public static AppContext appContext;
 
     private final Handler defaultHandler;
 

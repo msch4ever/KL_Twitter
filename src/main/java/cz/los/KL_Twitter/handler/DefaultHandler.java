@@ -1,6 +1,6 @@
 package cz.los.KL_Twitter.handler;
 
-import cz.los.KL_Twitter.persistence.UserDaoInMemImpl;
+import cz.los.KL_Twitter.persistence.inMem.UserDaoInMemImpl;
 import cz.los.KL_Twitter.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

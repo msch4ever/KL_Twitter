@@ -1,11 +1,17 @@
 package cz.los.KL_Twitter.config;
 
+import cz.los.KL_Twitter.app.App;
+import cz.los.KL_Twitter.app.AppContext;
+import cz.los.KL_Twitter.persistence.factory.DaoAbstractFactory;
+import cz.los.KL_Twitter.persistence.jdbc.DbUtils;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import static cz.los.KL_Twitter.config.DaoType.JDBC;
 
 public class Configurator {
 
@@ -16,29 +22,31 @@ public class Configurator {
     public static final String POPULATE_DB = "populateDb";
 
     public static void initApp(String[] args) {
-        // parse params
         Configuration config = createConfig(args);
-        // init app
-          // init daoType
+        AppContext.AppContextBuilder builder = AppContext.builder();
 
-        if (config.getDaoType() == Configuration.DaoType.IN_MEM) {
-            // use in mem db
-        } else if (config.getDaoType() == Configuration.DaoType.JDBC) {
-            //use jdbc db
-        } else {
-            throw new RuntimeException("SAD! Could not resolve DB type!");
-        }
-            // init db
-        if (config.initDb()) {
-            //init db
-        }
-        if (config.populateDb()) {
-            // populate db
-        }
+        DaoAbstractFactory factory = new DaoAbstractFactory();
+
+        builder.configuration(config);
+        builder.userDao(factory.createUserDao(config.getDaoType()));
+        builder.tweetDao(factory.createTweetDao(config.getDaoType()));
+
+        initDab(config);
 
         //ToDo: create all handlers and put into AppContext;
 
         System.out.println(config);
+    }
+
+    private static void initDab(Configuration config) {
+        if (config.initDb()) {
+            if (config.getDaoType() == JDBC) {
+                DbUtils.initDb();
+            }
+        }
+        if (config.populateDb()) {
+            // populate db
+        }
     }
 
     private static Configuration createConfig(String[] args) {

@@ -1,6 +1,7 @@
-package cz.los.KL_Twitter.persistence;
+package cz.los.KL_Twitter.persistence.jdbc;
 
 import cz.los.KL_Twitter.model.User;
+import cz.los.KL_Twitter.persistence.UserDao;
 
 import java.sql.*;
 import java.util.Optional;
