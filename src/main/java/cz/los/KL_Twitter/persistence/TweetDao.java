@@ -2,9 +2,7 @@ package cz.los.KL_Twitter.persistence;
 
 import cz.los.KL_Twitter.model.Tweet;
 
-import java.util.Set;
-
-public interface TweetDao {
+public interface TweetDao extends GenericDao<Tweet> {
 
     Long saveTweet(Tweet tweet);
 
@@ -15,5 +13,4 @@ public interface TweetDao {
     void updateTweet(Tweet tweet);
 
     Set<Tweet> getAllTweets();
-
 }

@@ -2,9 +2,7 @@ package cz.los.KL_Twitter.persistence;
 
 import cz.los.KL_Twitter.model.User;
 
-import java.util.Set;
-
-public interface UserDao {
+public interface UserDao extends GenericDao<User> {
 
     Long saveUser(User user);
 
@@ -15,5 +13,4 @@ public interface UserDao {
     void updateUser(User user);
 
     Set<User> getAllUsers();
-
 }
