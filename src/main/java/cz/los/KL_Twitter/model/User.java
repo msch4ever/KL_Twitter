@@ -41,6 +41,10 @@ public class User implements PersistenceEntity {
         this.dateRegistered = LocalDate.now();
         this.followers = new ArrayList<>();
         this.following = new ArrayList<>();
+
+
+    public void addToFollowing(User userToFollow) {
+        this.following.add(userToFollow);
     }
 
     public User(User other) {
