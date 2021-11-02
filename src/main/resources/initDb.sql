@@ -8,8 +8,6 @@ CREATE TABLE user
     , about VARCHAR(250)
 );
 
-----------------------------------------------
-
 CREATE TABLE tweet
 (
       tweetId INTEGER PRIMARY KEY ASC
@@ -20,8 +18,6 @@ CREATE TABLE tweet
     , FOREIGN KEY(userId) REFERENCES user(userId)
 );
 
-----------------------------------------------
-
 CREATE TABLE followers
 (
       userId INTEGER NOT NULL
@@ -29,9 +25,6 @@ CREATE TABLE followers
     , since TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     , CONSTRAINT UNIQUE_COMBINATION UNIQUE (userId, followingUserId)
 );
-
-
-----------------------------------------------
 
 CREATE TABLE likes
 (
