@@ -23,7 +23,7 @@ public class TweetDaoJdbcImpl implements TweetDao {
     }
 
     @Override
-    public void updateById(Long id, Tweet model) {
+    public void update(Tweet model) {
 
     }
 

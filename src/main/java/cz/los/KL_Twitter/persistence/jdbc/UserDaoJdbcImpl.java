@@ -69,7 +69,7 @@ public class UserDaoJdbcImpl implements UserDao {
         }
 
         @Override
-        public void updateById (Long id, User model){
+        public void update(User model){
 
         }
 

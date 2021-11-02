@@ -2,35 +2,69 @@ package cz.los.KL_Twitter.persistence.inMem;
 
 import cz.los.KL_Twitter.model.Tweet;
 import cz.los.KL_Twitter.persistence.TweetDao;
+import cz.los.KL_Twitter.storage.Storage;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
+@Slf4j
 public class TweetDaoInMemImpl implements TweetDao {
 
+    private final Storage storage = Storage.getInstance();
+
     @Override
-    public Long save(Tweet model) {
-        return null;
+    public Long save(Tweet tweet) {
+        long newTweetId = storage.getNewTweetIdSequence();
+        tweet.setTweetId(newTweetId);
+        storage.getTweetStorage().put(tweet.getTweetId(), createTweetState(tweet));
+        log.info("Tweet was persisted in the DB: {}", tweet);
+        return newTweetId;
     }
 
     @Override
-    public Set<Tweet> getAll() {
-        return null;
-    }
-
-    @Override
-    public Optional<Tweet> findById(Long id) {
+    public Optional<Tweet> findById(Long tweetId) {
+        final Tweet persistedTweet = storage.getTweetStorage().get(tweetId);
+        if (persistedTweet != null) {
+            Tweet resultTweet = createTweetState(persistedTweet);
+            return Optional.of(resultTweet);
+        }
+        log.warn("Could not find tweet by id:{}", tweetId);
         return Optional.empty();
     }
 
     @Override
-    public void updateById(Long id, Tweet model) {
-
+    public Set<Tweet> getAll() {
+        Set<Tweet> userList = new HashSet<>();
+        for (final Tweet tweet : storage.getTweetStorage().values()) {
+            userList.add(createTweetState(tweet));
+        }
+        log.debug("{} tweet were fetched from the DB.", userList.size());
+        return userList;
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Long tweetId) {
+        Map<Long, Tweet> userStorage = storage.getTweetStorage();
+        if (userStorage.containsKey(tweetId)) {
+            userStorage.remove(tweetId);
+            log.info("Tweet has been deleted. TweetId:{}", tweetId);
+        } else {
+            log.warn("Could not find tweet by id:{}", tweetId);
+        }
+    }
 
+    /**
+     * Editing tweets is not supported
+     *
+     * @throws UnsupportedOperationException
+     */
+    @Override
+    public void update(Tweet model) {
+        throw new UnsupportedOperationException("Editing tweets is not supported");
+    }
+
+    private Tweet createTweetState(Tweet tweetOriginal) {
+        return new Tweet(tweetOriginal);
     }
 
 }

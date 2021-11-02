@@ -1,145 +1,82 @@
 package cz.los.KL_Twitter.model;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import lombok.Data;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
 public class User implements PersistenceEntity {
 
     private Long userId;
-    private String login;
     private String nickname;
-    private LocalDateTime dateRegistered;
+    private String login;
+    private final LocalDate dateRegistered;
     private LocalDate dateOfBirth;
     private String about;
-    private Set<User> followers;
-    private Set<User> following;
+    private List<User> followers;
+    private List<User> following;
 
-    public User() {}
+    public User(String nickname, LocalDate dateOfBirth, String about) {
+        this.nickname = nickname;
+        this.dateRegistered = LocalDate.now();
+        this.dateOfBirth = dateOfBirth;
+        this.about = about;
+        this.followers = new ArrayList<>();
+        this.following = new ArrayList<>();
+    }
+
+    public User(String nickname) {
+        this.nickname = nickname;
+        this.login = nickname;
+        this.dateRegistered = LocalDate.now();
+        this.followers = new ArrayList<>();
+        this.following = new ArrayList<>();
+    }
 
     public User(String login, String nickname) {
-        this.login = login;
         this.nickname = nickname;
-        this.dateRegistered = LocalDateTime.now();
-        this.followers = new HashSet<>();
-        this.following = new HashSet<>();
+        this.login = login;
+        this.dateRegistered = LocalDate.now();
+        this.followers = new ArrayList<>();
+        this.following = new ArrayList<>();
     }
 
-    public User(Long userId, String login, String nickname, LocalDateTime dateRegistered, LocalDate dateOfBirth,
-                String about, Set<User> followers, Set<User> following) {
-        this.userId = userId;
-        this.login = login;
-        this.nickname = nickname;
-        this.dateRegistered = dateRegistered;
-        this.dateOfBirth = dateOfBirth;
-        this.about = about;
-        this.followers = followers;
-        this.following = following;
-    }
-
-    public Long getId() {
-        return userId;
+    public User(User other) {
+        this.userId = other.userId;
+        this.nickname = other.nickname;
+        this.dateRegistered = other.dateRegistered;
+        this.dateOfBirth = other.dateOfBirth;
+        this.about = other.about;
+        this.followers = other.followers;
+        this.following = other.following;
     }
 
     @Override
-    public void setId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public LocalDateTime getDateRegistered() {
-        return dateRegistered;
-    }
-
-    public void setDateRegistered(LocalDateTime dateRegistered) {
-        this.dateRegistered = dateRegistered;
-    }
-
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getAbout() {
-        return about;
-    }
-
-    public void setAbout(String about) {
-        this.about = about;
-    }
-
-    public Set<User> getFollowers() {
-        return followers;
-    }
-
-    public void setFollowers(Set<User> followers) {
-        this.followers = followers;
-    }
-
-    public Set<User> getFollowing() {
-        return following;
-    }
-
-    public void setFollowing(Set<User> following) {
-        this.following = following;
-    }
-
-    public void addToFollowing(User userToFollow) {
-        this.following.add(userToFollow);
-    }
-
-    public void addToFollowers(User follower) {
-        this.following.add(follower);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", login='" + login + '\'' +
-                ", nickname='" + nickname + '\'' +
-                '}';
+    public void setId(Long id) {
+        this.userId = id;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (o == null || getClass() != o.getClass()) return false;
 
         User user = (User) o;
 
-        if (!Objects.equals(userId, user.userId)) {
-            return false;
-        }
-        return login.equals(user.login);
+        if (userId != null ? !userId.equals(user.userId) : user.userId != null) return false;
+        if (nickname != null ? !nickname.equals(user.nickname) : user.nickname != null) return false;
+        if (!dateRegistered.equals(user.dateRegistered)) return false;
+        return dateOfBirth != null ? dateOfBirth.equals(user.dateOfBirth) : user.dateOfBirth == null;
     }
 
     @Override
     public int hashCode() {
         int result = userId != null ? userId.hashCode() : 0;
-        result = 31 * result + login.hashCode();
+        result = 31 * result + (nickname != null ? nickname.hashCode() : 0);
+        result = 31 * result + dateRegistered.hashCode();
+        result = 31 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
         return result;
     }
 }

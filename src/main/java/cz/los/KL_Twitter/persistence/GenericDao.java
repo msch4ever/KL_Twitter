@@ -13,7 +13,7 @@ public interface GenericDao <T extends PersistenceEntity> {
 
     Optional<T> findById(Long id);
 
-    void updateById(Long id, T model);
+    void update(T model);
 
     void deleteById(Long id);
 
