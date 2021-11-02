@@ -14,7 +14,7 @@ CREATE TABLE USER
 
 CREATE TABLE TWEET
 (
-      tweetId          BIGINT AUTO_INCREMENT
+      tweetId         BIGINT AUTO_INCREMENT
     , role            VARCHAR(15) DEFAULT 'USER'
     , firstName       VARCHAR(30) NOT NULL
     , lastName        VARCHAR(30) NOT NULL
