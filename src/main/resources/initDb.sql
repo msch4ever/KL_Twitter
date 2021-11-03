@@ -1,12 +1,24 @@
 CREATE TABLE user
 (
       userId INTEGER PRIMARY KEY ASC
-    , nickname VARCHAR(25) NOT NULL DEFAULT login
+    , nickname VARCHAR(25)
     , login VARCHAR(25) NOT NULL
     , dateRegistered TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     , dateOfBirth DATE
     , about VARCHAR(250)
 );
+
+--NEXT--
+
+CREATE TRIGGER default_user_nickname
+    AFTER INSERT ON user
+    FOR EACH ROW
+    WHEN NEW.nickname IS NULL
+BEGIN
+    UPDATE user SET nickname = NEW.login WHERE rowid = NEW.rowid;
+END;
+
+--NEXT--
 
 CREATE TABLE tweet
 (
@@ -18,6 +30,8 @@ CREATE TABLE tweet
     , FOREIGN KEY(userId) REFERENCES user(userId)
 );
 
+--NEXT--
+
 CREATE TABLE followers
 (
       userId INTEGER NOT NULL
@@ -25,6 +39,8 @@ CREATE TABLE followers
     , since TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     , CONSTRAINT UNIQUE_COMBINATION UNIQUE (userId, followingUserId)
 );
+
+--NEXT--
 
 CREATE TABLE likes
 (
