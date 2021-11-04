@@ -2,10 +2,20 @@ CREATE TABLE user
 (
       userId INTEGER PRIMARY KEY ASC
     , nickname VARCHAR(25)
-    , login VARCHAR(25) NOT NULL
+    , login VARCHAR(25) NOT NULL UNIQUE
     , dateRegistered TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     , dateOfBirth DATE
     , about VARCHAR(250)
+);
+
+--NEXT--
+
+CREATE TABLE UserAuthentication
+
+(
+      login VARCHAR(25) NOT NULL UNIQUE
+    , saltedPassword BLOB NOT NULL
+    , FOREIGN KEY(login) REFERENCES user(login)
 );
 
 --NEXT--
