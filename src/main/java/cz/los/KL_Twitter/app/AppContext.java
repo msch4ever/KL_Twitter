@@ -3,57 +3,42 @@ package cz.los.KL_Twitter.app;
 import cz.los.KL_Twitter.config.Configuration;
 import cz.los.KL_Twitter.persistence.TweetDao;
 import cz.los.KL_Twitter.persistence.UserDao;
+import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 
-public final class AppContext {
+@Slf4j
+@Value
+public class AppContext {
 
-    private Configuration configuration;
-    private TweetDao tweetDao;
-    private UserDao userDao;
+    Configuration configuration;
+    TweetDao tweetDao;
+    UserDao userDao;
 
-    private AppContext() {
+    private AppContext(AppContextBuilder builder) {
+        this.configuration = builder.configuration;
+        this.tweetDao = builder.tweetDao;
+        this.userDao = builder.userDao;
     }
 
     public static AppContextBuilder builder() {
         return new AppContextBuilder();
     }
 
-    public Configuration getConfiguration() {
-        return configuration;
-    }
-
-    private void setConfiguration(Configuration configuration) {
-        this.configuration = configuration;
-    }
-
-    public UserDao getUserDao() {
-        return userDao;
-    }
-
-    private void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
-    }
-
-    public TweetDao getTweetDao() {
-        return tweetDao;
-    }
-
-    private void setTweetDao(TweetDao tweetDao) {
-        this.tweetDao = tweetDao;
-    }
-
     public static class AppContextBuilder {
 
-        private final AppContext appContext = new AppContext();
+        private Configuration configuration;
+        private TweetDao tweetDao;
+        private UserDao userDao;
 
         public AppContext build() {
-            return this.appContext;
+            return new AppContext(this);
         }
 
         public AppContextBuilder configuration(Configuration configuration) {
             if (configuration == null) {
                 throw new AppContextException("Provided configuration is null!");
             }
-            this.appContext.setConfiguration(configuration);
+            this.configuration = configuration;
             return this;
         }
 
@@ -61,7 +46,7 @@ public final class AppContext {
             if (userDao == null) {
                 throw new AppContextException("Provided userDao is null!");
             }
-            this.appContext.setUserDao(userDao);
+            this.userDao = userDao;
             return this;
         }
 
@@ -69,7 +54,7 @@ public final class AppContext {
             if (tweetDao == null) {
                 throw new AppContextException("Provided tweetDao is null!");
             }
-            this.appContext.setTweetDao(tweetDao);
+            this.tweetDao = tweetDao;
             return this;
         }
     }

@@ -12,14 +12,14 @@ public class Tweet implements PersistenceEntity {
 
     private Long tweetId;
     private Long userId;
-    private Tweet referenceTweet;
+    private Long referenceTweet;
     private final LocalDate datePosted;
     private final String content;
     private List<User> mentionedUsers;
     private List<User> likes;
-    private List<Tweet> retweets;
+    private List<Long> retweets;
 
-    public Tweet(Long userId, Tweet referenceTweet, String content) {
+    public Tweet(Long userId, Long referenceTweet, String content) {
         this.userId = userId;
         this.referenceTweet = referenceTweet;
         this.datePosted = LocalDate.now();
