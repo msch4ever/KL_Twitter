@@ -1,11 +1,9 @@
 package cz.los.KL_Twitter.handler;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ExitHandler extends AbstractHandler {
-
-    private static Logger log = LogManager.getLogger(ExitHandler.class);
 
     public ExitHandler() {
         super(Command.EXIT, null);

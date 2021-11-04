@@ -1,11 +1,9 @@
 package cz.los.KL_Twitter.handler;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ClosingHandler implements Handler {
-
-    private static Logger log = LogManager.getLogger(ClosingHandler.class);
 
     @Override
     public Response handle(Command command) {

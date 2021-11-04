@@ -28,6 +28,7 @@ public class Configurator {
         log.info("Initializing application..");
         log.debug("CMD params:{}", Arrays.toString(args));
         Configuration config = createConfig(args);
+
         log.debug("Creating Application context..");
         DaoAbstractFactory factory = new DaoAbstractFactory();
         AppContext.AppContextBuilder builder = AppContext.builder();

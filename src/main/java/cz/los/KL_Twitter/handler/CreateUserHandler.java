@@ -1,19 +1,17 @@
 package cz.los.KL_Twitter.handler;
 
 import cz.los.KL_Twitter.model.User;
-import cz.los.KL_Twitter.service.UserService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import cz.los.KL_Twitter.service.UserServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Scanner;
 
+@Slf4j
 public class CreateUserHandler extends AbstractHandler {
 
-    private static Logger log = LogManager.getLogger(CreateUserHandler.class);
+    private final UserServiceImpl userService;
 
-    private final UserService userService;
-
-    public CreateUserHandler(Handler nextHandler, UserService userService) {
+    public CreateUserHandler(Handler nextHandler, UserServiceImpl userService) {
         super(Command.CREATE_USER, nextHandler);
         this.userService = userService;
     }

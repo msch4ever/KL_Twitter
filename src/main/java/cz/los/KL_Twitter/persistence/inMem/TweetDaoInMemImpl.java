@@ -5,7 +5,10 @@ import cz.los.KL_Twitter.persistence.TweetDao;
 import cz.los.KL_Twitter.storage.Storage;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 public class TweetDaoInMemImpl implements TweetDao {

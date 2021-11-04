@@ -4,10 +4,7 @@ import cz.los.KL_Twitter.handler.Command;
 import cz.los.KL_Twitter.handler.DefaultHandler;
 import cz.los.KL_Twitter.handler.Handler;
 import cz.los.KL_Twitter.handler.Response;
-import cz.los.KL_Twitter.storage.Storage;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.Scanner;
 
@@ -16,19 +13,14 @@ import static cz.los.KL_Twitter.config.Configurator.initApp;
 @Slf4j
 public class App {
 
-    public static AppContext appContext;
-
     private final Handler defaultHandler;
 
     private App() {
         this.defaultHandler = new DefaultHandler();
-
     }
 
     public static void main(String[] args) {
-        // parse initial arguments and configure the app
         initApp(args);
-        // run app
         App app = new App();
         app.run();
     }

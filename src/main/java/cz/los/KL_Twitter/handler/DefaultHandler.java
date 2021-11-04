@@ -1,18 +1,16 @@
 package cz.los.KL_Twitter.handler;
 
 import cz.los.KL_Twitter.persistence.inMem.UserDaoInMemImpl;
-import cz.los.KL_Twitter.service.UserService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import cz.los.KL_Twitter.service.UserServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class DefaultHandler implements Handler {
-
-    private static Logger log = LogManager.getLogger(DefaultHandler.class);
 
     private final Handler handler;
 
     public DefaultHandler() {
-        this.handler = new HelpHandler(new CreateUserHandler(new ExitHandler(), new UserService(new UserDaoInMemImpl())));
+        this.handler = new HelpHandler(new CreateUserHandler(new ExitHandler(), new UserServiceImpl(new UserDaoInMemImpl())));
     }
 
     @Override
