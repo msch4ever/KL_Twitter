@@ -1,4 +1,4 @@
-package cz.los.KL_Twitter.persistence.jdbc;
+package cz.los.KL_Twitter.persistence;
 
 import cz.los.KL_Twitter.app.AppContext;
 import cz.los.KL_Twitter.app.AppContextHolder;

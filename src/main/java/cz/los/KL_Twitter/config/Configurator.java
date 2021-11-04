@@ -4,7 +4,7 @@ import cz.los.KL_Twitter.app.AppContext;
 import cz.los.KL_Twitter.app.AppContextHolder;
 import cz.los.KL_Twitter.persistence.factory.DaoAbstractFactory;
 import cz.los.KL_Twitter.persistence.factory.DaoFactoryException;
-import cz.los.KL_Twitter.persistence.jdbc.DbUtils;
+import cz.los.KL_Twitter.persistence.DbUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
