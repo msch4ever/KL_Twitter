@@ -8,18 +8,6 @@ CREATE TABLE user
     , about VARCHAR(250)
 );
 
---NEXT--
-
-CREATE TABLE UserAuthentication
-(
-      login VARCHAR(25) NOT NULL UNIQUE
-    , salted BLOB NOT NULL
-    , saltedPassword BLOB NOT NULL
-    , FOREIGN KEY(login) REFERENCES user(login)
-);
-
---NEXT--
-
 CREATE TRIGGER default_user_nickname
     AFTER INSERT ON user
     FOR EACH ROW
@@ -58,4 +46,24 @@ CREATE TABLE likes
     , likedUserId INTEGER NOT NULL
     , likedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     , CONSTRAINT UNIQUE_COMBINATION UNIQUE (tweetId, likedUserId)
+);
+
+--NEXT--
+
+CREATE TABLE user_authentication
+(
+      login VARCHAR(25) NOT NULL UNIQUE
+    , salted BLOB NOT NULL
+    , saltedPassword BLOB NOT NULL
+    , FOREIGN KEY(login) REFERENCES user(login)
+);
+
+--NEXT--
+
+CREATE TABLE session
+(
+      sessionId INTEGER PRIMARY KEY ASC
+    , login VARCHAR(25) NOT NULL
+    , start TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    , end TIMESTAMP
 );

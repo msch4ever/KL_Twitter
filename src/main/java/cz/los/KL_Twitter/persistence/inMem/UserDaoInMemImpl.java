@@ -19,8 +19,9 @@ public class UserDaoInMemImpl implements UserDao {
     @Override
     public Long save(User user) {
         long newUserId = storage.getNewUserIdSequence();
+        user = createUserState(user);
         user.setUserId(newUserId);
-        storage.getUserStorage().put(user.getUserId(), createUserState(user));
+        storage.getUserStorage().put(newUserId, user);
         log.info("User was persisted in the DB: {}", user);
         return newUserId;
     }

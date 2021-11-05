@@ -2,8 +2,6 @@ package cz.los.KL_Twitter.service;
 
 import cz.los.KL_Twitter.model.User;
 import cz.los.KL_Twitter.persistence.UserDao;
-import cz.los.KL_Twitter.persistence.inMem.AuthDaoInMemImpl;
-import cz.los.KL_Twitter.persistence.inMem.UserDaoInMemImpl;
 
 import java.util.Optional;
 
@@ -21,7 +19,7 @@ public class UserServiceImpl implements UserService {
     public User createUser(String login, String password) {
         User user = new User(login);
         user.setId(userDao.save(user));
-        authService.create(login, password);
+        authService.createAuth(login, password);
         return user;
     }
 

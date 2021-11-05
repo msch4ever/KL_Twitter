@@ -1,5 +1,6 @@
 package cz.los.KL_Twitter.service;
 
+import cz.los.KL_Twitter.auth.Session;
 import cz.los.KL_Twitter.auth.UserAuthentication;
 import lombok.SneakyThrows;
 
@@ -11,11 +12,15 @@ import java.util.Optional;
 
 public interface AuthService {
 
+    Session createSession(String login, String password);
+
+    void endSession(Session session);
+
     Optional<UserAuthentication> getAuthByLogin(String login);
 
     boolean authorize(String login, String password);
 
-    void create(String login, String password);
+    void createAuth(String login, String password);
 
     @SneakyThrows(NoSuchAlgorithmException.class)
     default byte[] encodePassword(byte[] salt, String password) {

@@ -11,10 +11,19 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class Session {
 
+    @Setter
+    @NonFinal
     Long sessionId;
     UserAuthentication userAuthentication;
     LocalDateTime start;
     @Setter
     @NonFinal
     LocalDateTime end;
+
+    public Session(Session other) {
+        this.sessionId = other.sessionId;
+        this.userAuthentication = other.userAuthentication;
+        this.start = other.start;
+        this.end = other.end;
+    }
 }
