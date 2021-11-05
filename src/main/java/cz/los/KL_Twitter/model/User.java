@@ -26,6 +26,10 @@ public class User implements PersistenceEntity {
         this(login, login, null, null);
     }
 
+    public User(String login, LocalDate dateOfBirth, String about) {
+        this(login, login, dateOfBirth, about);
+    }
+
     public User(String login, String nickname, LocalDate dateOfBirth, String about) {
         this.login = login;
         this.nickname = nickname;

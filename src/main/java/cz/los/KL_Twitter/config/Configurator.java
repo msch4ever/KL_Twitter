@@ -56,7 +56,7 @@ public class Configurator {
             if (config.getDaoType() == JDBC) {
                 DbUtils.populateJDBC();
             } else if (config.getDaoType() == IN_MEM) {
-                DbUtils.populateInMem();
+               // DbUtils.populateInMem();
             } else {
                 throw new DaoFactoryException("Could not recognize dao type!");
             }

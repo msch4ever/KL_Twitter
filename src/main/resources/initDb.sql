@@ -11,9 +11,9 @@ CREATE TABLE user
 --NEXT--
 
 CREATE TABLE UserAuthentication
-
 (
       login VARCHAR(25) NOT NULL UNIQUE
+    , salted BLOB NOT NULL
     , saltedPassword BLOB NOT NULL
     , FOREIGN KEY(login) REFERENCES user(login)
 );

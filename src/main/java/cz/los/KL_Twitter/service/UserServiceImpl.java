@@ -2,6 +2,8 @@ package cz.los.KL_Twitter.service;
 
 import cz.los.KL_Twitter.model.User;
 import cz.los.KL_Twitter.persistence.UserDao;
+import cz.los.KL_Twitter.persistence.inMem.AuthDaoInMemImpl;
+import cz.los.KL_Twitter.persistence.inMem.UserDaoInMemImpl;
 
 import java.util.Optional;
 

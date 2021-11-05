@@ -2,11 +2,13 @@ package cz.los.KL_Twitter.persistence;
 
 import cz.los.KL_Twitter.auth.UserAuthentication;
 
+import java.util.Optional;
+
 public interface AuthDao {
 
     void save(UserAuthentication authentication);
 
-    UserAuthentication findByLogin(String login);
+    Optional<UserAuthentication> findByLogin(String login);
 
     void delete(String login);
 
