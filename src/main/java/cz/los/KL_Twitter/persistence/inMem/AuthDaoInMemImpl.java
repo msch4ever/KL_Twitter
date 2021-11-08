@@ -6,15 +6,17 @@ import cz.los.KL_Twitter.storage.Storage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
-public class AuthDaoInMemImpl implements AuthDao {
+public class AuthDaoInMemImpl implements AuthDao { //ToDo: make better
 
     private final Storage storage = Storage.getInstance();
 
     @Override
-    public void save(UserAuthentication authentication) {
+    public Long save(UserAuthentication authentication) {
         storage.getAuthStorage().put(authentication.getLogin(), createAuthState(authentication));
+        return -1L;
     }
 
     @Override
@@ -39,5 +41,20 @@ public class AuthDaoInMemImpl implements AuthDao {
 
     private UserAuthentication createAuthState(UserAuthentication authentication) {
         return new UserAuthentication(authentication);
+    }
+
+    @Override
+    public Set<UserAuthentication> getAll() {
+        throw new UnsupportedOperationException("not supported");
+    }
+
+    @Override
+    public Optional<UserAuthentication> findById(Long id) {
+        throw new UnsupportedOperationException("not supported");
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        throw new UnsupportedOperationException("not supported");
     }
 }

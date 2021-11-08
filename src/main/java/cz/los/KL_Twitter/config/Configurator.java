@@ -42,10 +42,10 @@ public class Configurator {
         Configuration config = createConfig(args);
 
         log.debug("Creating Application context..");
-        DaoAbstractFactory factory = new DaoAbstractFactory();
+        DaoAbstractFactory factory = new DaoAbstractFactory(config.getDaoType());
         AppContext.AppContextBuilder builder = AppContext.builder();
         builder.configuration(config);
-        initDaos(config.getDaoType(), factory, builder);
+        initDaos(factory, builder);
         initServices(builder);
         initHandlers(builder);
         AppContextHolder.initAppContext(builder.build());
@@ -58,10 +58,10 @@ public class Configurator {
         log.info("Application initialized successfully in {} seconds!", (end - start) / 1000.0D);
     }
 
-    private static void initDaos(DaoType daoType, DaoAbstractFactory factory, AppContext.AppContextBuilder builder) {
+    private static void initDaos(DaoAbstractFactory factory, AppContext.AppContextBuilder builder) {
         log.debug("Creating DAOs..");
-        UserDao userDao = factory.createUserDao(daoType);
-        TweetDao tweetDao = factory.createTweetDao(daoType);
+        UserDao userDao = factory.createUserDao();
+        TweetDao tweetDao = factory.createTweetDao();
 
         log.debug("Finalizing DAOs in AppContext..");
         builder.userDao(userDao);

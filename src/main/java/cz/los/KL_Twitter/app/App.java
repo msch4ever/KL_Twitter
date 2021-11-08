@@ -26,10 +26,11 @@ public class App {
     }
 
     private void run() {
-        Response response;
-        do {
+        log.info("Welcome to grannybench!");
+        Response response = dispatcherHandler.handle(Command.HELP);
+        while (response.getCommand() != Command.EXIT && response.isSuccess()) {
             response = startCOR();
-        } while (response.getCommand() != Command.EXIT && response.isSuccess());
+        }
         System.exit(0);
     }
 
