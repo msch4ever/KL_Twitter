@@ -2,6 +2,7 @@ package cz.los.KL_Twitter.config;
 
 import cz.los.KL_Twitter.app.AppContext;
 import cz.los.KL_Twitter.app.AppContextHolder;
+import cz.los.KL_Twitter.app.SecurityContext;
 import cz.los.KL_Twitter.persistence.factory.DaoAbstractFactory;
 import cz.los.KL_Twitter.persistence.factory.DaoFactoryException;
 import cz.los.KL_Twitter.persistence.DbUtils;
@@ -37,6 +38,7 @@ public class Configurator {
         builder.tweetDao(factory.createTweetDao(config.getDaoType()));
         //ToDo: create all handlers and put into AppContext;
         AppContextHolder.initAppContext(builder.build());
+        AppContextHolder.initSecurityContext(new SecurityContext());
         log.debug("Application context created. {}", AppContextHolder.getAppContext());
         log.info("Preparing database according to configuration..");
         initDB(config);
@@ -56,7 +58,7 @@ public class Configurator {
             if (config.getDaoType() == JDBC) {
                 DbUtils.populateJDBC();
             } else if (config.getDaoType() == IN_MEM) {
-               // DbUtils.populateInMem();
+                DbUtils.populateInMem();
             } else {
                 throw new DaoFactoryException("Could not recognize dao type!");
             }
