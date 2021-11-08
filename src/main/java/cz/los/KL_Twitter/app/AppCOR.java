@@ -10,17 +10,18 @@ import java.util.Scanner;
 import static cz.los.KL_Twitter.config.Configurator.initApp;
 
 @Slf4j
-public class App {
+@Deprecated
+public class AppCOR {
 
     private final Handler dispatcherHandler;
 
-    private App() {
+    private AppCOR() {
         this.dispatcherHandler = AppContextHolder.getAppContext().getDispatcherHandler();
     }
 
     public static void main(String[] args) {
         initApp(args);
-        App app = new App();
+        AppCOR app = new AppCOR();
         app.run();
     }
 
