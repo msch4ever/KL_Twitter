@@ -1,7 +1,6 @@
 package cz.los.KL_Twitter.app;
 
 import cz.los.KL_Twitter.handler.Command;
-import cz.los.KL_Twitter.handler.DispatcherHandler;
 import cz.los.KL_Twitter.handler.Handler;
 import cz.los.KL_Twitter.handler.Response;
 import lombok.extern.slf4j.Slf4j;
