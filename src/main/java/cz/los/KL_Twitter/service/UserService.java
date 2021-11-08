@@ -2,8 +2,12 @@ package cz.los.KL_Twitter.service;
 
 import cz.los.KL_Twitter.model.User;
 
+import java.util.Optional;
+
 public interface UserService {
 
     User createUser(String login, String nickName);
+
+    Optional<User> findByLogin(String login);
 
 }

@@ -19,8 +19,9 @@ public class UserDaoInMemImpl implements UserDao {
     @Override
     public Long save(User user) {
         long newUserId = storage.getNewUserIdSequence();
+        user = createUserState(user);
         user.setUserId(newUserId);
-        storage.getUserStorage().put(user.getUserId(), createUserState(user));
+        storage.getUserStorage().put(newUserId, user);
         log.info("User was persisted in the DB: {}", user);
         return newUserId;
     }
@@ -34,6 +35,18 @@ public class UserDaoInMemImpl implements UserDao {
         }
         log.warn("Could not find user by id:{}", userId);
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<User> findByLogin(String login) {
+        Optional<User> persistedUser = storage.getUserStorage().values().stream()
+                .filter(it -> it.getLogin().equals(login))
+                .findFirst();
+        if (!persistedUser.isPresent()) {
+            log.warn("Could not find user by login:{}", login);
+            return Optional.empty();
+        }
+        return Optional.of(createUserState(persistedUser.get()));
     }
 
     @Override

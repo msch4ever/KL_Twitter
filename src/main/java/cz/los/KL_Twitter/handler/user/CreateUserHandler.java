@@ -1,7 +1,11 @@
-package cz.los.KL_Twitter.handler;
+package cz.los.KL_Twitter.handler.user;
 
+import cz.los.KL_Twitter.handler.AbstractHandler;
+import cz.los.KL_Twitter.handler.Command;
+import cz.los.KL_Twitter.handler.Handler;
+import cz.los.KL_Twitter.handler.Response;
 import cz.los.KL_Twitter.model.User;
-import cz.los.KL_Twitter.service.UserServiceImpl;
+import cz.los.KL_Twitter.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Scanner;
@@ -9,10 +13,10 @@ import java.util.Scanner;
 @Slf4j
 public class CreateUserHandler extends AbstractHandler {
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
-    public CreateUserHandler(Handler nextHandler, UserServiceImpl userService) {
-        super(Command.CREATE_USER, nextHandler);
+    public CreateUserHandler(UserService userService) {
+        super(Command.CREATE_USER);
         this.userService = userService;
     }
 

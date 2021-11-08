@@ -18,8 +18,9 @@ public class TweetDaoInMemImpl implements TweetDao {
     @Override
     public Long save(Tweet tweet) {
         long newTweetId = storage.getNewTweetIdSequence();
+        tweet = createTweetState(tweet);
         tweet.setTweetId(newTweetId);
-        storage.getTweetStorage().put(tweet.getTweetId(), createTweetState(tweet));
+        storage.getTweetStorage().put(newTweetId, tweet);
         log.info("Tweet was persisted in the DB: {}", tweet);
         return newTweetId;
     }
@@ -59,7 +60,7 @@ public class TweetDaoInMemImpl implements TweetDao {
     /**
      * Editing tweets is not supported
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException - Editing tweets is not supported
      */
     @Override
     public void update(Tweet model) {

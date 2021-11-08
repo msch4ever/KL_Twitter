@@ -2,9 +2,21 @@ package cz.los.KL_Twitter.config;
 
 import cz.los.KL_Twitter.app.AppContext;
 import cz.los.KL_Twitter.app.AppContextHolder;
+import cz.los.KL_Twitter.app.SecurityContext;
+import cz.los.KL_Twitter.handler.ClosingHandler;
+import cz.los.KL_Twitter.handler.DispatcherHandler;
+import cz.los.KL_Twitter.handler.global.ExitHandler;
+import cz.los.KL_Twitter.handler.global.HelpHandler;
+import cz.los.KL_Twitter.handler.user.CreateUserHandler;
+import cz.los.KL_Twitter.persistence.TweetDao;
+import cz.los.KL_Twitter.persistence.UserDao;
 import cz.los.KL_Twitter.persistence.factory.DaoAbstractFactory;
 import cz.los.KL_Twitter.persistence.factory.DaoFactoryException;
-import cz.los.KL_Twitter.persistence.jdbc.DbUtils;
+import cz.los.KL_Twitter.persistence.DbUtils;
+import cz.los.KL_Twitter.service.AuthService;
+import cz.los.KL_Twitter.service.AuthServiceImpl;
+import cz.los.KL_Twitter.service.UserService;
+import cz.los.KL_Twitter.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
@@ -33,16 +45,64 @@ public class Configurator {
         DaoAbstractFactory factory = new DaoAbstractFactory();
         AppContext.AppContextBuilder builder = AppContext.builder();
         builder.configuration(config);
-        builder.userDao(factory.createUserDao(config.getDaoType()));
-        builder.tweetDao(factory.createTweetDao(config.getDaoType()));
-        //ToDo: create all handlers and put into AppContext;
+        initDaos(config.getDaoType(), factory, builder);
+        initServices(builder);
+        initHandlers(builder);
         AppContextHolder.initAppContext(builder.build());
+        AppContextHolder.initSecurityContext(new SecurityContext());
         log.debug("Application context created. {}", AppContextHolder.getAppContext());
         log.info("Preparing database according to configuration..");
         initDB(config);
         log.info("Database prepared.");
         long end = System.currentTimeMillis();
         log.info("Application initialized successfully in {} seconds!", (end - start) / 1000.0D);
+    }
+
+    private static void initDaos(DaoType daoType, DaoAbstractFactory factory, AppContext.AppContextBuilder builder) {
+        log.debug("Creating DAOs..");
+        UserDao userDao = factory.createUserDao(daoType);
+        TweetDao tweetDao = factory.createTweetDao(daoType);
+
+        log.debug("Finalizing DAOs in AppContext..");
+        builder.userDao(userDao);
+        builder.tweetDao(tweetDao);
+
+        log.debug("DAOs initialized!");
+    }
+
+    private static void initServices(AppContext.AppContextBuilder builder) {
+        log.debug("Creating services..");
+        AuthService authService = new AuthServiceImpl(builder.getSessionDao(), builder.getAuthDao());
+        UserService userService = new UserServiceImpl(authService, builder.getUserDao());
+
+        log.debug("Finalizing services in AppContext..");
+        builder.authService(authService);
+        builder.userService(userService);
+
+        log.debug("Services initialized!");
+    }
+
+    private static void initHandlers(AppContext.AppContextBuilder builder) {
+        log.debug("Creating handlers..");
+        HelpHandler helpHandler = new HelpHandler();
+        ExitHandler exitHandler = new ExitHandler();
+        ClosingHandler closingHandler = new ClosingHandler();
+        CreateUserHandler createUserHandler = new CreateUserHandler(builder.getUserService());
+
+        log.debug("Establishing Chain of Responsibility..");
+        helpHandler.setNextHandler(createUserHandler);
+        createUserHandler.setNextHandler(exitHandler);
+        exitHandler.setNextHandler(closingHandler);
+        DispatcherHandler dispatcherHandler = new DispatcherHandler(helpHandler);
+
+        log.debug("Finalizing handlers in AppContext..");
+        builder.dispatcherHandler(dispatcherHandler);
+        builder.createUserHandler(createUserHandler);
+        builder.helpHandler(helpHandler);
+        builder.exitHandler(exitHandler);
+        builder.closingHandler(closingHandler);
+
+        log.debug("Handlers initialized!");
     }
 
     private static void initDB(Configuration config) {

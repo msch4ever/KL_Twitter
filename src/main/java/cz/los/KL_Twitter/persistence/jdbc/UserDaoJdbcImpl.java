@@ -77,4 +77,9 @@ public class UserDaoJdbcImpl implements UserDao {
         public void deleteById (Long id){
 
         }
+
+    @Override
+    public Optional<User> findByLogin(String login) {
+        return Optional.empty();
     }
+}
