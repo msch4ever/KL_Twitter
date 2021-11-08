@@ -1,5 +1,6 @@
 package cz.los.KL_Twitter.service;
 
+import cz.los.KL_Twitter.app.AppContextHolder;
 import cz.los.KL_Twitter.auth.Session;
 import cz.los.KL_Twitter.auth.UserAuthentication;
 import cz.los.KL_Twitter.persistence.AuthDao;
@@ -22,11 +23,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Session createSession(String login, String password) {
+    public void startSession(String login, String password) {
         final Session session =
                 new Session(authDao.findByLogin(login).orElseThrow(SecurityException::new), LocalDateTime.now());
         sessionDao.save(session);
-        return session;
+        AppContextHolder.getSecurityContext().initSession(session);
     }
 
     @Override
@@ -34,6 +35,7 @@ public class AuthServiceImpl implements AuthService {
         LocalDateTime now = LocalDateTime.now();
         session.setEnd(now);
         sessionDao.updateEnd(session.getSessionId(), now);
+        AppContextHolder.getSecurityContext().destroyCurrentSession();
     }
 
     @Override

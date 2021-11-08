@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface AuthService {
 
-    Session createSession(String login, String password);
+    void startSession(String login, String password);
 
     void endSession(Session session);
 

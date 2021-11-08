@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 public final class AppContextHolder {
 
     private static AppContext appContext;
+    private static SecurityContext securityContext;
 
     public static AppContext getAppContext() {
         if (appContext == null) {
@@ -20,6 +21,20 @@ public final class AppContextHolder {
             throw new AppContextException("Application context already initialized!");
         }
         appContext = newAppContext;
+    }
+
+    public static SecurityContext getSecurityContext() {
+        if (securityContext == null) {
+            throw new AppContextException("Application context not yet initialized!");
+        }
+        return securityContext;
+    }
+
+    public static void initSecurityContext(SecurityContext newSecurityContext) {
+        if (securityContext != null) {
+            throw new AppContextException("Application context already initialized!");
+        }
+        securityContext = newSecurityContext;
     }
 
 }
