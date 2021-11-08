@@ -34,7 +34,7 @@ public class AuthServiceImpl implements AuthService {
     public void endSession(Session session) {
         LocalDateTime now = LocalDateTime.now();
         session.setEnd(now);
-        sessionDao.updateEnd(session.getSessionId(), now);
+        sessionDao.updateEnd(session.getId(), now);
         AppContextHolder.getSecurityContext().destroyCurrentSession();
     }
 
