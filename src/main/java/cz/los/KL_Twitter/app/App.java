@@ -1,7 +1,7 @@
 package cz.los.KL_Twitter.app;
 
 import cz.los.KL_Twitter.handler.Command;
-import cz.los.KL_Twitter.handler.DefaultHandler;
+import cz.los.KL_Twitter.handler.DispatcherHandler;
 import cz.los.KL_Twitter.handler.Handler;
 import cz.los.KL_Twitter.handler.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -13,10 +13,10 @@ import static cz.los.KL_Twitter.config.Configurator.initApp;
 @Slf4j
 public class App {
 
-    private final Handler defaultHandler;
+    private final Handler dispatcherHandler;
 
     private App() {
-        this.defaultHandler = new DefaultHandler();
+        this.dispatcherHandler = AppContextHolder.getAppContext().getDispatcherHandler();
     }
 
     public static void main(String[] args) {
@@ -45,7 +45,7 @@ public class App {
             }
         }
         //scanner.close();
-        Response response = defaultHandler.handle(command);
+        Response response = dispatcherHandler.handle(command);
         log.info(response.toString());
         return response;
     }

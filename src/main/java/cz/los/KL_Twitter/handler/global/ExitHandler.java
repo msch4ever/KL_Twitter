@@ -1,12 +1,15 @@
-package cz.los.KL_Twitter.handler;
+package cz.los.KL_Twitter.handler.global;
 
+import cz.los.KL_Twitter.handler.AbstractHandler;
+import cz.los.KL_Twitter.handler.Command;
+import cz.los.KL_Twitter.handler.Response;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ExitHandler extends AbstractHandler {
 
     public ExitHandler() {
-        super(Command.EXIT, null);
+        super(Command.EXIT);
     }
 
     @Override
