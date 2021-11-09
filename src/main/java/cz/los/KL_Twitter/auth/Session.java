@@ -27,4 +27,8 @@ public class Session implements PersistenceEntity {
         this.start = other.start;
         this.end = other.end;
     }
+
+    public boolean isActive() {
+        return end == null;
+    }
 }

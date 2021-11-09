@@ -13,6 +13,8 @@ import cz.los.KL_Twitter.persistence.TweetDao;
 import cz.los.KL_Twitter.persistence.UserDao;
 import cz.los.KL_Twitter.service.AuthService;
 import cz.los.KL_Twitter.service.UserService;
+import cz.los.KL_Twitter.views.FeedView;
+import cz.los.KL_Twitter.views.WelcomeView;
 import lombok.Getter;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +35,8 @@ public class AppContext {
     ClosingHandler closingHandler;
     HelpHandler helpHandler;
     ExitHandler exitHandler;
+    WelcomeView welcomeView;
+    FeedView feedView;
 
     private AppContext(AppContextBuilder builder) {
         this.configuration = builder.configuration;
@@ -47,6 +51,8 @@ public class AppContext {
         this.closingHandler = builder.closingHandler;
         this.helpHandler = builder.helpHandler;
         this.exitHandler = builder.exitHandler;
+        this.welcomeView = builder.welcomeView;
+        this.feedView = builder.feedView;
     }
 
     public static AppContextBuilder builder() {
@@ -68,6 +74,8 @@ public class AppContext {
         private ClosingHandler closingHandler;
         private HelpHandler helpHandler;
         private ExitHandler exitHandler;
+        private WelcomeView welcomeView;
+        private FeedView feedView;
 
         public AppContext build() {
             return new AppContext(this);
@@ -166,6 +174,22 @@ public class AppContext {
                 throw new AppContextException("Provided exitHandler is null!");
             }
             this.exitHandler = exitHandler;
+            return this;
+        }
+
+        public AppContextBuilder welcomeView(WelcomeView welcomeView) {
+            if (welcomeView == null) {
+                throw new AppContextException("Provided welcomeView is null!");
+            }
+            this.welcomeView = welcomeView;
+            return this;
+        }
+
+        public AppContextBuilder feedView(FeedView feedView) {
+            if (feedView == null) {
+                throw new AppContextException("Provided feedView is null!");
+            }
+            this.feedView = feedView;
             return this;
         }
     }

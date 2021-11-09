@@ -8,15 +8,15 @@ import cz.los.KL_Twitter.handler.DispatcherHandler;
 import cz.los.KL_Twitter.handler.global.ExitHandler;
 import cz.los.KL_Twitter.handler.global.HelpHandler;
 import cz.los.KL_Twitter.handler.user.CreateUserHandler;
-import cz.los.KL_Twitter.persistence.TweetDao;
-import cz.los.KL_Twitter.persistence.UserDao;
+import cz.los.KL_Twitter.persistence.*;
 import cz.los.KL_Twitter.persistence.factory.DaoAbstractFactory;
 import cz.los.KL_Twitter.persistence.factory.DaoFactoryException;
-import cz.los.KL_Twitter.persistence.DbUtils;
 import cz.los.KL_Twitter.service.AuthService;
 import cz.los.KL_Twitter.service.AuthServiceImpl;
 import cz.los.KL_Twitter.service.UserService;
 import cz.los.KL_Twitter.service.UserServiceImpl;
+import cz.los.KL_Twitter.views.FeedView;
+import cz.los.KL_Twitter.views.WelcomeView;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
@@ -48,6 +48,7 @@ public class Configurator {
         initDaos(factory, builder);
         initServices(builder);
         initHandlers(builder);
+        initViews(builder);
         AppContextHolder.initAppContext(builder.build());
         AppContextHolder.initSecurityContext(new SecurityContext());
         log.debug("Application context created. {}", AppContextHolder.getAppContext());
@@ -60,12 +61,16 @@ public class Configurator {
 
     private static void initDaos(DaoAbstractFactory factory, AppContext.AppContextBuilder builder) {
         log.debug("Creating DAOs..");
-        UserDao userDao = factory.createUserDao();
+        SessionDao sessionDao = factory.createSessionDao();
         TweetDao tweetDao = factory.createTweetDao();
+        UserDao userDao = factory.createUserDao();
+        AuthDao authDao = factory.createAuthDao();
 
         log.debug("Finalizing DAOs in AppContext..");
-        builder.userDao(userDao);
+        builder.sessionDao(sessionDao);
         builder.tweetDao(tweetDao);
+        builder.userDao(userDao);
+        builder.authDao(authDao);
 
         log.debug("DAOs initialized!");
     }
@@ -103,6 +108,11 @@ public class Configurator {
         builder.closingHandler(closingHandler);
 
         log.debug("Handlers initialized!");
+    }
+
+    private static void initViews(AppContext.AppContextBuilder builder) {
+        builder.welcomeView(new WelcomeView());
+        builder.feedView(new FeedView());
     }
 
     private static void initDB(Configuration config) {
