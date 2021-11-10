@@ -31,6 +31,11 @@ public class WelcomeView extends AbstractView {
     public AbstractView render() {
         clearScreen();
         System.out.print(CONTENT);
+        if (message != null) {
+            System.out.println(SEPARATOR);
+            System.out.println("Message: " + message);
+            System.out.println(SEPARATOR);
+        }
         return this;
     }
 }

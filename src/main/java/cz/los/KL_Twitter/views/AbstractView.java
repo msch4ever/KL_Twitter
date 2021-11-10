@@ -10,7 +10,10 @@ import java.util.*;
 @Slf4j
 public abstract class AbstractView {
 
+    public static final String SEPARATOR = "------------------------------------------------------------------------------------------";
+
     protected final Map<Integer, Command> commands;
+    protected String message;
 
     public AbstractView(Map<Integer, Command> commands) {
         this.commands = commands;
@@ -51,10 +54,31 @@ public abstract class AbstractView {
      * This will only work in a terminal.
      */
     protected void clearScreen() {
-        System.out.println();
-        System.out.print("\033[H\033[2J");
-        System.out.println();
-        System.out.flush();
+        try {
+            String operatingSystem = System.getProperty("os.name");
+
+            if (operatingSystem.contains("Windows")) {
+                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
+                Process startProcess = pb.inheritIO().start();
+                startProcess.waitFor();
+            } else {
+                ProcessBuilder pb = new ProcessBuilder("clear");
+                Process startProcess = pb.inheritIO().start();
+
+                startProcess.waitFor();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+    public String getAndDestroyMessage() {
+        String text = message;
+        message = null;
+        return text;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

@@ -7,6 +7,7 @@ import cz.los.KL_Twitter.handler.Command;
 import cz.los.KL_Twitter.handler.Response;
 import cz.los.KL_Twitter.model.User;
 import cz.los.KL_Twitter.service.UserService;
+import cz.los.KL_Twitter.views.WelcomeView;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.Console;
@@ -23,14 +24,14 @@ public class CreateUserHandler extends AbstractHandler {
         this.userService = userService;
     }
 
- /*   @Override
+    @Override
     public Response handleCommand() {
-        log.info("Enter user's login...");
         String login = null;
         String password = null;
         String input = null;
         Scanner scanner = new Scanner(System.in);
         while (login == null) {
+            System.out.println("Login:");
             input = scanner.nextLine();
             if (input == null) {
                 log.warn("Could not parse input:[" + input + "].");
@@ -41,6 +42,7 @@ public class CreateUserHandler extends AbstractHandler {
         log.info("Enter user's nickName...");
 
         while (password == null) {
+            System.out.println("Password:");
             input = scanner.nextLine();
             if (input == null) {
                 log.warn("Could not parse input:[" + input + "].");
@@ -49,10 +51,11 @@ public class CreateUserHandler extends AbstractHandler {
             password = input;
         }
         User user = userService.createUser(login, password);
-        return new Response(true, command, AppContextHolder.getAppContext().getWelcomeView());
+        WelcomeView welcomeView = AppContextHolder.getAppContext().getWelcomeView();
+        welcomeView.setMessage("User " + user.getLogin() + " has been created.");
+        return new Response(true, command, welcomeView);
     }
-*/
-    @Override
+    /*@Override
     public Response handleCommand() {
         String login = null;
         String password = null;
@@ -71,18 +74,16 @@ public class CreateUserHandler extends AbstractHandler {
         while (passwordChars == null) {
             passwordChars = console.readPassword("Password: ");
             System.out.println(passwordChars);
-            if (passwordChars == null || passwordChars.length == 0) {
+            if (passwordChars.length == 0) {
                 log.warn("Could not parse input.");
                 continue;
             }
-            System.out.println(passwordChars);
             password = new String(passwordChars);
             Arrays.fill(passwordChars, 's');
-            passwordChars = null;
         }
-        System.out.println(password);
+        passwordChars = null;
         userService.createUser(login, password);
         return new Response(true, command, AppContextHolder.getAppContext().getWelcomeView());
-    }
+    }*/
 
 }
