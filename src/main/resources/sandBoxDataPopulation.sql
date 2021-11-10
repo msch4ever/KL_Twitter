@@ -1,10 +1,10 @@
 INSERT INTO user (login, dateOfBirth, about)
 VALUES
-       ('@rip212', '1993-27-05', 'Hi, i''m Andrew. JS evangelista')
-     , ('@msch4ever', '1991-07-01', 'Hi, i''m Kostia. I love Java')
-     , ('@dardevil', '1993-13-06', 'Hi, i''m Olezhna. I love doing nothing and complain')
+       ('@rip212', '1993-05-27', 'Hi, i''m Andrew. JS evangelista')
+     , ('@msch4ever', '1991-01-07', 'Hi, i''m Kostia. I love Java')
+     , ('@dardevil', '1993-06-13', 'Hi, i''m Olezhna. I love doing nothing and complain')
      , ('@mkbhd', '1995-11-11', 'Hi, i''m Marquess Brownlee. I love making tech videos')
-     , ('@boo88', '1988-11-04', 'Hi, i''m Dima. I love selling things');
+     , ('@boo88', '1988-04-11', 'Hi, i''m Dima. I love selling things');
 
 --NEXT--
 

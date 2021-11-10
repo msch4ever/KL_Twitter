@@ -24,6 +24,7 @@ public abstract class AbstractView {
     public Response listen() {
         System.out.println("Enter the command.");
         Optional<Command> command = Optional.empty();
+        AppContextHolder.getAppContext().getUserDao().findById(1L);
         Scanner scanner = new Scanner(System.in);
         while (!command.isPresent()) {
             String input = scanner.nextLine();

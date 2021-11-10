@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class User implements PersistenceEntity {
     private Long userId;
     private String nickname;
     private final String login;
-    private final LocalDate dateRegistered;
+    private final LocalDateTime dateRegistered;
     private LocalDate dateOfBirth;
     private String about;
     private List<User> followers;
@@ -33,7 +34,7 @@ public class User implements PersistenceEntity {
     public User(String login, String nickname, LocalDate dateOfBirth, String about) {
         this.login = login;
         this.nickname = nickname;
-        this.dateRegistered = LocalDate.now();
+        this.dateRegistered = LocalDateTime.now();
         this.dateOfBirth = dateOfBirth;
         this.about = about;
         this.followers = new ArrayList<>();

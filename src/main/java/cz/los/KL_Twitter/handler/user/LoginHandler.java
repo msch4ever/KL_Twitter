@@ -43,7 +43,7 @@ public class LoginHandler extends AbstractHandler {
         return response;
     }
 
-    /*private String retrieveLogin() {
+    private String retrieveLogin() {
         String login = null;
         Scanner scanner = new Scanner(System.in);
         while (login == null) {
@@ -56,9 +56,9 @@ public class LoginHandler extends AbstractHandler {
             login = input;
         }
         return login;
-    }*/
+    }
 
-    private String retrieveLogin() {
+    /*private String retrieveLogin() {
         String login = null;
         Console console = System.console();
         while (login == null) {
@@ -71,9 +71,9 @@ public class LoginHandler extends AbstractHandler {
         }
         console.flush();
         return login;
-    }
+    }*/
 
-    /*private String retrievePassword() {
+    private String retrievePassword() {
         String password = null;
         Scanner scanner = new Scanner(System.in);
         while (password == null) {
@@ -86,9 +86,9 @@ public class LoginHandler extends AbstractHandler {
             password = input;
         }
         return password;
-    }*/
+    }
 
-    private String retrievePassword() {
+    /*private String retrievePassword() {
         char[] passwordChars = null;
         String password = null;
         Console console = System.console();
@@ -103,5 +103,5 @@ public class LoginHandler extends AbstractHandler {
         }
         console.flush();
         return password;
-    }
+    }*/
 }
