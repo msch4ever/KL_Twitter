@@ -33,7 +33,7 @@ public class WelcomeView extends AbstractView {
         System.out.print(CONTENT);
         if (message != null) {
             System.out.println(SEPARATOR);
-            System.out.println("Message: " + message);
+            System.out.println("Message: " + getAndDestroyMessage());
             System.out.println(SEPARATOR);
         }
         return this;

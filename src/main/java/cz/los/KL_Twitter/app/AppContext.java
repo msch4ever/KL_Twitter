@@ -7,6 +7,7 @@ import cz.los.KL_Twitter.handler.Handler;
 import cz.los.KL_Twitter.handler.global.ExitHandler;
 import cz.los.KL_Twitter.handler.global.HelpHandler;
 import cz.los.KL_Twitter.handler.user.CreateUserHandler;
+import cz.los.KL_Twitter.handler.user.LoginHandler;
 import cz.los.KL_Twitter.persistence.AuthDao;
 import cz.los.KL_Twitter.persistence.SessionDao;
 import cz.los.KL_Twitter.persistence.TweetDao;
@@ -33,6 +34,7 @@ public class AppContext {
     DispatcherHandler dispatcherHandler;
     CreateUserHandler createUserHandler;
     ClosingHandler closingHandler;
+    LoginHandler loginHandler;
     HelpHandler helpHandler;
     ExitHandler exitHandler;
     WelcomeView welcomeView;
@@ -49,6 +51,7 @@ public class AppContext {
         this.dispatcherHandler = builder.dispatcherHandler;
         this.createUserHandler = builder.createUserHandler;
         this.closingHandler = builder.closingHandler;
+        this.loginHandler = builder.loginHandler;
         this.helpHandler = builder.helpHandler;
         this.exitHandler = builder.exitHandler;
         this.welcomeView = builder.welcomeView;
@@ -72,6 +75,7 @@ public class AppContext {
         private DispatcherHandler dispatcherHandler;
         private CreateUserHandler createUserHandler;
         private ClosingHandler closingHandler;
+        private LoginHandler loginHandler;
         private HelpHandler helpHandler;
         private ExitHandler exitHandler;
         private WelcomeView welcomeView;
@@ -150,6 +154,14 @@ public class AppContext {
                 throw new AppContextException("Provided createUserHandler is null!");
             }
             this.createUserHandler = createUserHandler;
+            return this;
+        }
+
+        public AppContextBuilder loginHandler(LoginHandler loginHandler) {
+            if (loginHandler == null) {
+                throw new AppContextException("Provided loginHandler is null!");
+            }
+            this.loginHandler = loginHandler;
             return this;
         }
 

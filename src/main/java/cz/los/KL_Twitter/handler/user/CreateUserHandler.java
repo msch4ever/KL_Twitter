@@ -24,7 +24,7 @@ public class CreateUserHandler extends AbstractHandler {
         this.userService = userService;
     }
 
-    @Override
+    /*@Override
     public Response handleCommand() {
         String login = null;
         String password = null;
@@ -33,8 +33,8 @@ public class CreateUserHandler extends AbstractHandler {
         while (login == null) {
             System.out.println("Login:");
             input = scanner.nextLine();
-            if (input == null) {
-                log.warn("Could not parse input:[" + input + "].");
+            if (input.isEmpty()) {
+                log.warn("Could not parse input.");
                 continue;
             }
             login = input;
@@ -44,8 +44,8 @@ public class CreateUserHandler extends AbstractHandler {
         while (password == null) {
             System.out.println("Password:");
             input = scanner.nextLine();
-            if (input == null) {
-                log.warn("Could not parse input:[" + input + "].");
+            if (input.isEmpty()) {
+                log.warn("Could not parse input");
                 continue;
             }
             password = input;
@@ -54,8 +54,8 @@ public class CreateUserHandler extends AbstractHandler {
         WelcomeView welcomeView = AppContextHolder.getAppContext().getWelcomeView();
         welcomeView.setMessage("User " + user.getLogin() + " has been created.");
         return new Response(true, command, welcomeView);
-    }
-    /*@Override
+    }*/
+    @Override
     public Response handleCommand() {
         String login = null;
         String password = null;
@@ -83,7 +83,8 @@ public class CreateUserHandler extends AbstractHandler {
         }
         passwordChars = null;
         userService.createUser(login, password);
+        console.flush();
         return new Response(true, command, AppContextHolder.getAppContext().getWelcomeView());
-    }*/
+    }
 
 }

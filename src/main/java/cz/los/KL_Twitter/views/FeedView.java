@@ -1,5 +1,6 @@
 package cz.los.KL_Twitter.views;
 
+import cz.los.KL_Twitter.app.AppContextHolder;
 import cz.los.KL_Twitter.handler.Command;
 import cz.los.KL_Twitter.handler.Response;
 
@@ -7,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FeedView extends AbstractView {
+
+    private Mode feedMode = Mode.HOME;
 
     public FeedView() {
         super(initCommands());
@@ -22,11 +25,27 @@ public class FeedView extends AbstractView {
 
     @Override
     public AbstractView render() {
-        return null;
+        clearScreen();
+        System.out.println(SEPARATOR);
+        System.out.println("FEED VIEW");
+        System.out.println("WELCOME " + AppContextHolder.getSecurityContext().getSession().getUserAuthentication().getLogin());
+        System.out.println(SEPARATOR);
+        return this;
     }
 
-    @Override
-    public Response listen() {
-        return null;
+    public void setUserMode() {
+        this.feedMode = Mode.USER;
+    }
+
+    public void setHomeMode() {
+        this.feedMode = Mode.HOME;
+    }
+
+    public void setTweetMode() {
+        this.feedMode = Mode.TWEET;
+    }
+
+    public enum Mode {
+        HOME, USER, TWEET;
     }
 }

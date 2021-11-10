@@ -23,7 +23,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void startSession(String login, String password) {
+    public void startSession(String login) {
         final Session session =
                 new Session(authDao.findByLogin(login).orElseThrow(SecurityException::new), LocalDateTime.now());
         sessionDao.save(session);
