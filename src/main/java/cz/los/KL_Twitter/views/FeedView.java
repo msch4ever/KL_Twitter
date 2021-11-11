@@ -108,7 +108,7 @@ public class FeedView extends AbstractView {
     }
 
     private String getTimePassedText(Tweet tweet) {
-        long between = ChronoUnit.MINUTES.between(LocalDateTime.now(), tweet.getDatePosted());
+        long between = ChronoUnit.MINUTES.between(tweet.getDatePosted(), LocalDateTime.now());
         if (between < 60L) {
             return between + " min ago";
         } else if (between > 60L && between < 1140L) {

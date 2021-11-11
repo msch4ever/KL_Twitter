@@ -9,6 +9,8 @@ import cz.los.KL_Twitter.service.UserService;
 import cz.los.KL_Twitter.views.WelcomeView;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.Console;
+import java.util.Arrays;
 import java.util.Scanner;
 
 @Slf4j
@@ -21,7 +23,7 @@ public class CreateUserHandler extends AbstractHandler {
         this.userService = userService;
     }
 
-    @Override
+    /*@Override
     public Response handleCommand() {
         String login = null;
         String password = null;
@@ -51,8 +53,8 @@ public class CreateUserHandler extends AbstractHandler {
         WelcomeView welcomeView = ContextHolder.getAppContext().getWelcomeView();
         welcomeView.setMessage("User " + user.getLogin() + " has been created.");
         return new Response(true, command, welcomeView);
-    }
-    /*@Override
+    }*/
+    @Override
     public Response handleCommand() {
         String login = null;
         String password = null;
@@ -79,9 +81,11 @@ public class CreateUserHandler extends AbstractHandler {
             Arrays.fill(passwordChars, 's');
         }
         passwordChars = null;
-        userService.createUser(login, password);
         console.flush();
-        return new Response(true, command, AppContextHolder.getAppContext().getWelcomeView());
-    }*/
+        User user = userService.createUser(login, password);
+        WelcomeView welcomeView = ContextHolder.getAppContext().getWelcomeView();
+        welcomeView.setMessage("User " + user.getLogin() + " has been created.");
+        return new Response(true, command, ContextHolder.getAppContext().getWelcomeView());
+    }
 
 }
