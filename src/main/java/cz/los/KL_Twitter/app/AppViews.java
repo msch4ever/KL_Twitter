@@ -16,7 +16,7 @@ public class AppViews {
     }
 
     private void run() {
-        Response response = AppContextHolder.getAppContext().getWelcomeView().render().listen();
+        Response response = ContextHolder.getAppContext().getWelcomeView().render().listen();
         while (response.getCommand() != Command.EXIT) {
             response = response.getView().render().listen();
         }

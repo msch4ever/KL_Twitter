@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class AppContextHolder {
+public final class ContextHolder {
 
     private static AppContext appContext;
     private static SecurityContext securityContext;

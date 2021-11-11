@@ -1,6 +1,6 @@
 package cz.los.KL_Twitter.views;
 
-import cz.los.KL_Twitter.app.AppContextHolder;
+import cz.los.KL_Twitter.app.ContextHolder;
 import cz.los.KL_Twitter.handler.Command;
 import cz.los.KL_Twitter.handler.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,6 @@ public abstract class AbstractView {
     public Response listen() {
         System.out.println("Enter the command.");
         Optional<Command> command = Optional.empty();
-        AppContextHolder.getAppContext().getUserDao().findById(1L);
         Scanner scanner = new Scanner(System.in);
         while (!command.isPresent()) {
             String input = scanner.nextLine();
@@ -34,7 +33,7 @@ public abstract class AbstractView {
             }
         }
         //scanner.close();
-        Response response = AppContextHolder.getAppContext().getDispatcherHandler().handle(command.get());
+        Response response = ContextHolder.getAppContext().getDispatcherHandler().handle(command.get());
         log.info(response.toString());
         return response;
     }

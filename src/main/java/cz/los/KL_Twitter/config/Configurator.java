@@ -1,7 +1,7 @@
 package cz.los.KL_Twitter.config;
 
 import cz.los.KL_Twitter.app.AppContext;
-import cz.los.KL_Twitter.app.AppContextHolder;
+import cz.los.KL_Twitter.app.ContextHolder;
 import cz.los.KL_Twitter.app.SecurityContext;
 import cz.los.KL_Twitter.handler.ClosingHandler;
 import cz.los.KL_Twitter.handler.DispatcherHandler;
@@ -12,10 +12,7 @@ import cz.los.KL_Twitter.handler.user.LoginHandler;
 import cz.los.KL_Twitter.persistence.*;
 import cz.los.KL_Twitter.persistence.factory.DaoAbstractFactory;
 import cz.los.KL_Twitter.persistence.factory.DaoFactoryException;
-import cz.los.KL_Twitter.service.AuthService;
-import cz.los.KL_Twitter.service.AuthServiceImpl;
-import cz.los.KL_Twitter.service.UserService;
-import cz.los.KL_Twitter.service.UserServiceImpl;
+import cz.los.KL_Twitter.service.*;
 import cz.los.KL_Twitter.views.FeedView;
 import cz.los.KL_Twitter.views.WelcomeView;
 import lombok.extern.slf4j.Slf4j;
@@ -50,9 +47,9 @@ public class Configurator {
         initServices(builder);
         initHandlers(builder);
         initViews(builder);
-        AppContextHolder.initAppContext(builder.build());
-        AppContextHolder.initSecurityContext(new SecurityContext());
-        log.debug("Application context created. {}", AppContextHolder.getAppContext());
+        ContextHolder.initAppContext(builder.build());
+        ContextHolder.initSecurityContext(new SecurityContext());
+        log.debug("Application context created. {}", ContextHolder.getAppContext());
         log.info("Preparing database according to configuration..");
         initDB(config);
         log.info("Database prepared.");
@@ -78,12 +75,14 @@ public class Configurator {
 
     private static void initServices(AppContext.AppContextBuilder builder) {
         log.debug("Creating services..");
-        AuthService authService = new AuthServiceImpl(builder.getSessionDao(), builder.getAuthDao());
+        AuthService authService = new AuthServiceImpl(builder.getUserDao(), builder.getSessionDao(), builder.getAuthDao());
         UserService userService = new UserServiceImpl(authService, builder.getUserDao());
+        TweetService tweetService = new TweetServiceImpl(builder.getTweetDao());
 
         log.debug("Finalizing services in AppContext..");
         builder.authService(authService);
         builder.userService(userService);
+        builder.tweetService(tweetService);
 
         log.debug("Services initialized!");
     }
@@ -116,7 +115,7 @@ public class Configurator {
 
     private static void initViews(AppContext.AppContextBuilder builder) {
         builder.welcomeView(new WelcomeView());
-        builder.feedView(new FeedView());
+        builder.feedView(new FeedView(builder.getTweetService(), builder.getUserService()));
     }
 
     private static void initDB(Configuration config) {

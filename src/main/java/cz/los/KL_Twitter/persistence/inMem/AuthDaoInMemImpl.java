@@ -9,14 +9,15 @@ import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
-public class AuthDaoInMemImpl implements AuthDao { //ToDo: make better
+public class AuthDaoInMemImpl implements AuthDao {
 
     private final Storage storage = Storage.getInstance();
 
     @Override
     public Long save(UserAuthentication authentication) {
+        authentication.setId(storage.getAuthIdSequence());
         storage.getAuthStorage().put(authentication.getLogin(), createAuthState(authentication));
-        return -1L;
+        return authentication.getId();
     }
 
     @Override
@@ -50,7 +51,7 @@ public class AuthDaoInMemImpl implements AuthDao { //ToDo: make better
 
     @Override
     public Optional<UserAuthentication> findById(Long id) {
-        throw new UnsupportedOperationException("not supported");
+        return storage.getAuthStorage().values().stream().filter(it -> it.getId().equals(id)).findFirst();
     }
 
     @Override

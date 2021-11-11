@@ -1,7 +1,7 @@
 package cz.los.KL_Twitter.persistence;
 
 import cz.los.KL_Twitter.app.AppContext;
-import cz.los.KL_Twitter.app.AppContextHolder;
+import cz.los.KL_Twitter.app.ContextHolder;
 import cz.los.KL_Twitter.model.Tweet;
 import cz.los.KL_Twitter.model.User;
 import lombok.AccessLevel;
@@ -146,7 +146,7 @@ public class DbUtils {
 
     public static void populateInMem() {
         log.info("Population in memory Data Base with sandbox data...");
-        AppContext context = AppContextHolder.getAppContext();
+        AppContext context = ContextHolder.getAppContext();
         User rip = new User("@rip212", LocalDate.of(1993, 5, 27), "Hi, i''m Andrew. JS evangelista");
         User msch4ever = new User("@msch4ever", LocalDate.of(1991, 1, 7), "Hi, i''m Kostia. I love Java");
         User dardevil = new User("@dardevil", LocalDate.of(1993, 6, 13), "Hi, i''m Olezhna. I love doing nothing and complain");

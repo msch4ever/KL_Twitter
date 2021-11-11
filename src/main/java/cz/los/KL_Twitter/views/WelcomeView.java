@@ -30,7 +30,9 @@ public class WelcomeView extends AbstractView {
     @Override
     public AbstractView render() {
         clearScreen();
+        System.out.println(SEPARATOR);
         System.out.print(CONTENT);
+        System.out.println(SEPARATOR);
         if (message != null) {
             System.out.println(SEPARATOR);
             System.out.println("Message: " + getAndDestroyMessage());

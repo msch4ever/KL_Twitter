@@ -3,6 +3,7 @@ package cz.los.KL_Twitter.service;
 import cz.los.KL_Twitter.model.User;
 import cz.los.KL_Twitter.persistence.UserDao;
 
+import java.util.List;
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
@@ -19,12 +20,17 @@ public class UserServiceImpl implements UserService {
     public User createUser(String login, String password) {
         User user = new User(login);
         user.setId(userDao.save(user));
-        authService.createAuth(login, password);
+        authService.createAuth(user.getUserId(), login, password);
         return user;
     }
 
     @Override
     public Optional<User> findByLogin(String login) {
         return userDao.findByLogin(login);
+    }
+
+    @Override
+    public List<User> findAllByIdInList(List<Long> ids) {
+        return userDao.findAllByIdInList(ids);
     }
 }

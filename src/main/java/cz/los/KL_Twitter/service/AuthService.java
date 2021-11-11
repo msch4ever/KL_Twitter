@@ -20,7 +20,7 @@ public interface AuthService {
 
     boolean authorize(String login, String password);
 
-    void createAuth(String login, String password);
+    void createAuth(Long userId, String login, String password);
 
     @SneakyThrows(NoSuchAlgorithmException.class)
     default byte[] encodePassword(byte[] salt, String password) {

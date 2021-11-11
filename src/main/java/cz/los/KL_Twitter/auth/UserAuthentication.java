@@ -13,12 +13,14 @@ public class UserAuthentication implements PersistenceEntity {
     @Setter
     @NonFinal
     Long id;
+    Long userId;
     String login;
     byte[] salt;
     byte[] saltedPassword;
 
     public UserAuthentication(UserAuthentication other) {
         this.id = other.id;
+        this.userId = other.userId;
         this.login = other.login;
         this.salt = other.salt;
         this.saltedPassword = other.saltedPassword;

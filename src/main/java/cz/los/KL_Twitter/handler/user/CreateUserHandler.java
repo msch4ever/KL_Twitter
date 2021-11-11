@@ -1,7 +1,6 @@
 package cz.los.KL_Twitter.handler.user;
 
-import cz.los.KL_Twitter.app.AppContext;
-import cz.los.KL_Twitter.app.AppContextHolder;
+import cz.los.KL_Twitter.app.ContextHolder;
 import cz.los.KL_Twitter.handler.AbstractHandler;
 import cz.los.KL_Twitter.handler.Command;
 import cz.los.KL_Twitter.handler.Response;
@@ -10,8 +9,6 @@ import cz.los.KL_Twitter.service.UserService;
 import cz.los.KL_Twitter.views.WelcomeView;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.Console;
-import java.util.Arrays;
 import java.util.Scanner;
 
 @Slf4j
@@ -51,7 +48,7 @@ public class CreateUserHandler extends AbstractHandler {
             password = input;
         }
         User user = userService.createUser(login, password);
-        WelcomeView welcomeView = AppContextHolder.getAppContext().getWelcomeView();
+        WelcomeView welcomeView = ContextHolder.getAppContext().getWelcomeView();
         welcomeView.setMessage("User " + user.getLogin() + " has been created.");
         return new Response(true, command, welcomeView);
     }

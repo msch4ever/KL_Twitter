@@ -6,10 +6,8 @@ import cz.los.KL_Twitter.persistence.UserDoesNotExistException;
 import cz.los.KL_Twitter.storage.Storage;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class UserDaoInMemImpl implements UserDao {
@@ -79,6 +77,14 @@ public class UserDaoInMemImpl implements UserDao {
         } else {
             log.warn("Could not find user by id:{}", userId);
         }
+    }
+
+    @Override
+    public List<User> findAllByIdInList(List<Long> ids) {
+        return storage.getUserStorage().entrySet().stream()
+                .filter(it -> ids.contains(it.getKey()))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
     }
 
     private User createUserState(User userOriginal) {

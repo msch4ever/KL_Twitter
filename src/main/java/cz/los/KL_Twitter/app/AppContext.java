@@ -13,6 +13,7 @@ import cz.los.KL_Twitter.persistence.SessionDao;
 import cz.los.KL_Twitter.persistence.TweetDao;
 import cz.los.KL_Twitter.persistence.UserDao;
 import cz.los.KL_Twitter.service.AuthService;
+import cz.los.KL_Twitter.service.TweetService;
 import cz.los.KL_Twitter.service.UserService;
 import cz.los.KL_Twitter.views.FeedView;
 import cz.los.KL_Twitter.views.WelcomeView;
@@ -29,6 +30,7 @@ public class AppContext {
     TweetDao tweetDao;
     UserDao userDao;
     AuthDao authDao;
+    TweetService tweetService;
     UserService userService;
     AuthService authService;
     DispatcherHandler dispatcherHandler;
@@ -46,6 +48,7 @@ public class AppContext {
         this.tweetDao = builder.tweetDao;
         this.userDao = builder.userDao;
         this.authDao = builder.authDao;
+        this.tweetService = builder.tweetService;
         this.userService = builder.userService;
         this.authService = builder.authService;
         this.dispatcherHandler = builder.dispatcherHandler;
@@ -70,6 +73,7 @@ public class AppContext {
         private TweetDao tweetDao;
         private UserDao userDao;
         private AuthDao authDao;
+        private TweetService tweetService;
         private UserService userService;
         private AuthService authService;
         private DispatcherHandler dispatcherHandler;
@@ -138,6 +142,14 @@ public class AppContext {
                 throw new AppContextException("Provided userService is null!");
             }
             this.userService = userService;
+            return this;
+        }
+
+        public AppContextBuilder tweetService(TweetService tweetService) {
+            if (tweetService == null) {
+                throw new AppContextException("Provided userService is null!");
+            }
+            this.tweetService = tweetService;
             return this;
         }
 

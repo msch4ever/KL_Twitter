@@ -16,7 +16,7 @@ public class App {
     private final Handler dispatcherHandler;
 
     private App() {
-        this.dispatcherHandler = AppContextHolder.getAppContext().getDispatcherHandler();
+        this.dispatcherHandler = ContextHolder.getAppContext().getDispatcherHandler();
     }
 
     public static void main(String[] args) {

@@ -9,6 +9,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -104,5 +105,10 @@ public class UserDaoJdbcImpl implements UserDao {
     @Override
     public Optional<User> findByLogin(String login) {
         return Optional.empty();
+    }
+
+    @Override
+    public List<User> findAllByIdInList(List<Long> ids) {
+        return null;
     }
 }

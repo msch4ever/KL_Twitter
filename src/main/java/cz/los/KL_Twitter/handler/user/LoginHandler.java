@@ -1,17 +1,14 @@
 package cz.los.KL_Twitter.handler.user;
 
-import cz.los.KL_Twitter.app.AppContextHolder;
+import cz.los.KL_Twitter.app.ContextHolder;
 import cz.los.KL_Twitter.handler.AbstractHandler;
 import cz.los.KL_Twitter.handler.Command;
 import cz.los.KL_Twitter.handler.Response;
-import cz.los.KL_Twitter.model.User;
 import cz.los.KL_Twitter.service.AuthService;
 import cz.los.KL_Twitter.views.FeedView;
 import cz.los.KL_Twitter.views.WelcomeView;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.Console;
-import java.util.Arrays;
 import java.util.Scanner;
 
 @Slf4j
@@ -31,12 +28,12 @@ public class LoginHandler extends AbstractHandler {
         if (authService.authorize(login, retrievePassword())) {
             log.debug("{} has been authorized.", login);
             authService.startSession(login);
-            FeedView feedView = AppContextHolder.getAppContext().getFeedView();
+            FeedView feedView = ContextHolder.getAppContext().getFeedView();
             feedView.setHomeMode();
             response = new Response(true, Command.SIGN_IN, feedView);
         } else {
             log.warn("{} has not been authorized!", login);
-            WelcomeView welcomeView = AppContextHolder.getAppContext().getWelcomeView();
+            WelcomeView welcomeView = ContextHolder.getAppContext().getWelcomeView();
             welcomeView.setMessage("Incorrect login or password. Try again!");
             response = new Response(false, Command.SIGN_IN, welcomeView);
         }
