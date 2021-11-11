@@ -8,4 +8,8 @@ public interface TweetDao extends GenericDao<Tweet> {
 
     List<Tweet> findTweetsFromFollowing(long userId);
 
+    long getLikesCount(Long id);
+
+    long getReplyCount(Long id);
+
 }

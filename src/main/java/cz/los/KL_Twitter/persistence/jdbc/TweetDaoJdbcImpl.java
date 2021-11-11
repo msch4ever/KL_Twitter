@@ -37,4 +37,14 @@ public class TweetDaoJdbcImpl implements TweetDao {
     public List<Tweet> findTweetsFromFollowing(long userId) {
         return null;
     }
+
+    @Override
+    public long getLikesCount(Long id) {
+        return 0;
+    }
+
+    @Override
+    public long getReplyCount(Long id) {
+        return 0;
+    }
 }

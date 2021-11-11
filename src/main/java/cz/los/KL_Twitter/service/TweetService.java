@@ -8,4 +8,7 @@ public interface TweetService {
 
     List<Tweet> findTweetsFromFollowing(long userId);
 
+    long getLikesCount(Long id);
+
+    long getReplyCount(Long id);
 }

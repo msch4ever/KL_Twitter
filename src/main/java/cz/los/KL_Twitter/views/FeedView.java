@@ -25,8 +25,9 @@ public class FeedView extends AbstractView {
                     "\n" +
                     "${tweets}\n" +
                     "\n" +
-                    "[1] Sign Out    [2] Tweet    [3] Profile     [3] exit\n" +
+                    "[1] Sign Out    [2] Tweet    [3] Profile     [4] exit\n" +
                     "\n";
+    public static final String TEN_SPACES = "          ";
 
     private final TweetService tweetService;
     private final UserService userService;
@@ -95,17 +96,21 @@ public class FeedView extends AbstractView {
         String firstLine = String.format("%90s", passed);
         String userInfo = getUserInfoText(user);
         firstLine = userInfo + firstLine.substring(userInfo.length());
-        String tweetText = firstLine + System.lineSeparator();
+        StringBuilder tweetText = new StringBuilder(firstLine + System.lineSeparator());
         List<String> lines = getContentLines(tweet.getContent());
         for (String line : lines) {
-            tweetText = tweetText + line;
+            tweetText.append(line);
         }
-        return tweetText;
+        String statsLine = String.format("%90s", "likes:" + tweetService.getLikesCount(tweet.getTweetId()));
+        String repliesText = "replies:" + tweetService.getReplyCount(tweet.getTweetId());
+        statsLine = repliesText + statsLine.substring(repliesText.length());
+        tweetText.append(statsLine);
+        return tweetText.toString();
     }
 
     private String getTimePassedText(Tweet tweet) {
         long between = ChronoUnit.MINUTES.between(LocalDateTime.now(), tweet.getDatePosted());
-        if (between < 60) {
+        if (between < 60L) {
             return between + " min ago";
         } else if (between > 60L && between < 1140L) {
             return between / 60L + " hrs ago";
@@ -121,19 +126,23 @@ public class FeedView extends AbstractView {
     private List<String> getContentLines(String content) {
         List<String> lines = new ArrayList<>();
         int start = 0;
-        while (true) {
-            int end = start + 50;
+        int end = 0;
+        while (end < content.length()) {
+            while (content.charAt(start) == ' ') {
+                start++;
+            }
+            end = start + 50;
             String current;
-            if (end > content.length()) {
+            if (end >= content.length()) {
                 current = content.substring(start);
             } else {
-                current = content.substring(start, end);
+                while (content.charAt(end) != ' ') {
+                    end--;
+                }
+                current = content.substring(start, end).trim();
             }
-            lines.add(String.format("%35s", current) + System.lineSeparator());
+            lines.add(TEN_SPACES + current + System.lineSeparator());
             start = end;
-            if (end > content.length()) {
-                break;
-            }
         }
         return lines;
     }

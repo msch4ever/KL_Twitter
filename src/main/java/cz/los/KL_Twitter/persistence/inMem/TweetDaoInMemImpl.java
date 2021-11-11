@@ -81,6 +81,18 @@ public class TweetDaoInMemImpl implements TweetDao {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public long getLikesCount(Long id) {
+        return 0;
+    }
+
+    @Override
+    public long getReplyCount(Long id) {
+        return storage.getTweetStorage().values().stream()
+                .filter(it -> it.getReferenceTweetId().equals(id))
+                .count();
+    }
+
     private Tweet createTweetState(Tweet tweetOriginal) {
         return new Tweet(tweetOriginal);
     }
