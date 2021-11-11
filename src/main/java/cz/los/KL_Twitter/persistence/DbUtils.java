@@ -176,15 +176,23 @@ public class DbUtils {
         context.getTweetDao().save(new Tweet(4L, 10L, "@rip212 Why would you be so angry at mayo!"));
 
         AuthService authService = context.getAuthService();
-        byte[] msch4everSalt = authService.generateSalt();
-        context.getAuthDao()
-                .save(new UserAuthentication(msch4ever.getUserId(), msch4ever.getLogin(), msch4everSalt, authService.encodePassword(msch4everSalt, "lol")));
         List<Following> followingStorage = Storage.getInstance().getFollowingStorage();
-        followingStorage.add(new Following(msch4ever.getUserId(), rip.getUserId()));
-        followingStorage.add(new Following(msch4ever.getUserId(), dardevil.getUserId()));
-        followingStorage.add(new Following(msch4ever.getUserId(), mkbhd.getUserId()));
-        followingStorage.add(new Following(msch4ever.getUserId(), boo.getUserId()));
+
+        createSubs(context, msch4ever, Arrays.asList(rip, dardevil, mkbhd, boo), authService, followingStorage);
+        createSubs(context, rip, Arrays.asList(msch4ever, dardevil, mkbhd, boo), authService, followingStorage);
+        createSubs(context, dardevil, Arrays.asList(msch4ever, rip), authService, followingStorage);
+        createSubs(context, mkbhd, Arrays.asList(msch4ever, rip), authService, followingStorage);
+        createSubs(context, boo, Arrays.asList(msch4ever, rip, dardevil), authService, followingStorage);
 
         log.debug("GOOD! Database has been populated with fake data!");
+    }
+
+    private static void createSubs(AppContext context, User user, List<User> users, AuthService authService, List<Following> followingStorage) {
+        byte[] ripSalt = authService.generateSalt();
+        context.getAuthDao()
+                .save(new UserAuthentication(user.getUserId(), user.getLogin(), ripSalt, authService.encodePassword(ripSalt, "lol")));
+        for (User sub : users) {
+            followingStorage.add(new Following(user.getUserId(), sub.getUserId()));
+        }
     }
 }
