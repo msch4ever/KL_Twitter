@@ -9,6 +9,7 @@ import cz.los.KL_Twitter.handler.global.ExitHandler;
 import cz.los.KL_Twitter.handler.global.HelpHandler;
 import cz.los.KL_Twitter.handler.user.CreateUserHandler;
 import cz.los.KL_Twitter.handler.user.LoginHandler;
+import cz.los.KL_Twitter.handler.user.LogoutHandler;
 import cz.los.KL_Twitter.persistence.*;
 import cz.los.KL_Twitter.persistence.factory.DaoAbstractFactory;
 import cz.los.KL_Twitter.persistence.factory.DaoFactoryException;
@@ -93,12 +94,14 @@ public class Configurator {
         ExitHandler exitHandler = new ExitHandler();
         ClosingHandler closingHandler = new ClosingHandler();
         CreateUserHandler createUserHandler = new CreateUserHandler(builder.getUserService());
+        LogoutHandler logoutHandler = new LogoutHandler(builder.getAuthService());
         LoginHandler loginHandler = new LoginHandler(builder.getAuthService());
 
         log.debug("Establishing Chain of Responsibility..");
         helpHandler.setNextHandler(createUserHandler);
         createUserHandler.setNextHandler(loginHandler);
-        loginHandler.setNextHandler(exitHandler);
+        loginHandler.setNextHandler(logoutHandler);
+        logoutHandler.setNextHandler(exitHandler);
         exitHandler.setNextHandler(closingHandler);
         DispatcherHandler dispatcherHandler = new DispatcherHandler(helpHandler);
 
@@ -106,6 +109,7 @@ public class Configurator {
         builder.dispatcherHandler(dispatcherHandler);
         builder.createUserHandler(createUserHandler);
         builder.loginHandler(loginHandler);
+        builder.logoutHandler(logoutHandler);
         builder.helpHandler(helpHandler);
         builder.exitHandler(exitHandler);
         builder.closingHandler(closingHandler);

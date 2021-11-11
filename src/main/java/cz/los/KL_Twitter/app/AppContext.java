@@ -8,6 +8,7 @@ import cz.los.KL_Twitter.handler.global.ExitHandler;
 import cz.los.KL_Twitter.handler.global.HelpHandler;
 import cz.los.KL_Twitter.handler.user.CreateUserHandler;
 import cz.los.KL_Twitter.handler.user.LoginHandler;
+import cz.los.KL_Twitter.handler.user.LogoutHandler;
 import cz.los.KL_Twitter.persistence.AuthDao;
 import cz.los.KL_Twitter.persistence.SessionDao;
 import cz.los.KL_Twitter.persistence.TweetDao;
@@ -36,6 +37,7 @@ public class AppContext {
     DispatcherHandler dispatcherHandler;
     CreateUserHandler createUserHandler;
     ClosingHandler closingHandler;
+    LogoutHandler logoutHandler;
     LoginHandler loginHandler;
     HelpHandler helpHandler;
     ExitHandler exitHandler;
@@ -54,6 +56,7 @@ public class AppContext {
         this.dispatcherHandler = builder.dispatcherHandler;
         this.createUserHandler = builder.createUserHandler;
         this.closingHandler = builder.closingHandler;
+        this.logoutHandler = builder.logoutHandler;
         this.loginHandler = builder.loginHandler;
         this.helpHandler = builder.helpHandler;
         this.exitHandler = builder.exitHandler;
@@ -79,6 +82,7 @@ public class AppContext {
         private DispatcherHandler dispatcherHandler;
         private CreateUserHandler createUserHandler;
         private ClosingHandler closingHandler;
+        private LogoutHandler logoutHandler;
         private LoginHandler loginHandler;
         private HelpHandler helpHandler;
         private ExitHandler exitHandler;
@@ -166,6 +170,14 @@ public class AppContext {
                 throw new AppContextException("Provided createUserHandler is null!");
             }
             this.createUserHandler = createUserHandler;
+            return this;
+        }
+
+        public AppContextBuilder logoutHandler(LogoutHandler logoutHandler) {
+            if (logoutHandler == null) {
+                throw new AppContextException("Provided loginHandler is null!");
+            }
+            this.logoutHandler = logoutHandler;
             return this;
         }
 

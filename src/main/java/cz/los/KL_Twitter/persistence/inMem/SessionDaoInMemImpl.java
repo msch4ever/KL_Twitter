@@ -15,8 +15,8 @@ public class SessionDaoInMemImpl implements SessionDao {
     @Override
     public Long save(Session session) {
         long newSessionIdSequence = storage.getNewSessionIdSequence();
-        session = createSessionState(session);
         session.setId(newSessionIdSequence);
+        session = createSessionState(session);
         storage.getSessionStorage().put(newSessionIdSequence, session);
         return newSessionIdSequence;
     }
