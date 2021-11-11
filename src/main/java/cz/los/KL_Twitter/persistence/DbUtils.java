@@ -172,7 +172,7 @@ public class DbUtils {
         Tweet tweet7 = new Tweet(4L, 1L, "Very Sad!");
         Tweet tweet8 = new Tweet(4L, 6L, "That's so terrible we can not edit tweets XD");
         Tweet tweet9 = new Tweet(5L, null, "Hi, That will be my first tweet!");
-        Tweet tweet10 = new Tweet(1L, 4L, "No Kostia, mayo isn't and instrument!");
+        Tweet tweet10 = new Tweet(1L, 4L, "No Kostia, mayo isn't an instrument!");
         Tweet tweet11 = new Tweet(1L, 8L, "Ahahahahha LOL!");
         Tweet tweet12 = new Tweet(4L, 10L, "@rip212 Why would you be so angry at mayo!");
         context.getTweetDao().save(tweet1);
@@ -208,18 +208,18 @@ public class DbUtils {
         log.debug("GOOD! Database has been populated with fake data!");
     }
 
-    private static void createLikes(Tweet tweet1, List<User> liked, List<Like> likeStorage) {
-        for (User user : liked) {
-            likeStorage.add(new Like(tweet1.getTweetId(), user.getUserId()));
-        }
-    }
-
     private static void createSubs(AppContext context, User user, List<User> users, AuthService authService, List<Following> followingStorage) {
         byte[] ripSalt = authService.generateSalt();
         context.getAuthDao()
                 .save(new UserAuthentication(user.getUserId(), user.getLogin(), ripSalt, authService.encodePassword(ripSalt, "lol")));
         for (User sub : users) {
             followingStorage.add(new Following(user.getUserId(), sub.getUserId()));
+        }
+    }
+
+    private static void createLikes(Tweet tweet1, List<User> liked, List<Like> likeStorage) {
+        for (User user : liked) {
+            likeStorage.add(new Like(user.getUserId(), tweet1.getTweetId()));
         }
     }
 }

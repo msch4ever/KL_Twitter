@@ -44,7 +44,7 @@ VALUES
 
 INSERT INTO tweet (userId, datePosted, referenceTweet, content)
 VALUES
-       (1, null, 4, 'No Kostia, mayo isn''t and instrument!')
+       (1, null, 4, 'No Kostia, mayo isn''t an instrument!')
      , (1, null, 8, 'Ahahahahha LOL!');
 
 --NEXT--

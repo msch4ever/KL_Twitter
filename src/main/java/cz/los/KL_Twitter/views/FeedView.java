@@ -101,9 +101,8 @@ public class FeedView extends AbstractView {
         for (String line : lines) {
             tweetText.append(line);
         }
-        String statsLine = String.format("%90s", "likes:" + tweetService.getLikesCount(tweet.getTweetId()));
-        String repliesText = "replies:" + tweetService.getReplyCount(tweet.getTweetId());
-        statsLine = repliesText + statsLine.substring(repliesText.length());
+        String repliesText = String.format("%1$-20s", "replies:" + tweetService.getReplyCount(tweet.getTweetId()));
+        String statsLine = repliesText + "likes:" + tweetService.getLikesCount(tweet.getTweetId()) + System.lineSeparator();
         tweetText.append(statsLine);
         return tweetText.toString();
     }
