@@ -2,8 +2,12 @@ package cz.los.KL_Twitter.persistence;
 
 import cz.los.KL_Twitter.app.AppContext;
 import cz.los.KL_Twitter.app.ContextHolder;
+import cz.los.KL_Twitter.auth.UserAuthentication;
+import cz.los.KL_Twitter.model.Following;
 import cz.los.KL_Twitter.model.Tweet;
 import cz.los.KL_Twitter.model.User;
+import cz.los.KL_Twitter.service.AuthService;
+import cz.los.KL_Twitter.storage.Storage;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -147,11 +151,11 @@ public class DbUtils {
     public static void populateInMem() {
         log.info("Population in memory Data Base with sandbox data...");
         AppContext context = ContextHolder.getAppContext();
-        User rip = new User("@rip212", LocalDate.of(1993, 5, 27), "Hi, i''m Andrew. JS evangelista");
-        User msch4ever = new User("@msch4ever", LocalDate.of(1991, 1, 7), "Hi, i''m Kostia. I love Java");
-        User dardevil = new User("@dardevil", LocalDate.of(1993, 6, 13), "Hi, i''m Olezhna. I love doing nothing and complain");
-        User mkbhd = new User("@mkbhd", LocalDate.of(1995, 11, 11), "Hi, i''m Marquess Brownlee. I love making tech videos");
-        User boo = new User("@boo88", LocalDate.of(1988, 4, 11), "Hi, i''m Dima. I love selling things");
+        User rip = new User("rip212", LocalDate.of(1993, 5, 27), "Hi, i''m Andrew. JS evangelista");
+        User msch4ever = new User("msch4ever", LocalDate.of(1991, 1, 7), "Hi, i''m Kostia. I love Java");
+        User dardevil = new User("dardevil", LocalDate.of(1993, 6, 13), "Hi, i''m Olezhna. I love doing nothing and complain");
+        User mkbhd = new User("mkbhd", LocalDate.of(1995, 11, 11), "Hi, i''m Marquess Brownlee. I love making tech videos");
+        User boo = new User("boo88", LocalDate.of(1988, 4, 11), "Hi, i''m Dima. I love selling things");
         context.getUserDao().save(rip);
         context.getUserDao().save(msch4ever);
         context.getUserDao().save(dardevil);
@@ -170,6 +174,16 @@ public class DbUtils {
         context.getTweetDao().save(new Tweet(1L, 4L, "No Kostia, mayo isn't and instrument!"));
         context.getTweetDao().save(new Tweet(1L, 8L, "Ahahahahha LOL!"));
         context.getTweetDao().save(new Tweet(4L, 10L, "@rip212 Why would you be so angry at mayo!"));
+
+        AuthService authService = context.getAuthService();
+        byte[] msch4everSalt = authService.generateSalt();
+        context.getAuthDao()
+                .save(new UserAuthentication(msch4ever.getUserId(), msch4ever.getLogin(), msch4everSalt, authService.encodePassword(msch4everSalt, "lol")));
+        List<Following> followingStorage = Storage.getInstance().getFollowingStorage();
+        followingStorage.add(new Following(msch4ever.getUserId(), rip.getUserId()));
+        followingStorage.add(new Following(msch4ever.getUserId(), dardevil.getUserId()));
+        followingStorage.add(new Following(msch4ever.getUserId(), mkbhd.getUserId()));
+        followingStorage.add(new Following(msch4ever.getUserId(), boo.getUserId()));
 
         log.debug("GOOD! Database has been populated with fake data!");
     }

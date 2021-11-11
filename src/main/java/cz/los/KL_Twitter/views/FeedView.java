@@ -84,7 +84,7 @@ public class FeedView extends AbstractView {
                 .collect(Collectors.toMap(User::getUserId, Function.identity()));
         StringBuilder sb = new StringBuilder();
         for (Tweet tweet : tweets) {
-            sb.append(SEPARATOR).append(createTweetMessage(tweet, authors.get(tweet.getUserId())));
+            sb.append(SEPARATOR).append(System.lineSeparator()).append(createTweetMessage(tweet, authors.get(tweet.getUserId())));
         }
         sb.append(SEPARATOR);
         return sb.toString();
@@ -129,7 +129,7 @@ public class FeedView extends AbstractView {
             } else {
                 current = content.substring(start, end);
             }
-            lines.add("%35s" + current + System.lineSeparator());
+            lines.add(String.format("%35s", current) + System.lineSeparator());
             start = end;
             if (end > content.length()) {
                 break;

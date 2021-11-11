@@ -17,8 +17,8 @@ public class TweetDaoInMemImpl implements TweetDao {
     @Override
     public Long save(Tweet tweet) {
         long newTweetId = storage.getNewTweetIdSequence();
-        tweet = createTweetState(tweet);
         tweet.setTweetId(newTweetId);
+        tweet = createTweetState(tweet);
         storage.getTweetStorage().put(newTweetId, tweet);
         log.info("Tweet was persisted in the DB: {}", tweet);
         return newTweetId;
