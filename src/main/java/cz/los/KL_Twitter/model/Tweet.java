@@ -2,7 +2,7 @@ package cz.los.KL_Twitter.model;
 
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,8 +12,8 @@ public class Tweet implements PersistenceEntity {
 
     private Long tweetId;
     private Long userId;
-    private Long referenceTweet;
-    private final LocalDate datePosted;
+    private Long referenceTweetId;
+    private final LocalDateTime datePosted;
     private final String content;
     private List<User> mentionedUsers;
     private List<User> likes;
@@ -21,8 +21,8 @@ public class Tweet implements PersistenceEntity {
 
     public Tweet(Long userId, Long referenceTweet, String content) {
         this.userId = userId;
-        this.referenceTweet = referenceTweet;
-        this.datePosted = LocalDate.now();
+        this.referenceTweetId = referenceTweet;
+        this.datePosted = LocalDateTime.now();
         this.content = content;
         this.mentionedUsers = parseContentForMentions(content);
         this.likes = new ArrayList<>();
@@ -32,7 +32,7 @@ public class Tweet implements PersistenceEntity {
     public Tweet(Tweet other) {
         this.tweetId = other.getTweetId();
         this.userId = other.getUserId();
-        this.referenceTweet = other.getReferenceTweet();
+        this.referenceTweetId = other.getReferenceTweetId();
         this.datePosted = other.getDatePosted();
         this.content = other.getContent();
         this.mentionedUsers = other.getMentionedUsers();
@@ -59,7 +59,7 @@ public class Tweet implements PersistenceEntity {
 
         if (tweetId != null ? !tweetId.equals(tweet.tweetId) : tweet.tweetId != null) return false;
         if (!userId.equals(tweet.userId)) return false;
-        if (referenceTweet != null ? !referenceTweet.equals(tweet.referenceTweet) : tweet.referenceTweet != null)
+        if (referenceTweetId != null ? !referenceTweetId.equals(tweet.referenceTweetId) : tweet.referenceTweetId != null)
             return false;
         if (!datePosted.equals(tweet.datePosted)) return false;
         return content != null ? content.equals(tweet.content) : tweet.content == null;
@@ -69,7 +69,7 @@ public class Tweet implements PersistenceEntity {
     public int hashCode() {
         int result = tweetId != null ? tweetId.hashCode() : 0;
         result = 31 * result + userId.hashCode();
-        result = 31 * result + (referenceTweet != null ? referenceTweet.hashCode() : 0);
+        result = 31 * result + (referenceTweetId != null ? referenceTweetId.hashCode() : 0);
         result = 31 * result + datePosted.hashCode();
         result = 31 * result + (content != null ? content.hashCode() : 0);
         return result;
@@ -80,7 +80,7 @@ public class Tweet implements PersistenceEntity {
         return "Tweet{" +
                 "tweetId=" + tweetId +
                 ", userId=" + userId +
-                ", referenceTweet=" + referenceTweet +
+                ", referenceTweet=" + referenceTweetId +
                 ", content='" + content + '\'' +
                 '}';
     }

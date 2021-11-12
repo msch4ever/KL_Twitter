@@ -10,12 +10,13 @@ import java.util.Scanner;
 import static cz.los.KL_Twitter.config.Configurator.initApp;
 
 @Slf4j
+@Deprecated
 public class App {
 
     private final Handler dispatcherHandler;
 
     private App() {
-        this.dispatcherHandler = AppContextHolder.getAppContext().getDispatcherHandler();
+        this.dispatcherHandler = ContextHolder.getAppContext().getDispatcherHandler();
     }
 
     public static void main(String[] args) {
@@ -25,10 +26,11 @@ public class App {
     }
 
     private void run() {
-        Response response;
-        do {
+        log.info("Welcome to grannybench!");
+        Response response = dispatcherHandler.handle(Command.HELP);
+        while (response.getCommand() != Command.EXIT && response.isSuccess()) {
             response = startCOR();
-        } while (response.getCommand() != Command.EXIT && response.isSuccess());
+        }
         System.exit(0);
     }
 

@@ -1,9 +1,14 @@
 package cz.los.KL_Twitter.persistence;
 
 import cz.los.KL_Twitter.app.AppContext;
-import cz.los.KL_Twitter.app.AppContextHolder;
+import cz.los.KL_Twitter.app.ContextHolder;
+import cz.los.KL_Twitter.auth.UserAuthentication;
+import cz.los.KL_Twitter.model.Following;
+import cz.los.KL_Twitter.model.Like;
 import cz.los.KL_Twitter.model.Tweet;
 import cz.los.KL_Twitter.model.User;
+import cz.los.KL_Twitter.service.AuthService;
+import cz.los.KL_Twitter.storage.Storage;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -146,31 +151,75 @@ public class DbUtils {
 
     public static void populateInMem() {
         log.info("Population in memory Data Base with sandbox data...");
-        AppContext context = AppContextHolder.getAppContext();
-        User rip = new User("@rip212", LocalDate.of(1993, 5, 27), "Hi, i''m Andrew. JS evangelista");
-        User msch4ever = new User("@msch4ever", LocalDate.of(1991, 1, 7), "Hi, i''m Kostia. I love Java");
-        User dardevil = new User("@dardevil", LocalDate.of(1993, 6, 13), "Hi, i''m Olezhna. I love doing nothing and complain");
-        User mkbhd = new User("@mkbhd", LocalDate.of(1995, 11, 11), "Hi, i''m Marquess Brownlee. I love making tech videos");
-        User boo = new User("@boo88", LocalDate.of(1988, 4, 11), "Hi, i''m Dima. I love selling things");
+        AppContext context = ContextHolder.getAppContext();
+        User rip = new User("rip212", LocalDate.of(1993, 5, 27), "Hi, i''m Andrew. JS evangelista");
+        User msch4ever = new User("msch4ever", LocalDate.of(1991, 1, 7), "Hi, i''m Kostia. I love Java");
+        User dardevil = new User("dardevil", LocalDate.of(1993, 6, 13), "Hi, i''m Olezhna. I love doing nothing and complain");
+        User mkbhd = new User("mkbhd", LocalDate.of(1995, 11, 11), "Hi, i''m Marquess Brownlee. I love making tech videos");
+        User boo = new User("boo88", LocalDate.of(1988, 4, 11), "Hi, i''m Dima. I love selling things");
         context.getUserDao().save(rip);
         context.getUserDao().save(msch4ever);
         context.getUserDao().save(dardevil);
         context.getUserDao().save(mkbhd);
         context.getUserDao().save(boo);
 
-        context.getTweetDao().save(new Tweet(1L, null, "We will never forget this moment! America will never settle!"));
-        context.getTweetDao().save(new Tweet(1L, null, "I was always wondering why it is so cool to be awesome!"));
-        context.getTweetDao().save(new Tweet(2L, 1L, "Oh my god! What happened!?"));
-        context.getTweetDao().save(new Tweet(2L, null, "Hi chat! Is Mayo an instrument?"));
-        context.getTweetDao().save(new Tweet(3L, 3L, "They attacked US!"));
-        context.getTweetDao().save(new Tweet(3L, null, "I just love COCK! Cant imagine my life without it!"));
-        context.getTweetDao().save(new Tweet(4L, 1L, "Very Sad!"));
-        context.getTweetDao().save(new Tweet(4L, 6L, "That's so terrible we can not edit tweets XD"));
-        context.getTweetDao().save(new Tweet(5L, null, "Hi, That will be my first tweet!"));
-        context.getTweetDao().save(new Tweet(1L, 4L, "No Kostia, mayo isn't and instrument!"));
-        context.getTweetDao().save(new Tweet(1L, 8L, "Ahahahahha LOL!"));
-        context.getTweetDao().save(new Tweet(4L, 10L, "@rip212 Why would you be so angry at mayo!"));
+        Tweet tweet1 = new Tweet(1L, null, "We will never forget this moment! America will never settle!");
+        Tweet tweet2 = new Tweet(1L, null, "I was always wondering why it is so cool to be awesome!");
+        Tweet tweet3 = new Tweet(2L, 1L, "Oh my god! What happened!?");
+        Tweet tweet4 = new Tweet(2L, null, "Hi chat! Is Mayo an instrument?");
+        Tweet tweet5 = new Tweet(3L, 3L, "They attacked US!");
+        Tweet tweet6 = new Tweet(3L, null, "I just love COCK! Cant imagine my life without it!");
+        Tweet tweet7 = new Tweet(4L, 1L, "Very Sad!");
+        Tweet tweet8 = new Tweet(4L, 6L, "That's so terrible we can not edit tweets XD");
+        Tweet tweet9 = new Tweet(5L, null, "Hi, That will be my first tweet!");
+        Tweet tweet10 = new Tweet(1L, 4L, "No Kostia, mayo isn't an instrument!");
+        Tweet tweet11 = new Tweet(1L, 8L, "Ahahahahha LOL!");
+        Tweet tweet12 = new Tweet(4L, 10L, "@rip212 Why would you be so angry at mayo!");
+        context.getTweetDao().save(tweet1);
+        context.getTweetDao().save(tweet2);
+        context.getTweetDao().save(tweet3);
+        context.getTweetDao().save(tweet4);
+        context.getTweetDao().save(tweet5);
+        context.getTweetDao().save(tweet6);
+        context.getTweetDao().save(tweet7);
+        context.getTweetDao().save(tweet8);
+        context.getTweetDao().save(tweet9);
+        context.getTweetDao().save(tweet10);
+        context.getTweetDao().save(tweet11);
+        context.getTweetDao().save(tweet12);
+        AuthService authService = context.getAuthService();
+        List<Following> followingStorage = Storage.getInstance().getFollowingStorage();
+
+        createSubs(context, msch4ever, Arrays.asList(rip, dardevil, mkbhd, boo), authService, followingStorage);
+        createSubs(context, rip, Arrays.asList(msch4ever, dardevil, mkbhd, boo), authService, followingStorage);
+        createSubs(context, dardevil, Arrays.asList(msch4ever, rip), authService, followingStorage);
+        createSubs(context, mkbhd, Arrays.asList(msch4ever, rip), authService, followingStorage);
+        createSubs(context, boo, Arrays.asList(msch4ever, rip, dardevil), authService, followingStorage);
+
+        List<Like> likeStorage = Storage.getInstance().getLikeStorage();
+        createLikes(tweet1, Arrays.asList(msch4ever, dardevil, boo), likeStorage);
+        createLikes(tweet2, Arrays.asList(msch4ever, rip), likeStorage);
+        createLikes(tweet4, Arrays.asList(rip, dardevil, mkbhd, boo), likeStorage);
+        createLikes(tweet6, Arrays.asList(rip, msch4ever, boo), likeStorage);
+        createLikes(tweet8, Arrays.asList(rip, msch4ever, boo), likeStorage);
+        createLikes(tweet11, Arrays.asList(mkbhd), likeStorage);
+        createLikes(tweet12, Arrays.asList(msch4ever, rip, boo), likeStorage);
 
         log.debug("GOOD! Database has been populated with fake data!");
+    }
+
+    private static void createSubs(AppContext context, User user, List<User> users, AuthService authService, List<Following> followingStorage) {
+        byte[] ripSalt = authService.generateSalt();
+        context.getAuthDao()
+                .save(new UserAuthentication(user.getUserId(), user.getLogin(), ripSalt, authService.encodePassword(ripSalt, "lol")));
+        for (User sub : users) {
+            followingStorage.add(new Following(user.getUserId(), sub.getUserId()));
+        }
+    }
+
+    private static void createLikes(Tweet tweet1, List<User> liked, List<Like> likeStorage) {
+        for (User user : liked) {
+            likeStorage.add(new Like(user.getUserId(), tweet1.getTweetId()));
+        }
     }
 }

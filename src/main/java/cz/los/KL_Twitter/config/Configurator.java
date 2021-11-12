@@ -1,22 +1,21 @@
 package cz.los.KL_Twitter.config;
 
 import cz.los.KL_Twitter.app.AppContext;
-import cz.los.KL_Twitter.app.AppContextHolder;
+import cz.los.KL_Twitter.app.ContextHolder;
 import cz.los.KL_Twitter.app.SecurityContext;
 import cz.los.KL_Twitter.handler.ClosingHandler;
 import cz.los.KL_Twitter.handler.DispatcherHandler;
 import cz.los.KL_Twitter.handler.global.ExitHandler;
 import cz.los.KL_Twitter.handler.global.HelpHandler;
 import cz.los.KL_Twitter.handler.user.CreateUserHandler;
-import cz.los.KL_Twitter.persistence.TweetDao;
-import cz.los.KL_Twitter.persistence.UserDao;
+import cz.los.KL_Twitter.handler.user.LoginHandler;
+import cz.los.KL_Twitter.handler.user.LogoutHandler;
+import cz.los.KL_Twitter.persistence.*;
 import cz.los.KL_Twitter.persistence.factory.DaoAbstractFactory;
 import cz.los.KL_Twitter.persistence.factory.DaoFactoryException;
-import cz.los.KL_Twitter.persistence.DbUtils;
-import cz.los.KL_Twitter.service.AuthService;
-import cz.los.KL_Twitter.service.AuthServiceImpl;
-import cz.los.KL_Twitter.service.UserService;
-import cz.los.KL_Twitter.service.UserServiceImpl;
+import cz.los.KL_Twitter.service.*;
+import cz.los.KL_Twitter.views.FeedView;
+import cz.los.KL_Twitter.views.WelcomeView;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
@@ -42,15 +41,16 @@ public class Configurator {
         Configuration config = createConfig(args);
 
         log.debug("Creating Application context..");
-        DaoAbstractFactory factory = new DaoAbstractFactory();
+        DaoAbstractFactory factory = new DaoAbstractFactory(config.getDaoType());
         AppContext.AppContextBuilder builder = AppContext.builder();
         builder.configuration(config);
-        initDaos(config.getDaoType(), factory, builder);
+        initDaos(factory, builder);
         initServices(builder);
         initHandlers(builder);
-        AppContextHolder.initAppContext(builder.build());
-        AppContextHolder.initSecurityContext(new SecurityContext());
-        log.debug("Application context created. {}", AppContextHolder.getAppContext());
+        initViews(builder);
+        ContextHolder.initAppContext(builder.build());
+        ContextHolder.initSecurityContext(new SecurityContext());
+        log.debug("Application context created. {}", ContextHolder.getAppContext());
         log.info("Preparing database according to configuration..");
         initDB(config);
         log.info("Database prepared.");
@@ -58,26 +58,32 @@ public class Configurator {
         log.info("Application initialized successfully in {} seconds!", (end - start) / 1000.0D);
     }
 
-    private static void initDaos(DaoType daoType, DaoAbstractFactory factory, AppContext.AppContextBuilder builder) {
+    private static void initDaos(DaoAbstractFactory factory, AppContext.AppContextBuilder builder) {
         log.debug("Creating DAOs..");
-        UserDao userDao = factory.createUserDao(daoType);
-        TweetDao tweetDao = factory.createTweetDao(daoType);
+        SessionDao sessionDao = factory.createSessionDao();
+        TweetDao tweetDao = factory.createTweetDao();
+        UserDao userDao = factory.createUserDao();
+        AuthDao authDao = factory.createAuthDao();
 
         log.debug("Finalizing DAOs in AppContext..");
-        builder.userDao(userDao);
+        builder.sessionDao(sessionDao);
         builder.tweetDao(tweetDao);
+        builder.userDao(userDao);
+        builder.authDao(authDao);
 
         log.debug("DAOs initialized!");
     }
 
     private static void initServices(AppContext.AppContextBuilder builder) {
         log.debug("Creating services..");
-        AuthService authService = new AuthServiceImpl(builder.getSessionDao(), builder.getAuthDao());
+        AuthService authService = new AuthServiceImpl(builder.getUserDao(), builder.getSessionDao(), builder.getAuthDao());
         UserService userService = new UserServiceImpl(authService, builder.getUserDao());
+        TweetService tweetService = new TweetServiceImpl(builder.getTweetDao());
 
         log.debug("Finalizing services in AppContext..");
         builder.authService(authService);
         builder.userService(userService);
+        builder.tweetService(tweetService);
 
         log.debug("Services initialized!");
     }
@@ -88,21 +94,32 @@ public class Configurator {
         ExitHandler exitHandler = new ExitHandler();
         ClosingHandler closingHandler = new ClosingHandler();
         CreateUserHandler createUserHandler = new CreateUserHandler(builder.getUserService());
+        LogoutHandler logoutHandler = new LogoutHandler(builder.getAuthService());
+        LoginHandler loginHandler = new LoginHandler(builder.getAuthService());
 
         log.debug("Establishing Chain of Responsibility..");
         helpHandler.setNextHandler(createUserHandler);
-        createUserHandler.setNextHandler(exitHandler);
+        createUserHandler.setNextHandler(loginHandler);
+        loginHandler.setNextHandler(logoutHandler);
+        logoutHandler.setNextHandler(exitHandler);
         exitHandler.setNextHandler(closingHandler);
         DispatcherHandler dispatcherHandler = new DispatcherHandler(helpHandler);
 
         log.debug("Finalizing handlers in AppContext..");
         builder.dispatcherHandler(dispatcherHandler);
         builder.createUserHandler(createUserHandler);
+        builder.loginHandler(loginHandler);
+        builder.logoutHandler(logoutHandler);
         builder.helpHandler(helpHandler);
         builder.exitHandler(exitHandler);
         builder.closingHandler(closingHandler);
 
         log.debug("Handlers initialized!");
+    }
+
+    private static void initViews(AppContext.AppContextBuilder builder) {
+        builder.welcomeView(new WelcomeView());
+        builder.feedView(new FeedView(builder.getTweetService(), builder.getUserService()));
     }
 
     private static void initDB(Configuration config) {

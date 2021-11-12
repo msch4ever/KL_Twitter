@@ -1,10 +1,12 @@
 package cz.los.KL_Twitter.service;
 
-import cz.los.KL_Twitter.app.AppContextHolder;
+import cz.los.KL_Twitter.app.ContextHolder;
 import cz.los.KL_Twitter.auth.Session;
 import cz.los.KL_Twitter.auth.UserAuthentication;
+import cz.los.KL_Twitter.model.User;
 import cz.los.KL_Twitter.persistence.AuthDao;
 import cz.los.KL_Twitter.persistence.SessionDao;
+import cz.los.KL_Twitter.persistence.UserDao;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
@@ -15,27 +17,30 @@ import java.util.Optional;
 public class AuthServiceImpl implements AuthService {
 
     private final SessionDao sessionDao;
+    private final UserDao userDao;
     private final AuthDao authDao;
 
-    public AuthServiceImpl(SessionDao sessionDao, AuthDao authDao) {
+    public AuthServiceImpl(UserDao userDao, SessionDao sessionDao, AuthDao authDao) {
         this.sessionDao = sessionDao;
+        this.userDao = userDao;
         this.authDao = authDao;
     }
 
     @Override
-    public void startSession(String login, String password) {
+    public void startSession(String login) {
+        User loggedInUser = userDao.findByLogin(login).orElseThrow(IllegalArgumentException::new);
         final Session session =
-                new Session(authDao.findByLogin(login).orElseThrow(SecurityException::new), LocalDateTime.now());
+                new Session(loggedInUser, authDao.findByLogin(login).orElseThrow(SecurityException::new), LocalDateTime.now());
         sessionDao.save(session);
-        AppContextHolder.getSecurityContext().initSession(session);
+        ContextHolder.getSecurityContext().initSession(session);
     }
 
     @Override
     public void endSession(Session session) {
         LocalDateTime now = LocalDateTime.now();
         session.setEnd(now);
-        sessionDao.updateEnd(session.getSessionId(), now);
-        AppContextHolder.getSecurityContext().destroyCurrentSession();
+        sessionDao.updateEnd(session.getId(), now);
+        ContextHolder.getSecurityContext().destroyCurrentSession();
     }
 
     @Override
@@ -44,9 +49,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void createAuth(final String login, final String password) {
+    public void createAuth(final Long userId, final String login, final String password) {
         final byte[] salt = generateSalt();
-        authDao.save(new UserAuthentication(login, salt, encodePassword(salt, password)));
+        authDao.save(new UserAuthentication(userId, login, salt, encodePassword(salt, password)));
         log.debug("Authentication info saved for login:{}", login);
     }
 

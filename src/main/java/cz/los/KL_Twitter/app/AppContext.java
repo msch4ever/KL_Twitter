@@ -7,12 +7,17 @@ import cz.los.KL_Twitter.handler.Handler;
 import cz.los.KL_Twitter.handler.global.ExitHandler;
 import cz.los.KL_Twitter.handler.global.HelpHandler;
 import cz.los.KL_Twitter.handler.user.CreateUserHandler;
+import cz.los.KL_Twitter.handler.user.LoginHandler;
+import cz.los.KL_Twitter.handler.user.LogoutHandler;
 import cz.los.KL_Twitter.persistence.AuthDao;
 import cz.los.KL_Twitter.persistence.SessionDao;
 import cz.los.KL_Twitter.persistence.TweetDao;
 import cz.los.KL_Twitter.persistence.UserDao;
 import cz.los.KL_Twitter.service.AuthService;
+import cz.los.KL_Twitter.service.TweetService;
 import cz.los.KL_Twitter.service.UserService;
+import cz.los.KL_Twitter.views.FeedView;
+import cz.los.KL_Twitter.views.WelcomeView;
 import lombok.Getter;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -26,13 +31,18 @@ public class AppContext {
     TweetDao tweetDao;
     UserDao userDao;
     AuthDao authDao;
+    TweetService tweetService;
     UserService userService;
     AuthService authService;
     DispatcherHandler dispatcherHandler;
     CreateUserHandler createUserHandler;
     ClosingHandler closingHandler;
+    LogoutHandler logoutHandler;
+    LoginHandler loginHandler;
     HelpHandler helpHandler;
     ExitHandler exitHandler;
+    WelcomeView welcomeView;
+    FeedView feedView;
 
     private AppContext(AppContextBuilder builder) {
         this.configuration = builder.configuration;
@@ -40,13 +50,18 @@ public class AppContext {
         this.tweetDao = builder.tweetDao;
         this.userDao = builder.userDao;
         this.authDao = builder.authDao;
+        this.tweetService = builder.tweetService;
         this.userService = builder.userService;
         this.authService = builder.authService;
         this.dispatcherHandler = builder.dispatcherHandler;
         this.createUserHandler = builder.createUserHandler;
         this.closingHandler = builder.closingHandler;
+        this.logoutHandler = builder.logoutHandler;
+        this.loginHandler = builder.loginHandler;
         this.helpHandler = builder.helpHandler;
         this.exitHandler = builder.exitHandler;
+        this.welcomeView = builder.welcomeView;
+        this.feedView = builder.feedView;
     }
 
     public static AppContextBuilder builder() {
@@ -61,13 +76,18 @@ public class AppContext {
         private TweetDao tweetDao;
         private UserDao userDao;
         private AuthDao authDao;
+        private TweetService tweetService;
         private UserService userService;
         private AuthService authService;
         private DispatcherHandler dispatcherHandler;
         private CreateUserHandler createUserHandler;
         private ClosingHandler closingHandler;
+        private LogoutHandler logoutHandler;
+        private LoginHandler loginHandler;
         private HelpHandler helpHandler;
         private ExitHandler exitHandler;
+        private WelcomeView welcomeView;
+        private FeedView feedView;
 
         public AppContext build() {
             return new AppContext(this);
@@ -129,6 +149,14 @@ public class AppContext {
             return this;
         }
 
+        public AppContextBuilder tweetService(TweetService tweetService) {
+            if (tweetService == null) {
+                throw new AppContextException("Provided userService is null!");
+            }
+            this.tweetService = tweetService;
+            return this;
+        }
+
         public AppContextBuilder dispatcherHandler(DispatcherHandler dispatcherHandler) {
             if (dispatcherHandler == null) {
                 throw new AppContextException("Provided dispatcherHandler is null!");
@@ -142,6 +170,22 @@ public class AppContext {
                 throw new AppContextException("Provided createUserHandler is null!");
             }
             this.createUserHandler = createUserHandler;
+            return this;
+        }
+
+        public AppContextBuilder logoutHandler(LogoutHandler logoutHandler) {
+            if (logoutHandler == null) {
+                throw new AppContextException("Provided loginHandler is null!");
+            }
+            this.logoutHandler = logoutHandler;
+            return this;
+        }
+
+        public AppContextBuilder loginHandler(LoginHandler loginHandler) {
+            if (loginHandler == null) {
+                throw new AppContextException("Provided loginHandler is null!");
+            }
+            this.loginHandler = loginHandler;
             return this;
         }
 
@@ -166,6 +210,22 @@ public class AppContext {
                 throw new AppContextException("Provided exitHandler is null!");
             }
             this.exitHandler = exitHandler;
+            return this;
+        }
+
+        public AppContextBuilder welcomeView(WelcomeView welcomeView) {
+            if (welcomeView == null) {
+                throw new AppContextException("Provided welcomeView is null!");
+            }
+            this.welcomeView = welcomeView;
+            return this;
+        }
+
+        public AppContextBuilder feedView(FeedView feedView) {
+            if (feedView == null) {
+                throw new AppContextException("Provided feedView is null!");
+            }
+            this.feedView = feedView;
             return this;
         }
     }

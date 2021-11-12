@@ -1,9 +1,15 @@
 package cz.los.KL_Twitter.persistence.jdbc;
 
 import cz.los.KL_Twitter.model.User;
+import cz.los.KL_Twitter.persistence.DbUtils;
 import cz.los.KL_Twitter.persistence.UserDao;
+import lombok.SneakyThrows;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -64,7 +70,25 @@ public class UserDaoJdbcImpl implements UserDao {
         }
 
         @Override
-        public Optional<User> findById (Long id){
+        @SneakyThrows
+        public Optional<User> findById (Long id) {
+            User user = null;
+            Connection connection = DbUtils.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM user WHERE userId = " + id);
+            while (rs.next()) {
+                Long userId = rs.getLong("userId");
+                String nickname = rs.getString("nickname");
+                String login = rs.getString("login");
+                LocalDateTime dateRegistered =
+                        new Timestamp(rs.getDate("dateRegistered").getTime()).toLocalDateTime();
+                LocalDate dateOfBirth = LocalDate.parse(rs.getString("dateOfBirth"));
+                String about = rs.getString("about");
+                user = new User(userId, nickname, login, dateRegistered, dateOfBirth, about, new ArrayList<>(), new ArrayList<>());
+            }
+            if (user != null) {
+                return Optional.of(user);
+            }
             return Optional.empty();
         }
 
@@ -81,5 +105,10 @@ public class UserDaoJdbcImpl implements UserDao {
     @Override
     public Optional<User> findByLogin(String login) {
         return Optional.empty();
+    }
+
+    @Override
+    public List<User> findAllByIdInList(List<Long> ids) {
+        return null;
     }
 }
