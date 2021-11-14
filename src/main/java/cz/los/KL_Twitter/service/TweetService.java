@@ -11,4 +11,8 @@ public interface TweetService {
     long getLikesCount(Long id);
 
     long getReplyCount(Long id);
+
+    List<Tweet> findTweetsByUserId(Long id);
+
+    List<Tweet> findTweetReplies(Long id);
 }

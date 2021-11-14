@@ -95,6 +95,20 @@ public class TweetDaoInMemImpl implements TweetDao {
                 .count();
     }
 
+    @Override
+    public List<Tweet> findTweetsByUserId(Long id) {
+        return storage.getTweetStorage().values().stream()
+                .filter(it -> it.getUserId().equals(id))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Tweet> findTweetReplies(Long id) {
+        return storage.getTweetStorage().values().stream()
+                .filter(it -> it.getTweetId().equals(id))
+                .collect(Collectors.toList());
+    }
+
     private Tweet createTweetState(Tweet tweetOriginal) {
         return new Tweet(tweetOriginal);
     }

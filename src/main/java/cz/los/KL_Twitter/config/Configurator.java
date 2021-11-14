@@ -79,11 +79,13 @@ public class Configurator {
         AuthService authService = new AuthServiceImpl(builder.getUserDao(), builder.getSessionDao(), builder.getAuthDao());
         UserService userService = new UserServiceImpl(authService, builder.getUserDao());
         TweetService tweetService = new TweetServiceImpl(builder.getTweetDao());
+        FeedService feedService = new FeedServiceImpl(tweetService, userService);
 
         log.debug("Finalizing services in AppContext..");
         builder.authService(authService);
         builder.userService(userService);
         builder.tweetService(tweetService);
+        builder.feedService(feedService);
 
         log.debug("Services initialized!");
     }
@@ -119,7 +121,7 @@ public class Configurator {
 
     private static void initViews(AppContext.AppContextBuilder builder) {
         builder.welcomeView(new WelcomeView());
-        builder.feedView(new FeedView(builder.getTweetService(), builder.getUserService()));
+        builder.feedView(new FeedView(builder.getTweetService(), builder.getUserService(), builder.getFeedService()));
     }
 
     private static void initDB(Configuration config) {

@@ -12,4 +12,7 @@ public interface TweetDao extends GenericDao<Tweet> {
 
     long getReplyCount(Long id);
 
+    List<Tweet> findTweetsByUserId(Long id);
+
+    List<Tweet> findTweetReplies(Long id);
 }

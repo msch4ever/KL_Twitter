@@ -1,23 +1,34 @@
 package cz.los.KL_Twitter.model;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
 
 public abstract class Feed {
 
-    private Set<Tweet> tweets;
+    private List<Tweet> tweets;
+    private Map<Long, User> authors;
 
     public Feed() {}
 
-    public Feed(Set<Tweet> tweets) {
+    public Feed(List<Tweet> tweets, Map<Long, User> authors) {
         this.tweets = tweets;
+        this.authors = authors;
     }
 
-    public Set<Tweet> getTweets() {
+    public List<Tweet> getTweets() {
         return tweets;
     }
 
-    public void setTweets(Set<Tweet> tweets) {
+    public void setTweets(List<Tweet> tweets) {
         this.tweets = tweets;
+    }
+
+    public Map<Long, User> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Map<Long, User> authors) {
+        this.authors = authors;
     }
 
     @Override

@@ -19,6 +19,16 @@ public class TweetServiceImpl implements TweetService {
     }
 
     @Override
+    public List<Tweet> findTweetsByUserId(Long id) {
+        return tweetDao.findTweetsByUserId(id);
+    }
+
+    @Override
+    public List<Tweet> findTweetReplies(Long id) {
+        return tweetDao.findTweetReplies(id);
+    }
+
+    @Override
     public long getLikesCount(Long id) {
         return tweetDao.getLikesCount(id);
     }

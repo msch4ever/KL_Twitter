@@ -2,8 +2,11 @@ package cz.los.KL_Twitter.views;
 
 import cz.los.KL_Twitter.app.ContextHolder;
 import cz.los.KL_Twitter.handler.Command;
+import cz.los.KL_Twitter.model.Feed;
 import cz.los.KL_Twitter.model.Tweet;
 import cz.los.KL_Twitter.model.User;
+import cz.los.KL_Twitter.model.UserFeed;
+import cz.los.KL_Twitter.service.FeedService;
 import cz.los.KL_Twitter.service.TweetService;
 import cz.los.KL_Twitter.service.UserService;
 
@@ -31,13 +34,16 @@ public class FeedView extends AbstractView {
 
     private final TweetService tweetService;
     private final UserService userService;
+    private final FeedService feedService;
     private Mode feedMode;
+    private Long entityId;
 
 
-    public FeedView(TweetService tweetService, UserService userService) {
+    public FeedView(TweetService tweetService, UserService userService, FeedService feedService) {
         super(initCommands());
         this.tweetService = tweetService;
         this.userService = userService;
+        this.feedService = feedService;
         this.feedMode = Mode.HOME;
     }
 
@@ -78,14 +84,12 @@ public class FeedView extends AbstractView {
     }
 
     private CharSequence createTweetsList() {
-        User user = ContextHolder.getSecurityContext().getSession().getLoggedInUser();
-        List<Tweet> tweets = tweetService.findTweetsFromFollowing(user.getUserId());
-        Map<Long, User> authors = userService
-                .findAllByIdInList(tweets.stream().map(Tweet::getUserId).collect(Collectors.toList())).stream()
-                .collect(Collectors.toMap(User::getUserId, Function.identity()));
+        Feed feed = feedService.createFeed(feedMode, entityId);
         StringBuilder sb = new StringBuilder();
-        for (Tweet tweet : tweets) {
-            sb.append(SEPARATOR).append(System.lineSeparator()).append(createTweetMessage(tweet, authors.get(tweet.getUserId())));
+        for (Tweet tweet : feed.getTweets()) {
+            sb.append(SEPARATOR)
+                    .append(System.lineSeparator())
+                    .append(createTweetMessage(tweet, feed.getAuthors().get(tweet.getUserId())));
         }
         sb.append(SEPARATOR);
         return sb.toString();
@@ -146,16 +150,19 @@ public class FeedView extends AbstractView {
         return lines;
     }
 
-    public void setUserMode() {
+    public void setUserMode(Long userId) {
         this.feedMode = Mode.USER;
+        this.entityId = userId;
     }
 
     public void setHomeMode() {
         this.feedMode = Mode.HOME;
+        this.entityId = ContextHolder.getSecurityContext().getSession().getLoggedInUser().getUserId();
     }
 
-    public void setTweetMode() {
+    public void setTweetMode(Long tweetId) {
         this.feedMode = Mode.TWEET;
+        this.entityId = tweetId;
     }
 
     public enum Mode {
