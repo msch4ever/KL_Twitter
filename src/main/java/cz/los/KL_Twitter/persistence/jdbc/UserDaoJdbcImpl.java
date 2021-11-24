@@ -108,4 +108,29 @@ public class UserDaoJdbcImpl implements UserDao {
     public List<User> findAllByIdInList(List<Long> ids) {
         return null;
     }
+
+    @Override
+    public int countFollowers(Long id) {
+        return 0;
+    }
+
+    @Override
+    public int countFollowing(Long id) {
+        return 0;
+    }
+
+    @Override
+    public boolean userIsFollowingOther(Long first, Long second) {
+        return false;
+    }
+
+    @Override
+    public void follow(Long first, Long second) {
+
+    }
+
+    @Override
+    public void unfollow(Long first, Long second) {
+
+    }
 }

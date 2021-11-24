@@ -11,5 +11,14 @@ public interface UserDao extends GenericDao<User> {
 
     List<User> findAllByIdInList(List<Long> ids);
 
+    int countFollowers(Long id);
+
+    int countFollowing(Long id);
+
+    boolean userIsFollowingOther(Long first, Long second);
+
+    void follow(Long first, Long second);
+
+    void unfollow(Long first, Long second);
 
 }

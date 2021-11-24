@@ -6,9 +6,7 @@ import cz.los.KL_Twitter.handler.DispatcherHandler;
 import cz.los.KL_Twitter.handler.global.ExitHandler;
 import cz.los.KL_Twitter.handler.global.HelpHandler;
 import cz.los.KL_Twitter.handler.tweet.WriteTweetHandler;
-import cz.los.KL_Twitter.handler.user.CreateUserHandler;
-import cz.los.KL_Twitter.handler.user.LoginHandler;
-import cz.los.KL_Twitter.handler.user.LogoutHandler;
+import cz.los.KL_Twitter.handler.user.*;
 import cz.los.KL_Twitter.persistence.AuthDao;
 import cz.los.KL_Twitter.persistence.SessionDao;
 import cz.los.KL_Twitter.persistence.TweetDao;
@@ -18,6 +16,7 @@ import cz.los.KL_Twitter.service.FeedService;
 import cz.los.KL_Twitter.service.TweetService;
 import cz.los.KL_Twitter.service.UserService;
 import cz.los.KL_Twitter.views.FeedView;
+import cz.los.KL_Twitter.views.ProfileView;
 import cz.los.KL_Twitter.views.WelcomeView;
 import cz.los.KL_Twitter.views.WriteTweetView;
 import lombok.Getter;
@@ -39,13 +38,15 @@ public class AppContext {
     AuthService authService;
     DispatcherHandler dispatcherHandler;
     CreateUserHandler createUserHandler;
-    WriteTweetHandler writeTweetHandler;;
+    WriteTweetHandler writeTweetHandler;
+    MyProfileHandler myProfileHandler;
     ClosingHandler closingHandler;
     LogoutHandler logoutHandler;
     LoginHandler loginHandler;
     HelpHandler helpHandler;
     ExitHandler exitHandler;
     WriteTweetView writeTweetView;
+    ProfileView profileView;
     WelcomeView welcomeView;
     FeedView feedView;
 
@@ -62,12 +63,14 @@ public class AppContext {
         this.dispatcherHandler = builder.dispatcherHandler;
         this.createUserHandler = builder.createUserHandler;
         this.writeTweetHandler = builder.writeTweetHandler;
+        this.myProfileHandler = builder.myProfileHandler;
         this.closingHandler = builder.closingHandler;
         this.logoutHandler = builder.logoutHandler;
         this.loginHandler = builder.loginHandler;
         this.helpHandler = builder.helpHandler;
         this.exitHandler = builder.exitHandler;
         this.writeTweetView = builder.writeTweetView;
+        this.profileView = builder.profileView;
         this.welcomeView = builder.welcomeView;
         this.feedView = builder.feedView;
     }
@@ -91,12 +94,16 @@ public class AppContext {
         private DispatcherHandler dispatcherHandler;
         private CreateUserHandler createUserHandler;
         private WriteTweetHandler writeTweetHandler;
+        private MyProfileHandler myProfileHandler;
+        private UnfollowHandler unfollowHandler;
         private ClosingHandler closingHandler;
         private LogoutHandler logoutHandler;
+        private FollowHandler followHandler;
         private LoginHandler loginHandler;
         private HelpHandler helpHandler;
         private ExitHandler exitHandler;
         private WriteTweetView writeTweetView;
+        private ProfileView profileView;
         private WelcomeView welcomeView;
         private FeedView feedView;
 
@@ -192,11 +199,34 @@ public class AppContext {
             return this;
         }
 
+        public AppContextBuilder unfollowHandler(UnfollowHandler unfollowHandler) {
+            if (unfollowHandler == null) {
+                throw new AppContextException("Provided unfollowHandler is null!");
+            }
+            this.unfollowHandler = unfollowHandler;
+            return this;
+        }
+
+        public AppContextBuilder followHandler(FollowHandler followHandler) {
+            if (followHandler == null) {
+                throw new AppContextException("Provided followHandler is null!");
+            }
+            this.followHandler = followHandler;
+            return this;
+        }
+
         public AppContextBuilder writeTweetHandler(WriteTweetHandler writeTweetHandler) {
             if (writeTweetHandler == null) {
                 throw new AppContextException("Provided writeTweetHandler is null!");
             }
             this.writeTweetHandler = writeTweetHandler;
+            return this;
+        }
+        public AppContextBuilder myProfileHandler(MyProfileHandler myProfileHandler) {
+            if (myProfileHandler == null) {
+                throw new AppContextException("Provided myProfileHandler is null!");
+            }
+            this.myProfileHandler = myProfileHandler;
             return this;
         }
 
@@ -237,6 +267,14 @@ public class AppContext {
                 throw new AppContextException("Provided exitHandler is null!");
             }
             this.exitHandler = exitHandler;
+            return this;
+        }
+
+        public AppContextBuilder profileView(ProfileView profileView) {
+            if (profileView == null) {
+                throw new AppContextException("Provided profileView is null!");
+            }
+            this.profileView = profileView;
             return this;
         }
 

@@ -1,5 +1,6 @@
 package cz.los.KL_Twitter.persistence.inMem;
 
+import cz.los.KL_Twitter.model.Following;
 import cz.los.KL_Twitter.model.User;
 import cz.los.KL_Twitter.persistence.UserDao;
 import cz.los.KL_Twitter.persistence.UserDoesNotExistException;
@@ -85,6 +86,38 @@ public class UserDaoInMemImpl implements UserDao {
                 .filter(it -> ids.contains(it.getKey()))
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public int countFollowers(Long id) {
+        return (int) storage.getFollowingStorage().stream()
+                .map(Following::getFollowingId)
+                .filter(it -> it.equals(id))
+                .count();
+    }
+
+    @Override
+    public int countFollowing(Long id) {
+        return (int) storage.getFollowingStorage().stream()
+                .map(Following::getUserId)
+                .filter(it -> it.equals(id))
+                .count();
+    }
+
+    @Override
+    public boolean userIsFollowingOther(Long first, Long second) {
+        return storage.getFollowingStorage().stream()
+                .anyMatch(it ->it.getUserId() == first && it.getFollowingId() == second);
+    }
+
+    @Override
+    public void follow(Long first, Long second) {
+        storage.getFollowingStorage().add(new Following(first, second));
+    }
+
+    @Override
+    public void unfollow(Long first, Long second) {
+        storage.getFollowingStorage().removeIf(it -> it.getUserId() == first && it.getFollowingId() == second);
     }
 
     private User createUserState(User userOriginal) {

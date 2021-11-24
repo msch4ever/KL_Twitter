@@ -5,7 +5,6 @@ import cz.los.KL_Twitter.handler.Command;
 import cz.los.KL_Twitter.model.Feed;
 import cz.los.KL_Twitter.model.Tweet;
 import cz.los.KL_Twitter.model.User;
-import cz.los.KL_Twitter.model.UserFeed;
 import cz.los.KL_Twitter.service.FeedService;
 import cz.los.KL_Twitter.service.TweetService;
 import cz.los.KL_Twitter.service.UserService;
@@ -16,8 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class FeedView extends AbstractView {
 
@@ -28,7 +25,7 @@ public class FeedView extends AbstractView {
                     "\n" +
                     "${tweets}\n" +
                     "\n" +
-                    "[1] Sign Out    [2] Tweet    [3] Profile     [4] exit\n" +
+                    "[1] Sign Out    [2] Tweet    [3] Find User    [4] Profile    [5] Exit\n" +
                     "\n";
     public static final String TEN_SPACES = "          ";
 
@@ -51,8 +48,9 @@ public class FeedView extends AbstractView {
         Map<Integer, Command> commands = new HashMap<>();
         commands.put(1, Command.SIGN_OUT);
         commands.put(2, Command.TWEET);
-        commands.put(3, Command.PROFILE);
-        commands.put(4, Command.EXIT);
+        commands.put(3, Command.FIND_USER);
+        commands.put(4, Command.MY_PROFILE);
+        commands.put(5, Command.EXIT);
         return commands;
     }
 

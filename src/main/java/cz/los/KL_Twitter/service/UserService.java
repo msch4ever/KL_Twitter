@@ -11,5 +11,17 @@ public interface UserService {
 
     Optional<User> findByLogin(String login);
 
+    Optional<User> findById(Long id);
+
     List<User> findAllByIdInList(List<Long> collect);
+
+    int countFollowers(Long id);
+
+    int countFollowing(Long id);
+
+    boolean userIsFollowingOther(Long first, Long second);
+
+    void follow(Long first, Long second);
+
+    void unfollow(Long first, Long second);
 }
