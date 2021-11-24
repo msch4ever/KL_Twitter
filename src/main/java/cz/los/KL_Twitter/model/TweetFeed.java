@@ -1,6 +1,7 @@
 package cz.los.KL_Twitter.model;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
 
 public class TweetFeed extends Feed {
 
@@ -9,8 +10,8 @@ public class TweetFeed extends Feed {
     public TweetFeed() {
     }
 
-    public TweetFeed(Set<Tweet> tweets, Long tweetId) {
-        super(tweets);
+    public TweetFeed(List<Tweet> tweets, Map<Long, User> authors, Long tweetId) {
+        super(tweets, authors);
         this.tweetId = tweetId;
     }
 

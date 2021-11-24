@@ -7,6 +7,7 @@ public enum Command {
     SIGN_IN("sign in"),
     SIGN_OUT("sign out"),
     TWEET("tweet"),
+    ABORT("abort"),
     PROFILE("profile"),
     EXIT("exit");
 

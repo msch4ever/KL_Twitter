@@ -76,8 +76,8 @@ public class TweetDaoInMemImpl implements TweetDao {
         followings.add(userId);
         return tweetStorage.values().stream()
                 .filter(it -> followings.contains(it.getUserId()))
+                .sorted(Comparator.comparing(Tweet::getDatePosted).reversed())
                 .limit(10)
-                .sorted(Comparator.comparing(Tweet::getDatePosted))
                 .collect(Collectors.toList());
     }
 
@@ -93,6 +93,20 @@ public class TweetDaoInMemImpl implements TweetDao {
         return storage.getTweetStorage().values().stream()
                 .filter(it -> id.equals(it.getReferenceTweetId()))
                 .count();
+    }
+
+    @Override
+    public List<Tweet> findTweetsByUserId(Long id) {
+        return storage.getTweetStorage().values().stream()
+                .filter(it -> it.getUserId().equals(id))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Tweet> findTweetReplies(Long id) {
+        return storage.getTweetStorage().values().stream()
+                .filter(it -> it.getTweetId().equals(id))
+                .collect(Collectors.toList());
     }
 
     private Tweet createTweetState(Tweet tweetOriginal) {

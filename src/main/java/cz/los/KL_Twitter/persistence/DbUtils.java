@@ -11,6 +11,7 @@ import cz.los.KL_Twitter.service.AuthService;
 import cz.los.KL_Twitter.storage.Storage;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -18,10 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -43,6 +41,12 @@ public class DbUtils {
 
     public static Connection getConnection() {
         return getConnection(TWITTER_DB_URL);
+    }
+
+    @SneakyThrows
+    public static void closeResource(AutoCloseable closeable) {
+        Objects.requireNonNull(closeable);
+        closeable.close();
     }
 
     public static Connection getConnection(String url) {
@@ -87,12 +91,10 @@ public class DbUtils {
         boolean initiated = true;
         Connection con = getConnection();
         try (ResultSet tables = con.getMetaData().getTables(null, null, null, null)) {
-            List<String> tablesCatalog = new ArrayList<>();
             while (tables.next()) {
                 String table = tables.getString(3);
                 if (TABLES.contains(table)) {
                     log.debug("Table '{}' was found..", table);
-                    tablesCatalog.add(table);
                     initiatedTables.put(table, true);
                 }
             }

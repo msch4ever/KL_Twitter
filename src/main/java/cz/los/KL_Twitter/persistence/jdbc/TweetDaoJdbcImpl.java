@@ -47,4 +47,14 @@ public class TweetDaoJdbcImpl implements TweetDao {
     public long getReplyCount(Long id) {
         return 0;
     }
+
+    @Override
+    public List<Tweet> findTweetsByUserId(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<Tweet> findTweetReplies(Long id) {
+        return null;
+    }
 }

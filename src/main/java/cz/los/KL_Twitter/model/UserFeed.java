@@ -1,6 +1,7 @@
 package cz.los.KL_Twitter.model;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
 
 public class UserFeed extends Feed {
 
@@ -9,8 +10,8 @@ public class UserFeed extends Feed {
 
     public UserFeed() {}
 
-    public UserFeed(Set<Tweet> tweets, Long userId, boolean homeFeed) {
-        super(tweets);
+    public UserFeed(List<Tweet> tweets, Map<Long, User> authors, Long userId, boolean homeFeed) {
+        super(tweets, authors);
         this.userId = userId;
         this.homeFeed = homeFeed;
     }
