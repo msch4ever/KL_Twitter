@@ -20,7 +20,6 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     public Feed createFeed(FeedView.Mode mode, Long id) {
-        Feed feed;
         List<Tweet> tweets;
         Map<Long, User> feedAuthors;
         if (mode == FeedView.Mode.HOME) {

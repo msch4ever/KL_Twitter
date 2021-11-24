@@ -76,8 +76,8 @@ public class TweetDaoInMemImpl implements TweetDao {
         followings.add(userId);
         return tweetStorage.values().stream()
                 .filter(it -> followings.contains(it.getUserId()))
+                .sorted(Comparator.comparing(Tweet::getDatePosted).reversed())
                 .limit(10)
-                .sorted(Comparator.comparing(Tweet::getDatePosted))
                 .collect(Collectors.toList());
     }
 

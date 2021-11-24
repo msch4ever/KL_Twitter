@@ -5,6 +5,7 @@ import cz.los.KL_Twitter.handler.ClosingHandler;
 import cz.los.KL_Twitter.handler.DispatcherHandler;
 import cz.los.KL_Twitter.handler.global.ExitHandler;
 import cz.los.KL_Twitter.handler.global.HelpHandler;
+import cz.los.KL_Twitter.handler.tweet.WriteTweetHandler;
 import cz.los.KL_Twitter.handler.user.CreateUserHandler;
 import cz.los.KL_Twitter.handler.user.LoginHandler;
 import cz.los.KL_Twitter.handler.user.LogoutHandler;
@@ -18,6 +19,7 @@ import cz.los.KL_Twitter.service.TweetService;
 import cz.los.KL_Twitter.service.UserService;
 import cz.los.KL_Twitter.views.FeedView;
 import cz.los.KL_Twitter.views.WelcomeView;
+import cz.los.KL_Twitter.views.WriteTweetView;
 import lombok.Getter;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -37,11 +39,13 @@ public class AppContext {
     AuthService authService;
     DispatcherHandler dispatcherHandler;
     CreateUserHandler createUserHandler;
+    WriteTweetHandler writeTweetHandler;;
     ClosingHandler closingHandler;
     LogoutHandler logoutHandler;
     LoginHandler loginHandler;
     HelpHandler helpHandler;
     ExitHandler exitHandler;
+    WriteTweetView writeTweetView;
     WelcomeView welcomeView;
     FeedView feedView;
 
@@ -57,11 +61,13 @@ public class AppContext {
         this.authService = builder.authService;
         this.dispatcherHandler = builder.dispatcherHandler;
         this.createUserHandler = builder.createUserHandler;
+        this.writeTweetHandler = builder.writeTweetHandler;
         this.closingHandler = builder.closingHandler;
         this.logoutHandler = builder.logoutHandler;
         this.loginHandler = builder.loginHandler;
         this.helpHandler = builder.helpHandler;
         this.exitHandler = builder.exitHandler;
+        this.writeTweetView = builder.writeTweetView;
         this.welcomeView = builder.welcomeView;
         this.feedView = builder.feedView;
     }
@@ -84,11 +90,13 @@ public class AppContext {
         private AuthService authService;
         private DispatcherHandler dispatcherHandler;
         private CreateUserHandler createUserHandler;
+        private WriteTweetHandler writeTweetHandler;
         private ClosingHandler closingHandler;
         private LogoutHandler logoutHandler;
         private LoginHandler loginHandler;
         private HelpHandler helpHandler;
         private ExitHandler exitHandler;
+        private WriteTweetView writeTweetView;
         private WelcomeView welcomeView;
         private FeedView feedView;
 
@@ -184,6 +192,14 @@ public class AppContext {
             return this;
         }
 
+        public AppContextBuilder writeTweetHandler(WriteTweetHandler writeTweetHandler) {
+            if (writeTweetHandler == null) {
+                throw new AppContextException("Provided writeTweetHandler is null!");
+            }
+            this.writeTweetHandler = writeTweetHandler;
+            return this;
+        }
+
         public AppContextBuilder logoutHandler(LogoutHandler logoutHandler) {
             if (logoutHandler == null) {
                 throw new AppContextException("Provided logoutHandler is null!");
@@ -237,6 +253,14 @@ public class AppContext {
                 throw new AppContextException("Provided feedView is null!");
             }
             this.feedView = feedView;
+            return this;
+        }
+
+        public AppContextBuilder writeTweetView(WriteTweetView writeTweetView) {
+            if (writeTweetView == null) {
+                throw new AppContextException("Provided writeTweetView is null!");
+            }
+            this.writeTweetView = writeTweetView;
             return this;
         }
     }
