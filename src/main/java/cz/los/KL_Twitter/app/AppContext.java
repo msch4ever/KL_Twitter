@@ -40,7 +40,10 @@ public class AppContext {
     CreateUserHandler createUserHandler;
     WriteTweetHandler writeTweetHandler;
     MyProfileHandler myProfileHandler;
+    UnfollowHandler unfollowHandler;
+    FindUserHandler findUserHandler;
     ClosingHandler closingHandler;
+    FollowHandler followHandler;
     LogoutHandler logoutHandler;
     LoginHandler loginHandler;
     HelpHandler helpHandler;
@@ -64,7 +67,10 @@ public class AppContext {
         this.createUserHandler = builder.createUserHandler;
         this.writeTweetHandler = builder.writeTweetHandler;
         this.myProfileHandler = builder.myProfileHandler;
+        this.unfollowHandler = builder.unfollowHandler;
+        this.findUserHandler = builder.findUserHandler;
         this.closingHandler = builder.closingHandler;
+        this.followHandler = builder.followHandler;
         this.logoutHandler = builder.logoutHandler;
         this.loginHandler = builder.loginHandler;
         this.helpHandler = builder.helpHandler;
@@ -96,13 +102,14 @@ public class AppContext {
         private WriteTweetHandler writeTweetHandler;
         private MyProfileHandler myProfileHandler;
         private UnfollowHandler unfollowHandler;
+        private FindUserHandler findUserHandler;
         private ClosingHandler closingHandler;
+        private WriteTweetView writeTweetView;
         private LogoutHandler logoutHandler;
         private FollowHandler followHandler;
         private LoginHandler loginHandler;
         private HelpHandler helpHandler;
         private ExitHandler exitHandler;
-        private WriteTweetView writeTweetView;
         private ProfileView profileView;
         private WelcomeView welcomeView;
         private FeedView feedView;
@@ -207,6 +214,14 @@ public class AppContext {
             return this;
         }
 
+        public AppContextBuilder findUserHandler(FindUserHandler findUserHandler) {
+            if (findUserHandler == null) {
+                throw new AppContextException("Provided findUserHandler is null!");
+            }
+            this.findUserHandler = findUserHandler;
+            return this;
+        }
+
         public AppContextBuilder followHandler(FollowHandler followHandler) {
             if (followHandler == null) {
                 throw new AppContextException("Provided followHandler is null!");
@@ -222,6 +237,7 @@ public class AppContext {
             this.writeTweetHandler = writeTweetHandler;
             return this;
         }
+
         public AppContextBuilder myProfileHandler(MyProfileHandler myProfileHandler) {
             if (myProfileHandler == null) {
                 throw new AppContextException("Provided myProfileHandler is null!");

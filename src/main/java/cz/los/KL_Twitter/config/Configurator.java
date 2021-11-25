@@ -101,6 +101,7 @@ public class Configurator {
         FollowHandler followHandler = new FollowHandler(builder.getUserService(), builder.getProfileView());
         UnfollowHandler unfollowHandler = new UnfollowHandler(builder.getUserService(), builder.getProfileView());
         WriteTweetHandler writeTweetHandler = new WriteTweetHandler(builder.getWriteTweetView(), builder.getTweetService());
+        FindUserHandler findUserHandler = new FindUserHandler(builder.getProfileView(), builder.getFeedView(), builder.getUserService());
         LogoutHandler logoutHandler = new LogoutHandler(builder.getAuthService());
         LoginHandler loginHandler = new LoginHandler(builder.getAuthService());
 
@@ -110,7 +111,8 @@ public class Configurator {
         myProfileHandler.setNextHandler(followHandler);
         followHandler.setNextHandler(unfollowHandler);
         unfollowHandler.setNextHandler(loginHandler);
-        loginHandler.setNextHandler(writeTweetHandler);
+        loginHandler.setNextHandler(findUserHandler);
+        findUserHandler.setNextHandler(writeTweetHandler);
         writeTweetHandler.setNextHandler(logoutHandler);
         logoutHandler.setNextHandler(exitHandler);
         exitHandler.setNextHandler(closingHandler);
@@ -119,15 +121,16 @@ public class Configurator {
         log.debug("Finalizing handlers in AppContext..");
         builder.dispatcherHandler(dispatcherHandler);
         builder.createUserHandler(createUserHandler);
-        builder.unfollowHandler(unfollowHandler);
-        builder.followHandler(followHandler);
         builder.writeTweetHandler(writeTweetHandler);
         builder.myProfileHandler(myProfileHandler);
-        builder.loginHandler(loginHandler);
+        builder.unfollowHandler(unfollowHandler);
+        builder.findUserHandler(findUserHandler);
+        builder.closingHandler(closingHandler);
+        builder.followHandler(followHandler);
         builder.logoutHandler(logoutHandler);
+        builder.loginHandler(loginHandler);
         builder.helpHandler(helpHandler);
         builder.exitHandler(exitHandler);
-        builder.closingHandler(closingHandler);
 
         log.debug("Handlers initialized!");
     }

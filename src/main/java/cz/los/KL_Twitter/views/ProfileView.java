@@ -10,6 +10,7 @@ import cz.los.KL_Twitter.service.TweetService;
 import cz.los.KL_Twitter.service.UserService;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -64,7 +65,8 @@ public class ProfileView extends AbstractView {
         User user = userService.findById(userId).orElseGet(() -> ContextHolder.getSecurityContext().getSession().getLoggedInUser());
         content = content.replace("${nickname}", user.getNickname());
         content = content.replace("${login}", user.getLogin());
-        content = content.replace("${dob}", user.getDateOfBirth().toString());
+        LocalDate dateOfBirth = user.getDateOfBirth();
+        content = dateOfBirth != null ? content.replace("${dob}", dateOfBirth.toString()) : content.replace("${dob}", "none");
         content = content.replace("${registered}", user.getDateRegistered().toString());
         content = content.replace("${followers}", String.valueOf(userService.countFollowers(userId)));
         content = content.replace("${following}", String.valueOf(userService.countFollowing(userId)));
@@ -85,6 +87,9 @@ public class ProfileView extends AbstractView {
     }
 
     public void setUserId(Long userId) {
+        if (userId == null) {
+            userId = ContextHolder.getSecurityContext().getSession().getLoggedInUser().getUserId();
+        }
         this.userId = userId;
     }
 

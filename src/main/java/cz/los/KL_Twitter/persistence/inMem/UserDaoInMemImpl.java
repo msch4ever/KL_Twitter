@@ -49,6 +49,18 @@ public class UserDaoInMemImpl implements UserDao {
     }
 
     @Override
+    public Optional<User> findByNickname(String nickname) {
+        Optional<User> persistedUser = storage.getUserStorage().values().stream()
+                .filter(it -> it.getNickname().equals(nickname))
+                .findFirst();
+        if (!persistedUser.isPresent()) {
+            log.warn("Could not find user by nickname:{}", nickname);
+            return Optional.empty();
+        }
+        return Optional.of(createUserState(persistedUser.get()));
+    }
+
+    @Override
     public Set<User> getAll() {
         Set<User> userList = new HashSet<>();
         for (final User user : storage.getUserStorage().values()) {

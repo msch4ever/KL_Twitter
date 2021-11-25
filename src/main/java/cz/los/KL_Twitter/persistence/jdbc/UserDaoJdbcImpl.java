@@ -100,7 +100,48 @@ public class UserDaoJdbcImpl implements UserDao {
         }
 
     @Override
+    @SneakyThrows
     public Optional<User> findByLogin(String login) {
+        User user = null;
+        Connection connection = DbUtils.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery("SELECT * FROM user WHERE login = '" + login + "'");
+        while (rs.next()) {
+            Long userId = rs.getLong("userId");
+            String nick = rs.getString("nickname");
+            String log_in = rs.getString("login");
+            LocalDateTime dateRegistered =
+                    new Timestamp(rs.getDate("dateRegistered").getTime()).toLocalDateTime();
+            LocalDate dateOfBirth = LocalDate.parse(rs.getString("dateOfBirth"));
+            String about = rs.getString("about");
+            user = new User(userId, nick, log_in, dateRegistered, dateOfBirth, about, new ArrayList<>(), new ArrayList<>());
+        }
+        if (user != null) {
+            return Optional.of(user);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    @SneakyThrows
+    public Optional<User> findByNickname(String nickname) {
+        User user = null;
+        Connection connection = DbUtils.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery("SELECT * FROM user WHERE nickname = '" + nickname + "'");
+        while (rs.next()) {
+            Long userId = rs.getLong("userId");
+            String nick = rs.getString("nickname");
+            String login = rs.getString("login");
+            LocalDateTime dateRegistered =
+                    new Timestamp(rs.getDate("dateRegistered").getTime()).toLocalDateTime();
+            LocalDate dateOfBirth = LocalDate.parse(rs.getString("dateOfBirth"));
+            String about = rs.getString("about");
+            user = new User(userId, nick, login, dateRegistered, dateOfBirth, about, new ArrayList<>(), new ArrayList<>());
+        }
+        if (user != null) {
+            return Optional.of(user);
+        }
         return Optional.empty();
     }
 

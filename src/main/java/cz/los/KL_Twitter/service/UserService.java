@@ -11,6 +11,8 @@ public interface UserService {
 
     Optional<User> findByLogin(String login);
 
+    Optional<User> findByNickname(String nickname);
+
     Optional<User> findById(Long id);
 
     List<User> findAllByIdInList(List<Long> collect);
