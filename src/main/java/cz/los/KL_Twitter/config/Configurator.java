@@ -13,10 +13,7 @@ import cz.los.KL_Twitter.persistence.*;
 import cz.los.KL_Twitter.persistence.factory.DaoAbstractFactory;
 import cz.los.KL_Twitter.persistence.factory.DaoFactoryException;
 import cz.los.KL_Twitter.service.*;
-import cz.los.KL_Twitter.views.FeedView;
-import cz.los.KL_Twitter.views.ProfileView;
-import cz.los.KL_Twitter.views.WelcomeView;
-import cz.los.KL_Twitter.views.WriteTweetView;
+import cz.los.KL_Twitter.views.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
@@ -98,6 +95,7 @@ public class Configurator {
         ClosingHandler closingHandler = new ClosingHandler();
         CreateUserHandler createUserHandler = new CreateUserHandler(builder.getUserService());
         MyProfileHandler myProfileHandler = new MyProfileHandler(builder.getProfileView());
+        EditUserHandler editUserHandler = new EditUserHandler(builder.getEditProfileView(), builder.getUserService());
         FollowHandler followHandler = new FollowHandler(builder.getUserService(), builder.getProfileView());
         UnfollowHandler unfollowHandler = new UnfollowHandler(builder.getUserService(), builder.getProfileView());
         WriteTweetHandler writeTweetHandler = new WriteTweetHandler(builder.getWriteTweetView(), builder.getTweetService());
@@ -108,7 +106,8 @@ public class Configurator {
         log.debug("Establishing Chain of Responsibility..");
         helpHandler.setNextHandler(createUserHandler);
         createUserHandler.setNextHandler(myProfileHandler);
-        myProfileHandler.setNextHandler(followHandler);
+        myProfileHandler.setNextHandler(editUserHandler);
+        editUserHandler.setNextHandler(followHandler);
         followHandler.setNextHandler(unfollowHandler);
         unfollowHandler.setNextHandler(loginHandler);
         loginHandler.setNextHandler(findUserHandler);
@@ -123,6 +122,7 @@ public class Configurator {
         builder.createUserHandler(createUserHandler);
         builder.writeTweetHandler(writeTweetHandler);
         builder.myProfileHandler(myProfileHandler);
+        builder.editUserHandler(editUserHandler);
         builder.unfollowHandler(unfollowHandler);
         builder.findUserHandler(findUserHandler);
         builder.closingHandler(closingHandler);
@@ -138,6 +138,7 @@ public class Configurator {
     private static void initViews(AppContext.AppContextBuilder builder) {
         builder.writeTweetView(new WriteTweetView());
         builder.profileView(new ProfileView(builder.getUserService()));
+        builder.editProfileView(new EditProfileView());
         builder.welcomeView(new WelcomeView());
         builder.feedView(new FeedView(builder.getTweetService(), builder.getUserService(), builder.getFeedService()));
     }

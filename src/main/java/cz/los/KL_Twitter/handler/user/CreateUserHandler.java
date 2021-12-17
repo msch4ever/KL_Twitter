@@ -23,7 +23,7 @@ public class CreateUserHandler extends AbstractHandler {
         this.userService = userService;
     }
 
-    @Override
+    /*@Override
     public Response handleCommand() {
         String login = null;
         String password = null;
@@ -53,8 +53,8 @@ public class CreateUserHandler extends AbstractHandler {
         WelcomeView welcomeView = ContextHolder.getAppContext().getWelcomeView();
         welcomeView.setMessage("User " + user.getLogin() + " has been created.");
         return new Response(true, command, welcomeView);
-    }
-    /*@Override
+    }*/
+    @Override
     public Response handleCommand() {
         String login = null;
         String password = null;
@@ -86,6 +86,6 @@ public class CreateUserHandler extends AbstractHandler {
         WelcomeView welcomeView = ContextHolder.getAppContext().getWelcomeView();
         welcomeView.setMessage("User " + user.getLogin() + " has been created.");
         return new Response(true, command, ContextHolder.getAppContext().getWelcomeView());
-    }*/
+    }
 
 }

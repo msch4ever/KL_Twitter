@@ -38,7 +38,7 @@ public abstract class AbstractView {
         return response;
     }
 
-    private Optional<Command> parseInput(String input) {
+    protected Optional<Command> parseInput(String input) {
         String trimmedInput = input.toLowerCase(Locale.ROOT).trim();
         try {
             return Optional.of(commands.get(Integer.parseInt(input)));
@@ -48,6 +48,10 @@ public abstract class AbstractView {
             log.debug("Commands for this view are:{}", commands);
         }
         return commands.values().stream().filter(it -> it.getValue().equals(trimmedInput)).findFirst();
+    }
+
+    public Command getCommand(int index) {
+        return commands.get(index);
     }
 
     /**

@@ -6,6 +6,7 @@ public enum Command {
     SIGN_UP("sign up"),
     SIGN_IN("sign in"),
     SIGN_OUT("sign out"),
+    HOME("home"),
     TWEET("tweet"),
     ABORT("abort"),
     MY_PROFILE("profile"),

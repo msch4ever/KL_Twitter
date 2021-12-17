@@ -27,6 +27,7 @@ public class ProfileView extends AbstractView {
                     "registered since: ${registered}\n" +
                     "followers: ${followers}\n" +
                     "following: ${following}\n" +
+                    "about: ${about}\n" +
                     "\n" +
                     "[1] Sign Out    [2] Tweet    [3] Find User    [4] ${follow/unfollow/edit}    [5] Exit\n" +
                     "\n";
@@ -70,6 +71,8 @@ public class ProfileView extends AbstractView {
         content = content.replace("${registered}", user.getDateRegistered().toString());
         content = content.replace("${followers}", String.valueOf(userService.countFollowers(userId)));
         content = content.replace("${following}", String.valueOf(userService.countFollowing(userId)));
+        String about = user.getAbout();
+        content = about != null ? content.replace("${about}", user.getAbout()) : content.replace("${about}", "none");
 
         Long loggedInUserId = ContextHolder.getSecurityContext().getSession().getLoggedInUser().getUserId();
         if (this.userId.equals(loggedInUserId)) {

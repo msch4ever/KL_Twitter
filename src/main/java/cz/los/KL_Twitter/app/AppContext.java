@@ -15,10 +15,7 @@ import cz.los.KL_Twitter.service.AuthService;
 import cz.los.KL_Twitter.service.FeedService;
 import cz.los.KL_Twitter.service.TweetService;
 import cz.los.KL_Twitter.service.UserService;
-import cz.los.KL_Twitter.views.FeedView;
-import cz.los.KL_Twitter.views.ProfileView;
-import cz.los.KL_Twitter.views.WelcomeView;
-import cz.los.KL_Twitter.views.WriteTweetView;
+import cz.los.KL_Twitter.views.*;
 import lombok.Getter;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +37,7 @@ public class AppContext {
     CreateUserHandler createUserHandler;
     WriteTweetHandler writeTweetHandler;
     MyProfileHandler myProfileHandler;
+    EditUserHandler editUserHandler;
     UnfollowHandler unfollowHandler;
     FindUserHandler findUserHandler;
     ClosingHandler closingHandler;
@@ -49,6 +47,7 @@ public class AppContext {
     HelpHandler helpHandler;
     ExitHandler exitHandler;
     WriteTweetView writeTweetView;
+    EditProfileView editProfileView;
     ProfileView profileView;
     WelcomeView welcomeView;
     FeedView feedView;
@@ -67,6 +66,7 @@ public class AppContext {
         this.createUserHandler = builder.createUserHandler;
         this.writeTweetHandler = builder.writeTweetHandler;
         this.myProfileHandler = builder.myProfileHandler;
+        this.editUserHandler = builder.editUserHandler;
         this.unfollowHandler = builder.unfollowHandler;
         this.findUserHandler = builder.findUserHandler;
         this.closingHandler = builder.closingHandler;
@@ -76,6 +76,7 @@ public class AppContext {
         this.helpHandler = builder.helpHandler;
         this.exitHandler = builder.exitHandler;
         this.writeTweetView = builder.writeTweetView;
+        this.editProfileView = builder.editProfileView;
         this.profileView = builder.profileView;
         this.welcomeView = builder.welcomeView;
         this.feedView = builder.feedView;
@@ -101,6 +102,7 @@ public class AppContext {
         private CreateUserHandler createUserHandler;
         private WriteTweetHandler writeTweetHandler;
         private MyProfileHandler myProfileHandler;
+        private EditUserHandler editUserHandler;
         private UnfollowHandler unfollowHandler;
         private FindUserHandler findUserHandler;
         private ClosingHandler closingHandler;
@@ -110,6 +112,7 @@ public class AppContext {
         private LoginHandler loginHandler;
         private HelpHandler helpHandler;
         private ExitHandler exitHandler;
+        private EditProfileView editProfileView;
         private ProfileView profileView;
         private WelcomeView welcomeView;
         private FeedView feedView;
@@ -246,6 +249,14 @@ public class AppContext {
             return this;
         }
 
+        public AppContextBuilder editUserHandler(EditUserHandler editUserHandler) {
+            if (editUserHandler == null) {
+                throw new AppContextException("Provided editUserHandler is null!");
+            }
+            this.editUserHandler = editUserHandler;
+            return this;
+        }
+
         public AppContextBuilder logoutHandler(LogoutHandler logoutHandler) {
             if (logoutHandler == null) {
                 throw new AppContextException("Provided logoutHandler is null!");
@@ -283,6 +294,14 @@ public class AppContext {
                 throw new AppContextException("Provided exitHandler is null!");
             }
             this.exitHandler = exitHandler;
+            return this;
+        }
+
+        public AppContextBuilder editProfileView(EditProfileView editProfileView) {
+            if (editProfileView == null) {
+                throw new AppContextException("Provided editProfileView is null!");
+            }
+            this.editProfileView = editProfileView;
             return this;
         }
 

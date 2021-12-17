@@ -9,6 +9,8 @@ public interface UserService {
 
     User createUser(String login, String nickName);
 
+    void update(User user);
+
     Optional<User> findByLogin(String login);
 
     Optional<User> findByNickname(String nickname);
