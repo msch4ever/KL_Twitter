@@ -1,6 +1,7 @@
 package cz.los.KL_Twitter.views;
 
 import cz.los.KL_Twitter.app.ContextHolder;
+import cz.los.KL_Twitter.app.SecurityContext;
 import cz.los.KL_Twitter.handler.Command;
 import cz.los.KL_Twitter.model.Feed;
 import cz.los.KL_Twitter.model.Tweet;
@@ -8,6 +9,7 @@ import cz.los.KL_Twitter.model.User;
 import cz.los.KL_Twitter.service.FeedService;
 import cz.los.KL_Twitter.service.TweetService;
 import cz.los.KL_Twitter.service.UserService;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -16,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class FeedView extends AbstractView {
 
     private static final String CONTENT =
@@ -29,6 +32,7 @@ public class FeedView extends AbstractView {
                     "\n";
     public static final String TEN_SPACES = "          ";
 
+    private final SecurityContext securityContext;
     private final TweetService tweetService;
     private final UserService userService;
     private final FeedService feedService;
@@ -36,8 +40,9 @@ public class FeedView extends AbstractView {
     private Long entityId;
 
 
-    public FeedView(TweetService tweetService, UserService userService, FeedService feedService) {
+    public FeedView(SecurityContext securityContext, TweetService tweetService, UserService userService, FeedService feedService) {
         super(initCommands());
+        this.securityContext = securityContext;
         this.tweetService = tweetService;
         this.userService = userService;
         this.feedService = feedService;
@@ -73,7 +78,7 @@ public class FeedView extends AbstractView {
     }
 
     private String getLogin() {
-        String login = ContextHolder.getSecurityContext().getSession().getUserAuthentication().getLogin();
+        String login = securityContext.getSession().getUserAuthentication().getLogin();
         return String.format("%90s", "Welcome @" + login);
     }
 
@@ -155,7 +160,7 @@ public class FeedView extends AbstractView {
 
     public void setHomeMode() {
         this.feedMode = Mode.HOME;
-        this.entityId = ContextHolder.getSecurityContext().getSession().getLoggedInUser().getUserId();
+        this.entityId = securityContext.getSession().getLoggedInUser().getUserId();
     }
 
     public void setTweetMode(Long tweetId) {

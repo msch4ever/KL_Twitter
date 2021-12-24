@@ -1,14 +1,12 @@
 package cz.los.KL_Twitter.handler.user;
 
-import cz.los.KL_Twitter.app.ContextHolder;
-import cz.los.KL_Twitter.handler.AbstractHandler;
-import cz.los.KL_Twitter.handler.Command;
-import cz.los.KL_Twitter.handler.HandlerException;
-import cz.los.KL_Twitter.handler.Response;
+import cz.los.KL_Twitter.app.SecurityContext;
+import cz.los.KL_Twitter.handler.*;
 import cz.los.KL_Twitter.model.User;
 import cz.los.KL_Twitter.service.UserService;
 import cz.los.KL_Twitter.views.EditProfileView;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -16,20 +14,25 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 @Slf4j
+@Component
 public class EditUserHandler extends AbstractHandler {
 
+    private final SecurityContext securityContext;
     private final EditProfileView editProfileView;
     private final UserService userService;
+    private final DispatcherHandler dispatcherHandler;
 
-    public EditUserHandler(EditProfileView editProfileView, UserService userService) {
+    public EditUserHandler(SecurityContext securityContext, EditProfileView editProfileView, UserService userService, DispatcherHandler dispatcherHandler) {
         super(Command.EDIT);
+        this.securityContext = securityContext;
         this.editProfileView = editProfileView;
         this.userService = userService;
+        this.dispatcherHandler = dispatcherHandler;
     }
 
     @Override
     protected Response handleCommand() {
-        User currentUser = ContextHolder.getSecurityContext().getSession().getLoggedInUser();
+        User currentUser = securityContext.getSession().getLoggedInUser();
         String input = null;
         Scanner scanner = new Scanner(System.in);
         try {
@@ -58,7 +61,7 @@ public class EditUserHandler extends AbstractHandler {
             }
         } catch (HandlerException e) {
             System.out.println(input);
-            return ContextHolder.getAppContext().getDispatcherHandler().handle(editProfileView.getCommand(Integer.parseInt(e.getMessage())));
+            return dispatcherHandler.handle(editProfileView.getCommand(Integer.parseInt(e.getMessage())));
         }
         userService.update(currentUser);
         return new Response(true, null, editProfileView);

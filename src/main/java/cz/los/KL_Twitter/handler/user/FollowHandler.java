@@ -8,8 +8,10 @@ import cz.los.KL_Twitter.model.User;
 import cz.los.KL_Twitter.service.UserService;
 import cz.los.KL_Twitter.views.ProfileView;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class FollowHandler extends AbstractHandler {
 
     private final UserService userService;

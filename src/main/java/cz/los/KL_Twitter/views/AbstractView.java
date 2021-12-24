@@ -1,11 +1,15 @@
 package cz.los.KL_Twitter.views;
 
-import cz.los.KL_Twitter.app.ContextHolder;
 import cz.los.KL_Twitter.handler.Command;
+import cz.los.KL_Twitter.handler.DispatcherHandler;
 import cz.los.KL_Twitter.handler.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.*;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Scanner;
 
 @Slf4j
 public abstract class AbstractView {
@@ -13,10 +17,16 @@ public abstract class AbstractView {
     public static final String SEPARATOR = "------------------------------------------------------------------------------------------";
 
     protected final Map<Integer, Command> commands;
+    private DispatcherHandler dispatcherHandler;
     protected String message;
 
     public AbstractView(Map<Integer, Command> commands) {
         this.commands = commands;
+    }
+
+    @Autowired
+    public final void setDispatcherHandler(DispatcherHandler dispatcherHandler) {
+        this.dispatcherHandler = dispatcherHandler;
     }
 
     public abstract AbstractView render();
@@ -33,7 +43,7 @@ public abstract class AbstractView {
             }
         }
         //scanner.close();
-        Response response = ContextHolder.getAppContext().getDispatcherHandler().handle(command.get());
+        Response response = dispatcherHandler.handle(command.get());
         log.info(response.toString());
         return response;
     }

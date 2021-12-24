@@ -1,6 +1,7 @@
 package cz.los.KL_Twitter.views;
 
 import cz.los.KL_Twitter.app.ContextHolder;
+import cz.los.KL_Twitter.app.SecurityContext;
 import cz.los.KL_Twitter.handler.Command;
 import cz.los.KL_Twitter.model.Feed;
 import cz.los.KL_Twitter.model.Tweet;
@@ -9,6 +10,7 @@ import cz.los.KL_Twitter.service.FeedService;
 import cz.los.KL_Twitter.service.TweetService;
 import cz.los.KL_Twitter.service.UserService;
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class ProfileView extends AbstractView {
 
     private static final String CONTENT =
@@ -33,13 +36,15 @@ public class ProfileView extends AbstractView {
                     "\n";
 
     private final UserService userService;
+    private final SecurityContext securityContext;
     @Getter
     private Long userId;
 
 
-    public ProfileView(UserService userService) {
+    public ProfileView(UserService userService, SecurityContext securityContext) {
         super(initCommands());
         this.userService = userService;
+        this.securityContext = securityContext;
     }
 
     private static Map<Integer, Command> initCommands() {
@@ -63,7 +68,7 @@ public class ProfileView extends AbstractView {
 
     private String fillTheContent() {
         String content = CONTENT;
-        User user = userService.findById(userId).orElseGet(() -> ContextHolder.getSecurityContext().getSession().getLoggedInUser());
+        User user = userService.findById(userId).orElseGet(() -> securityContext.getSession().getLoggedInUser());
         content = content.replace("${nickname}", user.getNickname());
         content = content.replace("${login}", user.getLogin());
         LocalDate dateOfBirth = user.getDateOfBirth();
@@ -74,7 +79,7 @@ public class ProfileView extends AbstractView {
         String about = user.getAbout();
         content = about != null ? content.replace("${about}", user.getAbout()) : content.replace("${about}", "none");
 
-        Long loggedInUserId = ContextHolder.getSecurityContext().getSession().getLoggedInUser().getUserId();
+        Long loggedInUserId = securityContext.getSession().getLoggedInUser().getUserId();
         if (this.userId.equals(loggedInUserId)) {
             content = content.replace("${follow/unfollow/edit}", "Edit");
             commands.put(4, Command.EDIT);
@@ -91,7 +96,7 @@ public class ProfileView extends AbstractView {
 
     public void setUserId(Long userId) {
         if (userId == null) {
-            userId = ContextHolder.getSecurityContext().getSession().getLoggedInUser().getUserId();
+            userId = securityContext.getSession().getLoggedInUser().getUserId();
         }
         this.userId = userId;
     }

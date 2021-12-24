@@ -11,6 +11,13 @@ public class Response {
     String message;
     AbstractView view;
 
+    public Response(boolean success, Command command) {
+        this.success = success;
+        this.command = command;
+        this.message = null;
+        this.view = null;
+    }
+
     @Deprecated
     public Response(boolean success, Command command, String message) {
         this.success = success;
@@ -32,6 +39,10 @@ public class Response {
 
     public boolean isSuccess() {
         return success;
+    }
+
+    public boolean isInvalidResponse() {
+        return !success && message == null && view == null;
     }
 
     @Override

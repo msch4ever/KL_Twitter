@@ -5,11 +5,13 @@ import cz.los.KL_Twitter.handler.Command;
 import cz.los.KL_Twitter.model.User;
 import cz.los.KL_Twitter.service.UserService;
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class EditProfileView extends AbstractView {
 
     private static final String CONTENT =

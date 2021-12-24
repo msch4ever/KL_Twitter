@@ -13,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -151,19 +152,18 @@ public class DbUtils {
         }
     }
 
-    public static void populateInMem() {
+    public static void populateInMem(ApplicationContext context) {
         log.info("Population in memory Data Base with sandbox data...");
-        AppContext context = ContextHolder.getAppContext();
         User rip = new User("rip212", LocalDate.of(1993, 5, 27), "Hi, i''m Andrew. JS evangelista");
         User msch4ever = new User("msch4ever", LocalDate.of(1991, 1, 7), "Hi, i''m Kostia. I love Java");
         User dardevil = new User("dardevil", LocalDate.of(1993, 6, 13), "Hi, i''m Olezhna. I love doing nothing and complain");
         User mkbhd = new User("mkbhd", LocalDate.of(1995, 11, 11), "Hi, i''m Marquess Brownlee. I love making tech videos");
         User boo = new User("boo88", LocalDate.of(1988, 4, 11), "Hi, i''m Dima. I love selling things");
-        context.getUserDao().save(rip);
-        context.getUserDao().save(msch4ever);
-        context.getUserDao().save(dardevil);
-        context.getUserDao().save(mkbhd);
-        context.getUserDao().save(boo);
+        context.getBean(UserDao.class).save(rip);
+        context.getBean(UserDao.class).save(msch4ever);
+        context.getBean(UserDao.class).save(dardevil);
+        context.getBean(UserDao.class).save(mkbhd);
+        context.getBean(UserDao.class).save(boo);
 
         Tweet tweet1 = new Tweet(1L, null, "We will never forget this moment! America will never settle!");
         Tweet tweet2 = new Tweet(1L, null, "I was always wondering why it is so cool to be awesome!");
@@ -177,19 +177,19 @@ public class DbUtils {
         Tweet tweet10 = new Tweet(1L, 4L, "No Kostia, mayo isn't an instrument!");
         Tweet tweet11 = new Tweet(1L, 8L, "Ahahahahha LOL!");
         Tweet tweet12 = new Tweet(4L, 10L, "@rip212 Why would you be so angry at mayo!");
-        context.getTweetDao().save(tweet1);
-        context.getTweetDao().save(tweet2);
-        context.getTweetDao().save(tweet3);
-        context.getTweetDao().save(tweet4);
-        context.getTweetDao().save(tweet5);
-        context.getTweetDao().save(tweet6);
-        context.getTweetDao().save(tweet7);
-        context.getTweetDao().save(tweet8);
-        context.getTweetDao().save(tweet9);
-        context.getTweetDao().save(tweet10);
-        context.getTweetDao().save(tweet11);
-        context.getTweetDao().save(tweet12);
-        AuthService authService = context.getAuthService();
+        context.getBean(TweetDao.class).save(tweet1);
+        context.getBean(TweetDao.class).save(tweet2);
+        context.getBean(TweetDao.class).save(tweet3);
+        context.getBean(TweetDao.class).save(tweet4);
+        context.getBean(TweetDao.class).save(tweet5);
+        context.getBean(TweetDao.class).save(tweet6);
+        context.getBean(TweetDao.class).save(tweet7);
+        context.getBean(TweetDao.class).save(tweet8);
+        context.getBean(TweetDao.class).save(tweet9);
+        context.getBean(TweetDao.class).save(tweet10);
+        context.getBean(TweetDao.class).save(tweet11);
+        context.getBean(TweetDao.class).save(tweet12);
+        AuthService authService = context.getBean(AuthService.class);
         List<Following> followingStorage = Storage.getInstance().getFollowingStorage();
 
         createSubs(context, msch4ever, Arrays.asList(rip, dardevil, mkbhd, boo), authService, followingStorage);
@@ -210,9 +210,9 @@ public class DbUtils {
         log.debug("GOOD! Database has been populated with fake data!");
     }
 
-    private static void createSubs(AppContext context, User user, List<User> users, AuthService authService, List<Following> followingStorage) {
+    private static void createSubs(ApplicationContext context, User user, List<User> users, AuthService authService, List<Following> followingStorage) {
         byte[] ripSalt = authService.generateSalt();
-        context.getAuthDao()
+        context.getBean(AuthDao.class)
                 .save(new UserAuthentication(user.getUserId(), user.getLogin(), ripSalt, authService.encodePassword(ripSalt, "lol")));
         for (User sub : users) {
             followingStorage.add(new Following(user.getUserId(), sub.getUserId()));

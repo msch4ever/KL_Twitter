@@ -10,11 +10,13 @@ import cz.los.KL_Twitter.service.UserService;
 import cz.los.KL_Twitter.views.FeedView;
 import cz.los.KL_Twitter.views.ProfileView;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 import java.util.Scanner;
 
 @Slf4j
+@Component
 public class FindUserHandler extends AbstractHandler {
 
     private final ProfileView profileView;

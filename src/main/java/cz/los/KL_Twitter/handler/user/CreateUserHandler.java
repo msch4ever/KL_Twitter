@@ -8,22 +8,26 @@ import cz.los.KL_Twitter.model.User;
 import cz.los.KL_Twitter.service.UserService;
 import cz.los.KL_Twitter.views.WelcomeView;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.io.Console;
 import java.util.Arrays;
 import java.util.Scanner;
 
 @Slf4j
+@Component
 public class CreateUserHandler extends AbstractHandler {
 
     private final UserService userService;
+    private final WelcomeView welcomeView;
 
-    public CreateUserHandler(UserService userService) {
+    public CreateUserHandler(UserService userService, WelcomeView welcomeView) {
         super(Command.SIGN_UP);
         this.userService = userService;
+        this.welcomeView = welcomeView;
     }
 
-    /*@Override
+    @Override
     public Response handleCommand() {
         String login = null;
         String password = null;
@@ -50,11 +54,10 @@ public class CreateUserHandler extends AbstractHandler {
             password = input;
         }
         User user = userService.createUser(login, password);
-        WelcomeView welcomeView = ContextHolder.getAppContext().getWelcomeView();
         welcomeView.setMessage("User " + user.getLogin() + " has been created.");
         return new Response(true, command, welcomeView);
-    }*/
-    @Override
+    }
+    /*@Override
     public Response handleCommand() {
         String login = null;
         String password = null;
@@ -86,6 +89,6 @@ public class CreateUserHandler extends AbstractHandler {
         WelcomeView welcomeView = ContextHolder.getAppContext().getWelcomeView();
         welcomeView.setMessage("User " + user.getLogin() + " has been created.");
         return new Response(true, command, ContextHolder.getAppContext().getWelcomeView());
-    }
+    }*/
 
 }

@@ -1,10 +1,12 @@
 package cz.los.KL_Twitter.views;
 
 import cz.los.KL_Twitter.handler.Command;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class WelcomeView extends AbstractView {
 
     private static final String CONTENT =

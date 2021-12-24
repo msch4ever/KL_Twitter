@@ -1,6 +1,5 @@
 package cz.los.KL_Twitter.service;
 
-import cz.los.KL_Twitter.auth.Session;
 import cz.los.KL_Twitter.auth.UserAuthentication;
 import lombok.SneakyThrows;
 
@@ -14,7 +13,7 @@ public interface AuthService {
 
     void startSession(String login);
 
-    void endSession(Session session);
+    void endSession();
 
     Optional<UserAuthentication> getAuthByLogin(String login);
 

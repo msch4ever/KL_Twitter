@@ -4,7 +4,10 @@ import cz.los.KL_Twitter.model.PersistenceEntity;
 import cz.los.KL_Twitter.persistence.GenericDao;
 import cz.los.KL_Twitter.persistence.inMem.SessionDaoInMemImpl;
 import cz.los.KL_Twitter.persistence.jdbc.SessionDaoJdbcImpl;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
+@Component
 public class SessionDaoFactory implements DaoFactory {
 
     @Override

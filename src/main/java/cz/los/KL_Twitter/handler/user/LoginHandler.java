@@ -8,19 +8,25 @@ import cz.los.KL_Twitter.service.AuthService;
 import cz.los.KL_Twitter.views.FeedView;
 import cz.los.KL_Twitter.views.WelcomeView;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.io.Console;
 import java.util.Arrays;
 import java.util.Scanner;
 
 @Slf4j
+@Component
 public class LoginHandler extends AbstractHandler {
 
     private final AuthService authService;
+    private final FeedView feedView;
+    private final WelcomeView welcomeView;
 
-    public LoginHandler(AuthService authService) {
+    public LoginHandler(AuthService authService, FeedView feedView, WelcomeView welcomeView) {
         super(Command.SIGN_IN);
         this.authService = authService;
+        this.feedView = feedView;
+        this.welcomeView = welcomeView;
     }
 
     @Override
@@ -30,19 +36,17 @@ public class LoginHandler extends AbstractHandler {
         if (authService.authorize(login, retrievePassword())) {
             log.debug("{} has been authorized.", login);
             authService.startSession(login);
-            FeedView feedView = ContextHolder.getAppContext().getFeedView();
             feedView.setHomeMode();
             response = new Response(true, Command.SIGN_IN, feedView);
         } else {
             log.warn("{} has not been authorized!", login);
-            WelcomeView welcomeView = ContextHolder.getAppContext().getWelcomeView();
             welcomeView.setMessage("Incorrect login or password. Try again!");
             response = new Response(false, Command.SIGN_IN, welcomeView);
         }
         return response;
     }
 
-    /*private String retrieveLogin() {
+    private String retrieveLogin() {
         String login = null;
         Scanner scanner = new Scanner(System.in);
         while (login == null) {
@@ -55,9 +59,9 @@ public class LoginHandler extends AbstractHandler {
             login = input;
         }
         return login;
-    }*/
+    }
 
-    private String retrieveLogin() {
+    /*private String retrieveLogin() {
         String login = null;
         Console console = System.console();
         while (login == null) {
@@ -70,9 +74,9 @@ public class LoginHandler extends AbstractHandler {
         }
         console.flush();
         return login;
-    }
+    }*/
 
-    /*private String retrievePassword() {
+    private String retrievePassword() {
         String password = null;
         Scanner scanner = new Scanner(System.in);
         while (password == null) {
@@ -85,9 +89,9 @@ public class LoginHandler extends AbstractHandler {
             password = input;
         }
         return password;
-    }*/
+    }
 
-    private String retrievePassword() {
+    /*private String retrievePassword() {
         char[] passwordChars = null;
         String password = null;
         Console console = System.console();
@@ -102,5 +106,5 @@ public class LoginHandler extends AbstractHandler {
         }
         console.flush();
         return password;
-    }
+    }*/
 }

@@ -3,9 +3,11 @@ package cz.los.KL_Twitter.service;
 import cz.los.KL_Twitter.model.Tweet;
 import cz.los.KL_Twitter.model.User;
 import cz.los.KL_Twitter.persistence.TweetDao;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class TweetServiceImpl implements TweetService {
 
     private static final int MAX_UTILITY_CONTENT_LEN = 20;

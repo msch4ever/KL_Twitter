@@ -14,19 +14,25 @@ import cz.los.KL_Twitter.views.FeedView;
 import cz.los.KL_Twitter.views.WelcomeView;
 import cz.los.KL_Twitter.views.WriteTweetView;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
 @Slf4j
+@Component
 public class WriteTweetHandler extends AbstractHandler {
 
+    private final SecurityContext securityContext;
     private final WriteTweetView writeTweetView;
     private final TweetService tweetService;
+    private final FeedView feedView;
 
-    public WriteTweetHandler(WriteTweetView writeTweetView, TweetService tweetService) {
+    public WriteTweetHandler(SecurityContext securityContext,WriteTweetView writeTweetView, TweetService tweetService, FeedView feedView) {
         super(Command.TWEET);
+        this.securityContext = securityContext;
         this.writeTweetView = writeTweetView;
         this.tweetService = tweetService;
+        this.feedView = feedView;
 
     }
 
@@ -35,7 +41,7 @@ public class WriteTweetHandler extends AbstractHandler {
         writeTweetView.render();
         String input;
         String rawContent;
-        User user = ContextHolder.getSecurityContext().getSession().getLoggedInUser();
+        User user = securityContext.getSession().getLoggedInUser();
         Tweet tweet = null;
         Scanner scanner = new Scanner(System.in);
         while (tweet == null) {
@@ -54,7 +60,6 @@ public class WriteTweetHandler extends AbstractHandler {
             }
         }
         tweetService.save(tweet);
-        FeedView feedView = ContextHolder.getAppContext().getFeedView();
         feedView.setHomeMode();
         return new Response(true, command, feedView);
     }

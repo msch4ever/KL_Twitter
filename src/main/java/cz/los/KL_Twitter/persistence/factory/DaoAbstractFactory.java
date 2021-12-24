@@ -7,9 +7,11 @@ import cz.los.KL_Twitter.persistence.TweetDao;
 import cz.los.KL_Twitter.persistence.UserDao;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @Value
+@Component
 public class DaoAbstractFactory {
 
     DaoType daoType;
@@ -19,12 +21,16 @@ public class DaoAbstractFactory {
     DaoFactory authDaoFactory;
     DaoFactory sessionDaoFactory;
 
-    public DaoAbstractFactory(DaoType daoType) {
+    public DaoAbstractFactory(DaoType daoType,
+                              UserDaoFactory userDaoFactory,
+                              TweetDaoFactory tweetDaoFactory,
+                              AuthDaoFactory authDaoFactory,
+                              SessionDaoFactory sessionDaoFactory) {
         this.daoType = daoType;
-        this.userDaoFactory = new UserDaoFactory();
-        this.tweetDaoFactory = new TweetDaoFactory();
-        this.authDaoFactory = new AuthDaoFactory();
-        this.sessionDaoFactory = new SessionDaoFactory();
+        this.userDaoFactory = userDaoFactory;
+        this.tweetDaoFactory = tweetDaoFactory;
+        this.authDaoFactory = authDaoFactory;
+        this.sessionDaoFactory = sessionDaoFactory;
     }
 
     public UserDao createUserDao() {

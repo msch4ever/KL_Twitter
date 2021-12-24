@@ -1,13 +1,15 @@
 package cz.los.KL_Twitter.service;
 
-import cz.los.KL_Twitter.app.ContextHolder;
 import cz.los.KL_Twitter.model.*;
 import cz.los.KL_Twitter.views.FeedView;
+import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Service
 public class FeedServiceImpl implements FeedService {
 
     private final TweetService tweetService;

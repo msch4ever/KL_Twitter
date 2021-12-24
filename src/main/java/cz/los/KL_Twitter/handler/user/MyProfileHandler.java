@@ -6,8 +6,10 @@ import cz.los.KL_Twitter.handler.Command;
 import cz.los.KL_Twitter.handler.Response;
 import cz.los.KL_Twitter.views.ProfileView;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class MyProfileHandler extends AbstractHandler {
 
     private final ProfileView profileView;
