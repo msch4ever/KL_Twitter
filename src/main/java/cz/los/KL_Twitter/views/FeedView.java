@@ -1,6 +1,5 @@
 package cz.los.KL_Twitter.views;
 
-import cz.los.KL_Twitter.app.ContextHolder;
 import cz.los.KL_Twitter.app.SecurityContext;
 import cz.los.KL_Twitter.handler.Command;
 import cz.los.KL_Twitter.model.Feed;

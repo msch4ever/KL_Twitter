@@ -1,10 +1,8 @@
 package cz.los.KL_Twitter.views;
 
-import cz.los.KL_Twitter.app.ContextHolder;
+import cz.los.KL_Twitter.app.SecurityContext;
 import cz.los.KL_Twitter.handler.Command;
 import cz.los.KL_Twitter.model.User;
-import cz.los.KL_Twitter.service.UserService;
-import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -24,8 +22,11 @@ public class EditProfileView extends AbstractView {
                     "[1] Sign Out    [2] Home    [3] Tweet    [4] Find User    [5] Exit\n" +
                     "\n";
 
-    public EditProfileView() {
+    private final SecurityContext securityContext;
+
+    public EditProfileView(SecurityContext securityContext) {
         super(initCommands());
+        this.securityContext = securityContext;
     }
 
     private static Map<Integer, Command> initCommands() {
@@ -49,7 +50,7 @@ public class EditProfileView extends AbstractView {
 
     private String fillTheContent() {
         String content = CONTENT;
-        User user = ContextHolder.getSecurityContext().getSession().getLoggedInUser();
+        User user = securityContext.getSession().getLoggedInUser();
         content = content.replace("${nickname}", user.getNickname());
         content = content.replace("${login}", user.getLogin());
         LocalDate dateOfBirth = user.getDateOfBirth();

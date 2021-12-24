@@ -1,6 +1,5 @@
 package cz.los.KL_Twitter.handler.tweet;
 
-import cz.los.KL_Twitter.app.ContextHolder;
 import cz.los.KL_Twitter.app.SecurityContext;
 import cz.los.KL_Twitter.handler.AbstractHandler;
 import cz.los.KL_Twitter.handler.Command;
@@ -9,9 +8,7 @@ import cz.los.KL_Twitter.model.Tweet;
 import cz.los.KL_Twitter.model.User;
 import cz.los.KL_Twitter.service.TweetLengthExceededException;
 import cz.los.KL_Twitter.service.TweetService;
-import cz.los.KL_Twitter.service.UserService;
 import cz.los.KL_Twitter.views.FeedView;
-import cz.los.KL_Twitter.views.WelcomeView;
 import cz.los.KL_Twitter.views.WriteTweetView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

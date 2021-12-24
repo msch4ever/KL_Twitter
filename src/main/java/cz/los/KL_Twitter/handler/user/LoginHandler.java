@@ -1,6 +1,5 @@
 package cz.los.KL_Twitter.handler.user;
 
-import cz.los.KL_Twitter.app.ContextHolder;
 import cz.los.KL_Twitter.handler.AbstractHandler;
 import cz.los.KL_Twitter.handler.Command;
 import cz.los.KL_Twitter.handler.Response;
@@ -10,8 +9,6 @@ import cz.los.KL_Twitter.views.WelcomeView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.io.Console;
-import java.util.Arrays;
 import java.util.Scanner;
 
 @Slf4j

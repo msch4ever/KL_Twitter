@@ -1,23 +1,14 @@
 package cz.los.KL_Twitter.views;
 
-import cz.los.KL_Twitter.app.ContextHolder;
 import cz.los.KL_Twitter.app.SecurityContext;
 import cz.los.KL_Twitter.handler.Command;
-import cz.los.KL_Twitter.model.Feed;
-import cz.los.KL_Twitter.model.Tweet;
 import cz.los.KL_Twitter.model.User;
-import cz.los.KL_Twitter.service.FeedService;
-import cz.los.KL_Twitter.service.TweetService;
 import cz.los.KL_Twitter.service.UserService;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Component

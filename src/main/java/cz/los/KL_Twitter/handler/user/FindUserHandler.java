@@ -1,11 +1,9 @@
 package cz.los.KL_Twitter.handler.user;
 
-import cz.los.KL_Twitter.app.ContextHolder;
 import cz.los.KL_Twitter.handler.AbstractHandler;
 import cz.los.KL_Twitter.handler.Command;
 import cz.los.KL_Twitter.handler.Response;
 import cz.los.KL_Twitter.model.User;
-import cz.los.KL_Twitter.service.TweetLengthExceededException;
 import cz.los.KL_Twitter.service.UserService;
 import cz.los.KL_Twitter.views.FeedView;
 import cz.los.KL_Twitter.views.ProfileView;

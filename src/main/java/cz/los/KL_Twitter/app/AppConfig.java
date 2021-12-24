@@ -2,8 +2,6 @@ package cz.los.KL_Twitter.app;
 
 import cz.los.KL_Twitter.App;
 import cz.los.KL_Twitter.config.DaoType;
-import cz.los.KL_Twitter.handler.DispatcherHandler;
-import cz.los.KL_Twitter.handler.global.HelpHandler;
 import cz.los.KL_Twitter.persistence.AuthDao;
 import cz.los.KL_Twitter.persistence.SessionDao;
 import cz.los.KL_Twitter.persistence.TweetDao;

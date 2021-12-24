@@ -1,6 +1,5 @@
 package cz.los.KL_Twitter.handler.user;
 
-import cz.los.KL_Twitter.app.ContextHolder;
 import cz.los.KL_Twitter.handler.AbstractHandler;
 import cz.los.KL_Twitter.handler.Command;
 import cz.los.KL_Twitter.handler.Response;
