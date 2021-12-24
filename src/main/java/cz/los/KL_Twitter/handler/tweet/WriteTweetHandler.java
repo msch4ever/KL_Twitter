@@ -12,6 +12,7 @@ import cz.los.KL_Twitter.service.TweetService;
 import cz.los.KL_Twitter.service.UserService;
 import cz.los.KL_Twitter.views.FeedView;
 import cz.los.KL_Twitter.views.WelcomeView;
+import cz.los.KL_Twitter.views.WriteTweetView;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Scanner;
@@ -19,15 +20,19 @@ import java.util.Scanner;
 @Slf4j
 public class WriteTweetHandler extends AbstractHandler {
 
+    private final WriteTweetView writeTweetView;
     private final TweetService tweetService;
 
-    public WriteTweetHandler(TweetService tweetService) {
+    public WriteTweetHandler(WriteTweetView writeTweetView, TweetService tweetService) {
         super(Command.TWEET);
+        this.writeTweetView = writeTweetView;
         this.tweetService = tweetService;
+
     }
 
     @Override
     public Response handleCommand() {
+        writeTweetView.render();
         String input;
         String rawContent;
         User user = ContextHolder.getSecurityContext().getSession().getLoggedInUser();

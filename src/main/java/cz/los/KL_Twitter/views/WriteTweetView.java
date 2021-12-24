@@ -10,7 +10,7 @@ public class WriteTweetView extends AbstractView {
     private static final String CONTENT =
             "Please write your tweet here. It should not exceed 140 characters\n" +
                     "\n" +
-                    "[1] Sign In    [2] Abort    [3] exit\n" +
+                    "[1] Sign In    [2] Abort    [3] Exit\n" +
                     "\n";
 
     public WriteTweetView() {

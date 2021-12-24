@@ -9,7 +9,23 @@ public interface UserService {
 
     User createUser(String login, String nickName);
 
+    void update(User user);
+
     Optional<User> findByLogin(String login);
 
+    Optional<User> findByNickname(String nickname);
+
+    Optional<User> findById(Long id);
+
     List<User> findAllByIdInList(List<Long> collect);
+
+    int countFollowers(Long id);
+
+    int countFollowing(Long id);
+
+    boolean userIsFollowingOther(Long first, Long second);
+
+    void follow(Long first, Long second);
+
+    void unfollow(Long first, Long second);
 }

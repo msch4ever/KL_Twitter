@@ -6,9 +6,14 @@ public enum Command {
     SIGN_UP("sign up"),
     SIGN_IN("sign in"),
     SIGN_OUT("sign out"),
+    HOME("home"),
     TWEET("tweet"),
     ABORT("abort"),
-    PROFILE("profile"),
+    MY_PROFILE("profile"),
+    EDIT("edit"),
+    FOLLOW("follow"),
+    UNFOLLOW("unfollow"),
+    FIND_USER("find user"),
     EXIT("exit");
 
     private final String value;

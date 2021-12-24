@@ -8,16 +8,12 @@ import cz.los.KL_Twitter.handler.DispatcherHandler;
 import cz.los.KL_Twitter.handler.global.ExitHandler;
 import cz.los.KL_Twitter.handler.global.HelpHandler;
 import cz.los.KL_Twitter.handler.tweet.WriteTweetHandler;
-import cz.los.KL_Twitter.handler.user.CreateUserHandler;
-import cz.los.KL_Twitter.handler.user.LoginHandler;
-import cz.los.KL_Twitter.handler.user.LogoutHandler;
+import cz.los.KL_Twitter.handler.user.*;
 import cz.los.KL_Twitter.persistence.*;
 import cz.los.KL_Twitter.persistence.factory.DaoAbstractFactory;
 import cz.los.KL_Twitter.persistence.factory.DaoFactoryException;
 import cz.los.KL_Twitter.service.*;
-import cz.los.KL_Twitter.views.FeedView;
-import cz.los.KL_Twitter.views.WelcomeView;
-import cz.los.KL_Twitter.views.WriteTweetView;
+import cz.los.KL_Twitter.views.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
@@ -48,8 +44,8 @@ public class Configurator {
         builder.configuration(config);
         initDaos(factory, builder);
         initServices(builder);
-        initHandlers(builder);
         initViews(builder);
+        initHandlers(builder);
         ContextHolder.initAppContext(builder.build());
         ContextHolder.initSecurityContext(new SecurityContext());
         log.debug("Application context created. {}", ContextHolder.getAppContext());
@@ -98,14 +94,24 @@ public class Configurator {
         ExitHandler exitHandler = new ExitHandler();
         ClosingHandler closingHandler = new ClosingHandler();
         CreateUserHandler createUserHandler = new CreateUserHandler(builder.getUserService());
-        WriteTweetHandler writeTweetHandler = new WriteTweetHandler(builder.getTweetService());
+        MyProfileHandler myProfileHandler = new MyProfileHandler(builder.getProfileView());
+        EditUserHandler editUserHandler = new EditUserHandler(builder.getEditProfileView(), builder.getUserService());
+        FollowHandler followHandler = new FollowHandler(builder.getUserService(), builder.getProfileView());
+        UnfollowHandler unfollowHandler = new UnfollowHandler(builder.getUserService(), builder.getProfileView());
+        WriteTweetHandler writeTweetHandler = new WriteTweetHandler(builder.getWriteTweetView(), builder.getTweetService());
+        FindUserHandler findUserHandler = new FindUserHandler(builder.getProfileView(), builder.getFeedView(), builder.getUserService());
         LogoutHandler logoutHandler = new LogoutHandler(builder.getAuthService());
         LoginHandler loginHandler = new LoginHandler(builder.getAuthService());
 
         log.debug("Establishing Chain of Responsibility..");
         helpHandler.setNextHandler(createUserHandler);
-        createUserHandler.setNextHandler(loginHandler);
-        loginHandler.setNextHandler(writeTweetHandler);
+        createUserHandler.setNextHandler(myProfileHandler);
+        myProfileHandler.setNextHandler(editUserHandler);
+        editUserHandler.setNextHandler(followHandler);
+        followHandler.setNextHandler(unfollowHandler);
+        unfollowHandler.setNextHandler(loginHandler);
+        loginHandler.setNextHandler(findUserHandler);
+        findUserHandler.setNextHandler(writeTweetHandler);
         writeTweetHandler.setNextHandler(logoutHandler);
         logoutHandler.setNextHandler(exitHandler);
         exitHandler.setNextHandler(closingHandler);
@@ -115,17 +121,24 @@ public class Configurator {
         builder.dispatcherHandler(dispatcherHandler);
         builder.createUserHandler(createUserHandler);
         builder.writeTweetHandler(writeTweetHandler);
-        builder.loginHandler(loginHandler);
+        builder.myProfileHandler(myProfileHandler);
+        builder.editUserHandler(editUserHandler);
+        builder.unfollowHandler(unfollowHandler);
+        builder.findUserHandler(findUserHandler);
+        builder.closingHandler(closingHandler);
+        builder.followHandler(followHandler);
         builder.logoutHandler(logoutHandler);
+        builder.loginHandler(loginHandler);
         builder.helpHandler(helpHandler);
         builder.exitHandler(exitHandler);
-        builder.closingHandler(closingHandler);
 
         log.debug("Handlers initialized!");
     }
 
     private static void initViews(AppContext.AppContextBuilder builder) {
         builder.writeTweetView(new WriteTweetView());
+        builder.profileView(new ProfileView(builder.getUserService()));
+        builder.editProfileView(new EditProfileView());
         builder.welcomeView(new WelcomeView());
         builder.feedView(new FeedView(builder.getTweetService(), builder.getUserService(), builder.getFeedService()));
     }
