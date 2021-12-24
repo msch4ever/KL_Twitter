@@ -11,7 +11,10 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <log4j-core.version>2.14.0</log4j-core.version>
+        <log4j-core.version>2.17.0</log4j-core.version>
+        <h2.version>2.0.202</h2.version>
+        <commons-cli.version>20040117.000000</commons-cli.version>
+        <log4j-slf4j-impl.version>2.16.0</log4j-slf4j-impl.version>
     </properties>
 
     <dependencies>
@@ -23,15 +26,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${log4j-core.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.4.200</version>
+            <version>${h2.version}</version>
         </dependency>
 
         <dependency>
@@ -43,8 +40,15 @@
         <dependency>
             <groupId>commons-cli</groupId>
             <artifactId>commons-cli</artifactId>
-            <version>1.4</version>
+            <version>${commons-cli.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>5.3.14</version>
+        </dependency>
+
 
         <!--    LOGGING    -->
         <dependency>
@@ -56,13 +60,13 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
-            <version>2.14.1</version>
+            <version>${log4j-slf4j-impl.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.14.1</version>
+            <version>${log4j-core.version}</version>
         </dependency>
 
 
