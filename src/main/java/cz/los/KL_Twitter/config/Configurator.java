@@ -15,10 +15,7 @@ import cz.los.KL_Twitter.persistence.factory.DaoFactoryException;
 import cz.los.KL_Twitter.service.*;
 import cz.los.KL_Twitter.views.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.*;
 
 import java.util.Arrays;
 
@@ -164,11 +161,11 @@ public class Configurator {
 
     private static Configuration createConfig(String[] args) {
         Options options = new Options();
-        options.addRequiredOption("dt", DAO_TYPE, true, "choose dao type for this run.");
+        options.addOption("dt", DAO_TYPE, true, "choose dao type for this run.");
         options.addOption(INIT_DB, false, "flag for initial creation of the DB.");
         options.addOption(POPULATE_DB, false, "flag for population the DB with fake data for a showdown..");
         try {
-            CommandLine cmd = new DefaultParser().parse(options, args);
+            CommandLine cmd = new BasicParser().parse(options, args);
             Configuration config = Configuration.builder()
                     .daoType(cmd.getOptionValue(DAO_TYPE))
                     .initDb(cmd.hasOption(INIT_DB))
