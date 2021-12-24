@@ -1,4 +1,4 @@
-kl-tweeter:
+kl-twitter:
   initDb: true
   daoType: inMem
   populateDb: true

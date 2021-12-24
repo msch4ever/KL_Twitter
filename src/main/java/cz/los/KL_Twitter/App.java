@@ -25,14 +25,4 @@ public class App {
         }
         System.exit(0);
     }
-
-    /*public void run(String ... args) {
-        //Response response = ContextHolder.getAppContext().getWelcomeView().render().listen();
-        Response response = SpringApplication.;
-        while (response.getCommand() != Command.EXIT) {
-            response = response.getView().render().listen();
-        }
-        System.exit(0);
-    }*/
-
 }

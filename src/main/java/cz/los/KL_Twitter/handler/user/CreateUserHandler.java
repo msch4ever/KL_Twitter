@@ -9,7 +9,8 @@ import cz.los.KL_Twitter.views.WelcomeView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.Scanner;
+import java.io.Console;
+import java.util.Arrays;
 
 @Slf4j
 @Component
@@ -24,7 +25,7 @@ public class CreateUserHandler extends AbstractHandler {
         this.welcomeView = welcomeView;
     }
 
-    @Override
+    /*@Override
     public Response handleCommand() {
         String login = null;
         String password = null;
@@ -53,8 +54,8 @@ public class CreateUserHandler extends AbstractHandler {
         User user = userService.createUser(login, password);
         welcomeView.setMessage("User " + user.getLogin() + " has been created.");
         return new Response(true, command, welcomeView);
-    }
-    /*@Override
+    }*/
+    @Override
     public Response handleCommand() {
         String login = null;
         String password = null;
@@ -83,9 +84,8 @@ public class CreateUserHandler extends AbstractHandler {
         passwordChars = null;
         console.flush();
         User user = userService.createUser(login, password);
-        WelcomeView welcomeView = ContextHolder.getAppContext().getWelcomeView();
         welcomeView.setMessage("User " + user.getLogin() + " has been created.");
-        return new Response(true, command, ContextHolder.getAppContext().getWelcomeView());
-    }*/
+        return new Response(true, command, welcomeView);
+    }
 
 }

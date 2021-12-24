@@ -26,7 +26,7 @@ public class AppConfig {
     public static PropertySourcesPlaceholderConfigurer configurer() {
         PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
         YamlPropertiesFactoryBean yaml = new YamlPropertiesFactoryBean();
-        yaml.setResources(new ClassPathResource("kl-tweeter.yaml"));
+        yaml.setResources(new ClassPathResource("kl-twitter.yaml"));
         configurer.setProperties(Objects.requireNonNull(yaml.getObject()));
         return configurer;
     }
@@ -52,7 +52,7 @@ public class AppConfig {
     }
 
     @Bean
-    public DaoType daoType(@Value("${kl-tweeter.daoType}") String daoTypeValue) {
+    public DaoType daoType(@Value("${kl-twitter.daoType}") String daoTypeValue) {
         return Arrays.stream(DaoType.values())
                 .filter(it -> it.value().equalsIgnoreCase(daoTypeValue))
                 .findFirst()
@@ -60,12 +60,12 @@ public class AppConfig {
     }
 
     @Bean
-    public Boolean initDb(@Value("${kl-tweeter.initDb}") Boolean initDb) {
+    public Boolean initDb(@Value("${kl-twitter.initDb}") Boolean initDb) {
         return initDb;
     }
 
     @Bean
-    public Boolean populateDb(@Value("${kl-tweeter.populateDb}") Boolean populateDb) {
+    public Boolean populateDb(@Value("${kl-twitter.populateDb}") Boolean populateDb) {
         return populateDb;
     }
 
