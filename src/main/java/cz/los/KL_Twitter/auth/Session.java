@@ -18,20 +18,20 @@ public class Session implements PersistenceEntity {
     Long id;
     User loggedInUser;
     UserAuthentication userAuthentication;
-    LocalDateTime start;
+    LocalDateTime started;
     @Setter
     @NonFinal
-    LocalDateTime end;
+    LocalDateTime ended;
 
     public Session(Session other) {
         this.id = other.id;
         this.loggedInUser = other.loggedInUser;
         this.userAuthentication = other.userAuthentication;
-        this.start = other.start;
-        this.end = other.end;
+        this.started = other.started;
+        this.ended = other.ended;
     }
 
     public boolean isActive() {
-        return end == null;
+        return ended == null;
     }
 }

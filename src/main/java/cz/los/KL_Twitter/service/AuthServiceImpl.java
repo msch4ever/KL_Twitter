@@ -38,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void endSession(Session session) {
         LocalDateTime now = LocalDateTime.now();
-        session.setEnd(now);
+        session.setEnded(now);
         sessionDao.updateEnd(session.getId(), now);
         ContextHolder.getSecurityContext().destroyCurrentSession();
     }
@@ -51,7 +51,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void createAuth(final Long userId, final String login, final String password) {
         final byte[] salt = generateSalt();
-        authDao.save(new UserAuthentication(userId, login, salt, encodePassword(salt, password)));
+        UserAuthentication authentication = new UserAuthentication(userId, login, salt, encodePassword(salt, password));
+        authDao.save(authentication);
         log.debug("Authentication info saved for login:{}", login);
     }
 

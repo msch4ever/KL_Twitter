@@ -12,7 +12,7 @@ import java.util.*;
 
 public class UserDaoJdbcImpl implements UserDao {
 
-    private static final String getLastId = "SELECT MAX(userId) FROM USER";
+    private static final String getLastId = "SELECT MAX(userId) FROM TWITTER_USER";
 
     @Override
     public Long save(User model) {
@@ -22,27 +22,29 @@ public class UserDaoJdbcImpl implements UserDao {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        String dbUrl = "jdbc:h2:file:C:/Users/msch4/IdeaProjects/School/KL_Twitter/dataBase/new_db";
 
         Connection conn = null;
         PreparedStatement statement1 = null;
         Statement statement2 = null;
         ResultSet rs = null;
+        Long resultId = null;
         try {
-            conn = DriverManager.getConnection(dbUrl);
-            String sql = "INSERT INTO USER (login\n" +
+            conn = DbUtils.getConnection();
+            String sql = "INSERT INTO TWITTER_USER (login\n" +
                     "                , nickname\n" +
                     "                , about)\n" +
                     "VALUES  (?, ?, ?)";
             statement1 = conn.prepareStatement(sql);
             statement1.setString(1, model.getLogin());
-            int result = statement1.executeUpdate(sql);
+            statement1.setString(2, model.getNickname());
+            statement1.setString(3, model.getAbout());
+            int result = statement1.executeUpdate();
             System.out.println(result);
             if (result == 1) {
                 statement2 = conn.createStatement();
                 rs = statement2.executeQuery(getLastId);
                 if (rs.next()) {
-                    return rs.getLong(1);
+                    resultId = rs.getLong(1);
                 }
             }
         } catch (SQLException throwables) {
@@ -57,7 +59,7 @@ public class UserDaoJdbcImpl implements UserDao {
                 throwables.printStackTrace();
             }
 
-            return null;
+            return resultId;
         }
     }
 
@@ -72,7 +74,7 @@ public class UserDaoJdbcImpl implements UserDao {
             User user = null;
             Connection connection = DbUtils.getConnection();
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM user WHERE userId = " + id);
+            ResultSet rs = statement.executeQuery("SELECT * FROM TWITTER_USER WHERE userId = " + id);
             while (rs.next()) {
                 Long userId = rs.getLong("userId");
                 String nickname = rs.getString("nickname");

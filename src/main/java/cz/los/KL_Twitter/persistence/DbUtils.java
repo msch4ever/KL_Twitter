@@ -27,13 +27,14 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DbUtils {
 
-    private static final String TWITTER_DB_URL = "jdbc:sqlite:C:\\STORAGE\\kl_twitter\\twitter_DB";
-    public static final String USER = "user";
-    public static final String TWEET = "tweet";
-    public static final String LIKES = "likes";
-    public static final String FOLLOWERS = "followers";
-    public static final String SESSION = "session";
-    public static final String USER_AUTHENTICATION = "user_authentication";
+    //private static final String TWITTER_DB_URL = "jdbc:sqlite:C:\\STORAGE\\kl_twitter\\twitter_DB";
+    private static final String TWITTER_DB_URL = "jdbc:h2:file:C:/DEVELOPMENT/REPO/KL_Twitter/dataBase/new_db";
+    public static final String USER = "TWITTER_USER";
+    public static final String TWEET = "TWEET";
+    public static final String LIKES = "LIKES";
+    public static final String FOLLOWERS = "FOLLOWERS";
+    public static final String SESSION = "SESSION";
+    public static final String USER_AUTHENTICATION = "USER_AUTHENTICATION";
     public static final String QUERY_DELIMITER = "--NEXT--";
 
     private static final List<String> TABLES =

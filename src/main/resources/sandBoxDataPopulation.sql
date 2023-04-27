@@ -1,4 +1,4 @@
-INSERT INTO user (login, dateOfBirth, about)
+INSERT INTO TWITTER_USER (login, dateOfBirth, about)
 VALUES
        ('@rip212', '1993-05-27', 'Hi, i''m Andrew. JS evangelista')
      , ('@msch4ever', '1991-01-07', 'Hi, i''m Kostia. I love Java')
@@ -8,54 +8,54 @@ VALUES
 
 --NEXT--
 
-INSERT INTO tweet (userId, datePosted, referenceTweet, content)
+INSERT INTO TWEET (userId, datePosted, referenceTweet, content)
 VALUES
        (1, '2001-09-11', null, 'We will never forget this moment! America will never settle!')
      , (1, null, null, 'I was always wondering why it is so cool to be awesome!');
 
 --NEXT--
 
-INSERT INTO tweet (userId, datePosted, referenceTweet, content)
+INSERT INTO TWEET (userId, datePosted, referenceTweet, content)
 VALUES
        (2, '2001-09-11', 1, 'Oh my god! What happened!?')
      , (2, null, null, 'Hi chat! Is Mayo an instrument?');
 
 --NEXT--
 
-INSERT INTO tweet (userId, datePosted, referenceTweet, content)
+INSERT INTO TWEET (userId, datePosted, referenceTweet, content)
 VALUES
        (3, '2001-09-11', 3, 'They attacked US!')
      , (3, null, null, 'I just love COCK! Cant imagine my life without it!');
 
 --NEXT--
 
-INSERT INTO tweet (userId, datePosted, referenceTweet, content)
+INSERT INTO TWEET (userId, datePosted, referenceTweet, content)
 VALUES
        (4, '2001-09-11', 1, 'Very Sad!')
      , (4, null, 6, 'That''s so terrible we can not edit tweets XD');
 
 --NEXT--
 
-INSERT INTO tweet (userId, datePosted, referenceTweet, content)
+INSERT INTO TWEET (userId, datePosted, referenceTweet, content)
 VALUES
        (5, null, null, 'Hi, That will be my first tweet!');
 
 --NEXT--
 
-INSERT INTO tweet (userId, datePosted, referenceTweet, content)
+INSERT INTO TWEET (userId, datePosted, referenceTweet, content)
 VALUES
        (1, null, 4, 'No Kostia, mayo isn''t an instrument!')
      , (1, null, 8, 'Ahahahahha LOL!');
 
 --NEXT--
 
-INSERT INTO tweet (userId, datePosted, referenceTweet, content)
+INSERT INTO TWEET (userId, datePosted, referenceTweet, content)
 VALUES
        (4, null, 10, '@rip212 Why would you be so angry at mayo!');
 
 --NEXT--
 
-INSERT INTO followers (userId, followingUserId)
+INSERT INTO FOLLOWERS (userId, followingUserId)
 VALUES
        (1, 2)
     ,  (1, 3)
@@ -73,7 +73,7 @@ VALUES
 
 --NEXT--
 
-INSERT INTO likes (tweetId, likedUserId)
+INSERT INTO LIKES (tweetId, likedUserId)
 VALUES
        (1, 2)
      , (1, 3)

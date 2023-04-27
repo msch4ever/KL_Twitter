@@ -58,7 +58,7 @@ public abstract class AbstractView {
      * This will only work in a terminal.
      */
     protected void clearScreen() {
-        try {
+       /* try {
             String operatingSystem = System.getProperty("os.name");
 
             if (operatingSystem.contains("Windows")) {
@@ -73,7 +73,7 @@ public abstract class AbstractView {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public String getAndDestroyMessage() {

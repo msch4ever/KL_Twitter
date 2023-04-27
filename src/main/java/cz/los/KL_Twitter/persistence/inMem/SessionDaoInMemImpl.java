@@ -23,7 +23,7 @@ public class SessionDaoInMemImpl implements SessionDao {
 
     @Override
     public void updateEnd(Long id, LocalDateTime end) {
-        storage.getSessionStorage().get(id).setEnd(end);
+        storage.getSessionStorage().get(id).setEnded(end);
     }
 
     private Session createSessionState(Session session) {
